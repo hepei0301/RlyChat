@@ -1,0 +1,16 @@
+{
+    "UserId": "",
+    "AppId": "2333d117bc924a0795df83f98aede913",
+    "AppToken": "8059eea76ba0ca610e8bcdcaf5411777",
+    "ConnectorAddrs": ["192.168.27.239:8085"],
+    "LvsAddrs": ["192.168.27.239:8888"],
+    "WbssAddrs": ["192.168.27.227:8001"],
+    "account": "",
+    "Profile": {
+        "Email": "",
+        "Mobile": "",
+        "NickName": "", 
+        "PhotoUrl": "",
+        "UserType": 1
+    }
+}

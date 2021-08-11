@@ -1,0 +1,31 @@
+.dialogResizeMoveBox {
+  overflow: hidden;
+  border-radius: 2px;
+  display: flex !important;
+  flex-direction: column;
+  border: 1px solid red;
+
+  .close {
+    cursor: pointer;
+    padding-left: 5px;
+    height: 100%;
+  }
+
+  .dialogTitle {
+    height: 45px;
+    cursor: move;
+    background-color: rgba(39, 57, 59, 0.6);
+    color: rgba(255, 255, 255, 0.847);
+    border-bottom: 1px solid rgb(33, 82, 70);
+    box-shadow: 0 1px 1px rgb(33, 82, 70);
+    padding: 0 14px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: "Microsoft Tai Le";
+  }
+
+  .resizeContent {
+    flex: 1;
+    overflow: auto;
+  }
+}

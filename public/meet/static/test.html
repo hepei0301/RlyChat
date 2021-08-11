@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    你好，我是iframe的内容
+    <button onclick="setData()">打印本地的值</button>
+    <button onclick="getData()">点击获取值vue的值</button>
+    <script>
+        // var wpsData;
+        // window.addEventListener('message', function(messageEvent) {
+        //     var data = messageEvent.data; 
+        //     console.log('收到vue的数据：',data);
+        //     wpsData = data
+        //     console.log('wpsData：',wpsData);
+        // })
+        var aaaaa = '22222'
+        function setData(){
+            alert(aaaaa)
+        }
+        function getData(){
+            alert(wpsData) 
+        }
+    </script>
+</body>
+</html>
