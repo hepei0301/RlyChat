@@ -59,7 +59,7 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
   return (
     <>
       <Button style={{ position: 'absolute', top: 10, left: 20 }} onClick={open}>
-        答案开im
+        答案开
       </Button>
       <ResizeMoveDialog
         limitSize={limitSize || { width: 300, height: 300 }}
@@ -77,11 +77,13 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
           onLoad={() => {
             (window as any).ChatLogin.init(() => {
               const contentWindow = (document.getElementById('RlyChat-Im') as any).contentWindow;
-              contentWindow.IM.loginCallBack('15071046271', '我是一个名字', [
-                { id: 15071046271, name: '我是一个名字' },
-                { id: 'aa11', name: 'hepeu' },
-                { id: 'bb11', name: '何佩' },
-              ]);
+              if (contentWindow) {
+                contentWindow.IM.loginCallBack('15071046271', '我是一个名字', [
+                  { id: 15071046271, name: '我是一个名字' },
+                  { id: 'aa11', name: 'hepeu' },
+                  { id: 'bb11', name: '何佩' },
+                ]);
+              }
             });
           }}
         />

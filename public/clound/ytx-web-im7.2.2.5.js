@@ -407,9 +407,7 @@
         return commonConfig.msgVersion;
       }
       var s = null;
-      if (
-        (s = window.localStorage[commonConfig.userName + commonConfig.deviceType]) === undefined
-      ) {
+      if ((s = window.localStorage[commonConfig.userName + commonConfig.deviceType]) === undefined) {
         window.localStorage[commonConfig.userName + commonConfig.deviceType] = 0;
         return '0';
       }
@@ -576,15 +574,9 @@
           if (ipAdd['3'] !== YTX_CONFIG.WS_TYPE) {
             continue;
           }
-          var count = !!ipSpeedTestPolicy['3']
-            ? ipSpeedTestPolicy['3']
-            : YTX_CONFIG.ipSpeedTestConfig._count;
-          var interval = !!ipSpeedTestPolicy['4']
-            ? ipSpeedTestPolicy['4']
-            : YTX_CONFIG.ipSpeedTestConfig._interval;
-          var timeout = !!ipSpeedTestPolicy['5']
-            ? ipSpeedTestPolicy['5']
-            : YTX_CONFIG.ipSpeedTestConfig._timeout._WIFI;
+          var count = !!ipSpeedTestPolicy['3'] ? ipSpeedTestPolicy['3'] : YTX_CONFIG.ipSpeedTestConfig._count;
+          var interval = !!ipSpeedTestPolicy['4'] ? ipSpeedTestPolicy['4'] : YTX_CONFIG.ipSpeedTestConfig._interval;
+          var timeout = !!ipSpeedTestPolicy['5'] ? ipSpeedTestPolicy['5'] : YTX_CONFIG.ipSpeedTestConfig._timeout._WIFI;
           var num = 0,
             receiveNum = 0;
           var webSocket = new WebSocket('ws://' + ipAdd['1'] + ':' + ipAdd['2']);
@@ -653,14 +645,7 @@
           webSocket.onclose = function (event) {
             commonMethods.logger.info('ipSpeedTest complete...');
             if (event.code > 1000) {
-              console.warn(
-                'ipspeed socket has closed, error code :' +
-                  event.code +
-                  ': ' +
-                  event.reason +
-                  ': ' +
-                  event.wasClean
-              );
+              console.warn('ipspeed socket has closed, error code :' + event.code + ': ' + event.reason + ': ' + event.wasClean);
             }
             var netWork = 1;
             var lost, averageDelay, costtime;
@@ -670,18 +655,7 @@
             } else {
               lost = 100;
             }
-            var jsonStr =
-              '{"IpSpeedResult":{"1":' +
-              netWork +
-              ',' +
-              '"3":"' +
-              this._ip +
-              '",' +
-              '"4":' +
-              this._port +
-              ',' +
-              '"5":' +
-              lost;
+            var jsonStr = '{"IpSpeedResult":{"1":' + netWork + ',' + '"3":"' + this._ip + '",' + '"4":' + this._port + ',' + '"5":' + lost;
             if (averageDelay > 0) {
               jsonStr += ',"6":' + averageDelay;
             }
@@ -695,8 +669,7 @@
               jsonStr += ',"11":"' + ipSpeedTestPolicy['7'] + '"';
             }
             jsonStr += '}}';
-            var str =
-              '{"MsgLite":{"1":' + commonConfig.msgTypeNo._ipSpeedTest + ',"2":' + jsonStr + '}}';
+            var str = '{"MsgLite":{"1":' + commonConfig.msgTypeNo._ipSpeedTest + ',"2":' + jsonStr + '}}';
             if (YTX_CONFIG.loginStatus === YTX_CONFIG.loginStatusNo.Logined) {
               YTX_Methods.sendMsg(str);
             }
@@ -952,10 +925,7 @@
         Chat.confirmMsg();
         ytx.logout();
         return;
-      } else if (
-        type === commonConfig.msgTypeNo._chatRoom.MSG_SEND_LiveChatRoom_MESSAGE &&
-        !obj['3']
-      ) {
+      } else if (type === commonConfig.msgTypeNo._chatRoom.MSG_SEND_LiveChatRoom_MESSAGE && !obj['3']) {
         if (ytx.chatActive) Chat.receiveChatRoomMsg(obj);
         return;
       } else if (type === commonConfig.msgTypeNo._ConferenceNotice) {
@@ -1076,10 +1046,7 @@
         if (!!YTX_CONFIG.intervalId) {
           window.clearInterval(YTX_CONFIG.intervalId);
         }
-        YTX_CONFIG.intervalId = window.setInterval(
-          YTX_Methods.heartBeat,
-          YTX_CONFIG.heartBeatInterval._WIFI * 1000
-        );
+        YTX_CONFIG.intervalId = window.setInterval(YTX_Methods.heartBeat, YTX_CONFIG.heartBeatInterval._WIFI * 1000);
         if (!!YTX_CONFIG.failIntervalId) {
           clearInterval(YTX_CONFIG.failIntervalId);
           YTX_CONFIG.failIntervalId = null;
@@ -1108,10 +1075,7 @@
         callback(commonMethods.parseCodeResp(obj));
       } else if (type === commonConfig.msgTypeNo._sendMsg) {
         if (ytx.chatActive) Chat.receiveMsgResp(obj, request, 'parseSendMsgResp');
-      } else if (
-        type === commonConfig.msgTypeNo._getMyInfo ||
-        type == commonConfig.msgTypeNo._setMyInfo
-      ) {
+      } else if (type === commonConfig.msgTypeNo._getMyInfo || type == commonConfig.msgTypeNo._setMyInfo) {
         if (ytx.chatActive) Chat.receiveMsgResp(obj, request, 'parseGetMyInfo');
       } else if (type === commonConfig.msgTypeNo._createGroup) {
         if (ytx.chatActive) Chat.receiveMsgResp(obj, request, 'parseCreateGroupResp');
@@ -1175,10 +1139,7 @@
           console.log("Cannot read property 'timeout' of undefined");
         }
       }
-      if (
-        obj['1'] === commonConfig.msgTypeNo._getMyInfo &&
-        obj['6'] == commonConfig.reqErrCode.AccountInexistent
-      ) {
+      if (obj['1'] === commonConfig.msgTypeNo._getMyInfo && obj['6'] == commonConfig.reqErrCode.AccountInexistent) {
         var resp = {};
         resp.version = 1;
         resp.nickName = commonConfig.userName;
@@ -1186,23 +1147,17 @@
         resp.birth = '1970-01-01';
         callback(resp);
       } else if (
-        (obj['6'] >= commonConfig.reqErrCode.NoAppkey &&
-          obj['6'] <= commonConfig.reqErrCode.MissingLoginParam + 1) ||
-        (obj['6'] >= commonConfig.reqErrCode.MissingPwd &&
-          obj['6'] <= commonConfig.reqErrCode.IncorrectPwd) ||
-        (obj['6'] >= commonConfig.reqErrCode.IncorrectAccount &&
-          obj['6'] <= commonConfig.reqErrCode.IncorrectAccount) ||
-        (obj['6'] >= commonConfig.reqErrCode.AccountIllegal &&
-          obj['6'] <= commonConfig.reqErrCode.AccountIllegal) ||
+        (obj['6'] >= commonConfig.reqErrCode.NoAppkey && obj['6'] <= commonConfig.reqErrCode.MissingLoginParam + 1) ||
+        (obj['6'] >= commonConfig.reqErrCode.MissingPwd && obj['6'] <= commonConfig.reqErrCode.IncorrectPwd) ||
+        (obj['6'] >= commonConfig.reqErrCode.IncorrectAccount && obj['6'] <= commonConfig.reqErrCode.IncorrectAccount) ||
+        (obj['6'] >= commonConfig.reqErrCode.AccountIllegal && obj['6'] <= commonConfig.reqErrCode.AccountIllegal) ||
         obj['6'] === commonConfig.reqErrCode.RegistOver
       ) {
         onError(commonMethods.parseCodeResp(obj));
         return;
       } else if (
-        (obj['6'] >= commonConfig.reqErrCode.NoAppkey - 1 &&
-          obj['6'] <= commonConfig.reqErrCode.RegistOver + 1) ||
-        (obj['6'] >= commonConfig.reqErrCode.callRouteError - 1 &&
-          obj['6'] <= commonConfig.reqErrCode.unknownError) ||
+        (obj['6'] >= commonConfig.reqErrCode.NoAppkey - 1 && obj['6'] <= commonConfig.reqErrCode.RegistOver + 1) ||
+        (obj['6'] >= commonConfig.reqErrCode.callRouteError - 1 && obj['6'] <= commonConfig.reqErrCode.unknownError) ||
         obj['6'] == 219000
       ) {
         YTX_CONFIG.reconnectNum = 0;
@@ -1223,9 +1178,7 @@
         YTX_CONFIG.loginStatus = YTX_CONFIG.loginStatusNo.NoLogin;
       }
       if (obj['1'] === commonConfig.msgTypeNo._sendMsg) {
-        onError
-          ? onError(YTX_Methods.parseSendMsgRespErr(obj, request))
-          : console.log('onError is missing,lack of onerror callback');
+        onError ? onError(YTX_Methods.parseSendMsgRespErr(obj, request)) : console.log('onError is missing,lack of onerror callback');
         return;
       }
       delete YTX_CONFIG.clientMap[obj['3']];
@@ -1407,10 +1360,8 @@
         datas,
         function (e) {
           var lvs = 'https://' + e['LVS'][0].host + ':' + e['LVS'][0].port;
-          var fileurl =
-            'wss://' + e['webSocketServer'][0].host + ':' + e['webSocketServer'][0].port + '/ws';
-          var server =
-            'wss://' + e['webSocketServer'][0].host + ':' + e['webSocketServer'][0].port + '/ws';
+          var fileurl = 'wss://' + e['webSocketServer'][0].host + ':' + e['webSocketServer'][0].port + '/ws';
+          var server = 'wss://' + e['webSocketServer'][0].host + ':' + e['webSocketServer'][0].port + '/ws';
           // if (ytx.chatActive) Chat.setConfig({
           //   lvsServer: [Base64.encode(lvs)],
           //   fileServerWs: Base64.encode(fileurl)
@@ -1430,10 +1381,7 @@
       //当重连次数超过最大重连数，停止重连
       if (data.isReconnect && YTX_CONFIG.reconnectNum > YTX_CONFIG.maxReconnectNum) return;
       console.log('data---', data);
-      if (
-        data.type === undefined ||
-        (data.type === YTX_CONFIG.loginTypeNo.LoginByUserName && data.sig === undefined)
-      ) {
+      if (data.type === undefined || (data.type === YTX_CONFIG.loginTypeNo.LoginByUserName && data.sig === undefined)) {
         var resp = {};
         resp.code = commonConfig.errCode._NO_REQUIRED_PARAM;
         resp.msg = 'login type or sig is empty';
@@ -1504,21 +1452,12 @@
             if (sessionId !== YTX_CONFIG.currentSession) {
               return;
             }
-            commonMethods.logger.info(
-              commonMethods.getTimeStamp() + ' Client received a message:' + JSON.stringify(event)
-            );
+            commonMethods.logger.info(commonMethods.getTimeStamp() + ' Client received a message:' + JSON.stringify(event));
             YTX_Methods.onResponse(event.data);
           };
           YTX_CONFIG.socket.onclose = function (event) {
             if (event.code > 1000) {
-              commonMethods.logger.warn(
-                'main websocket has closed, error code :' +
-                  event.code +
-                  ': ' +
-                  event.reason +
-                  ': ' +
-                  event.wasClean
-              );
+              commonMethods.logger.warn('main websocket has closed, error code :' + event.code + ': ' + event.reason + ': ' + event.wasClean);
             }
             if (!!tId) {
               clearTimeout(tId);
@@ -1687,8 +1626,7 @@
         ROOT.RL_Builder = new RL_Builder();
       }
       if (config.deviceType) commonConfig.deviceType = config.deviceType;
-      if (typeof config.isOpenOfflineSwitch === 'boolean')
-        YTX_CONFIG.isOpenOfflineSwitch = config.isOpenOfflineSwitch;
+      if (typeof config.isOpenOfflineSwitch === 'boolean') YTX_CONFIG.isOpenOfflineSwitch = config.isOpenOfflineSwitch;
       if (config.maxReconnectNum) YTX_CONFIG.maxReconnectNum = config.maxReconnectNum;
       YTX_CONFIG.isV3 = config.isV3;
       RL_Media = config.RL_Media || ROOT.RL_Media;
@@ -1713,11 +1651,7 @@
 
       //消息提醒
       YTX_CONFIG.Notification =
-        window.Notification ||
-        window.mozNotification ||
-        window.webkitNotification ||
-        window.msNotification ||
-        window.webkitNotifications;
+        window.Notification || window.mozNotification || window.webkitNotification || window.msNotification || window.webkitNotifications;
       if (!!YTX_CONFIG.Notification) {
         YTX_CONFIG.Notification.requestPermission(function (permission) {
           if (YTX_CONFIG.Notification.permission !== 'granted') {
@@ -1776,7 +1710,7 @@
        *   password
        * }
        *  */
-      console.log('登录', data, callback)
+      console.log('登录', data, callback);
       data = commonMethods.getParam(data);
       var resp = {};
       if (!commonConfig.appId) {
@@ -3090,9 +3024,7 @@
       if (!data || (data['GetMultiUserStateResp'] && !data['GetMultiUserStateResp'][0])) {
         return resp;
       }
-      data = data['GetUserStateResp']
-        ? data['GetUserStateResp']
-        : data['GetMultiUserStateResp'][0]['GetUserStateResp'];
+      data = data['GetUserStateResp'] ? data['GetUserStateResp'] : data['GetMultiUserStateResp'][0]['GetUserStateResp'];
       resp.useracc = data['1'];
       resp.network = data['2'];
       resp.state = data['3'];
@@ -3201,10 +3133,7 @@
         deviceType: commonConfig.deviceType,
       });
       var postUrl =
-        chatConfig.fileServerIp +
-        '/2015-03-26/Corp/yuntongxun/Upload/Attach?sig=2B9C64616C98A93F1375BF0A2F6429E7&token=' +
-        commonConfig.token +
-        '&type=1';
+        chatConfig.fileServerIp + '/2015-03-26/Corp/yuntongxun/Upload/Attach?sig=2B9C64616C98A93F1375BF0A2F6429E7&token=' + commonConfig.token + '&type=1';
       var sendData = {
         url: postUrl,
         header: {
@@ -3391,9 +3320,7 @@
         if (regx.exec(data.birth) == null) {
           var resp = {};
           resp.code = commonConfig.errCode._PARAM_TYPE_ERR;
-          resp.msg =
-            funName +
-            'upload personInfo,birth is error, only accept format yyyy-MM-dd, eg:1990-01-01';
+          resp.msg = funName + 'upload personInfo,birth is error, only accept format yyyy-MM-dd, eg:1990-01-01';
           onError(resp);
           return;
         }
@@ -4808,9 +4735,7 @@
         onError(resp);
         return;
       }
-      var postUrl =
-        chatConfig.fileServerIp +
-        '/2015-03-26/Corp/yuntongxun/IM/UserDeviceDetail?sig=2B9C64616C98A93F1375BF0A2F6429E7';
+      var postUrl = chatConfig.fileServerIp + '/2015-03-26/Corp/yuntongxun/IM/UserDeviceDetail?sig=2B9C64616C98A93F1375BF0A2F6429E7';
       var userAgent = navigator.userAgent.split(' ');
       userAgent = userAgent[userAgent.length - 2] + ' ' + userAgent[userAgent.length - 1];
       var send = {
@@ -5584,11 +5509,7 @@
         // 本地消息版本号小于本地最大消息版本号，中间缺消息
         var end = commonConfig.maxMsgVersion;
         var msgArr = [];
-        console.log(
-          'chatConfig.receiveMsgBuf',
-          JSON.stringify(chatConfig.receiveMsgBuf),
-          commonConfig.msgVersion
-        );
+        console.log('chatConfig.receiveMsgBuf', JSON.stringify(chatConfig.receiveMsgBuf), commonConfig.msgVersion);
         for (var i in chatConfig.receiveMsgBuf) {
           //循环消息暂存里的消息
           if (parseInt(i) === commonConfig.msgVersion + 1) {
@@ -5662,17 +5583,11 @@
           //cmd消息
           chatMethods._noticeListener(msgObj[val]);
           console.log('_noticeListener send', msgObj[val]);
-        } else if (
-          parseInt(val) === commonConfig.msgTypeNo._msg_DEL &&
-          chatMethods._msgNotifyListener
-        ) {
+        } else if (parseInt(val) === commonConfig.msgTypeNo._msg_DEL && chatMethods._msgNotifyListener) {
           //阅后即焚删除消息
           chatMethods._msgNotifyListener(msgObj[val]);
           console.log('_msgNotifyListener send', msgObj[val]);
-        } else if (
-          parseInt(val) === commonConfig.msgTypeNo._chatRoom.ChatRoom_MESSAGE &&
-          chatMethods._charRoomListener
-        ) {
+        } else if (parseInt(val) === commonConfig.msgTypeNo._chatRoom.ChatRoom_MESSAGE && chatMethods._charRoomListener) {
           //聊天室推送消息
           chatMethods._charRoomListener(msgObj[val]);
           console.log('_charRoomListener send', msgObj[val]);
@@ -5743,10 +5658,7 @@
         commonMethods.setlocalStorage(pushs['1']);
       }
       var pushMsg = chatMethods.parsePushMsgResp(obj);
-      if (
-        pushMsg.msgType === commonConfig.msgTypeNo._cmdMsg &&
-        pushMsg.msgSender !== commonConfig.userName
-      ) {
+      if (pushMsg.msgType === commonConfig.msgTypeNo._cmdMsg && pushMsg.msgSender !== commonConfig.userName) {
         try {
           var msgDomain = JSON.parse(pushMsg.msgDomain);
           if (msgDomain.SanTi) {
@@ -5772,10 +5684,7 @@
         }
       } else if (pushMsg.version > commonConfig.msgVersion) {
         console.log('commonConfig.maxMsgVersion---', commonConfig.maxMsgVersion);
-        commonConfig.maxMsgVersion =
-          commonConfig.maxMsgVersion < pushMsg.version
-            ? pushMsg.version
-            : commonConfig.maxMsgVersion;
+        commonConfig.maxMsgVersion = commonConfig.maxMsgVersion < pushMsg.version ? pushMsg.version : commonConfig.maxMsgVersion;
         chatConfig.receiveMsgBuf[pushMsg.version] = pushMsg;
         this.processSyncMsg(1);
       }
@@ -6209,58 +6118,28 @@
     },
     // 控制媒体
     MediaControl: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/Member/MediaControl?source=SDK',
-        commonMethods.assign({ confId: this.confId }, data),
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/Member/MediaControl?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
     },
     //更新成员信息
     UpdateMeetMemberNick: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/Member/Update?source=SDK',
-        data,
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/Member/Update?source=SDK', data, callback, onError);
     },
     //踢出成员
     KickMeetMember: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/Member/Kickout?source=SDK',
-        data,
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/Member/Kickout?source=SDK', data, callback, onError);
     },
     //拒绝邀请
     RejectInvitation: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/Member/RejectInvitation?source=SDK',
-        data,
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/Member/RejectInvitation?source=SDK', data, callback, onError);
     },
     //接受邀请
     AcceptInvitation: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/Member/AcceptInvitation?source=SDK',
-        data,
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/Member/AcceptInvitation?source=SDK', data, callback, onError);
     },
     //退出会议
     leaveMeeting: function (data, callback, onError) {
       if (!this.callId) return;
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/Member/Quit?source=SDK',
-        commonMethods.assign({ confId: this.confId }, data),
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/Member/Quit?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
       ROOT.RL_Media.releaseCall(
         {
           caller: this.caller,
@@ -6280,12 +6159,7 @@
     },
     // 删除会议、结束会议
     DeleteMeeting: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/Delete?source=SDK',
-        commonMethods.assign({ confId: this.confId }, data),
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/Delete?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
       ROOT.RL_Media.DisconnectMedia(
         {
           caller: this.caller,
@@ -6324,30 +6198,15 @@
     },
     //更新会议摘要
     UpdateAbstract: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/Abstract/Update?source=SDK',
-        commonMethods.assign({ confId: this.confId }, data),
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/Abstract/Update?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
     },
     //锁定会议
     LockMeet: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/LockUnlock?source=SDK',
-        commonMethods.assign({ confId: this.confId }, data),
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/LockUnlock?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
     },
     //删除摘要
     DeleteAbstract: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg(
-        '/REST/Conference/Abstract/Delete?source=SDK',
-        data,
-        callback,
-        onError
-      );
+      meetMethods.buildConferenceMsg('/REST/Conference/Abstract/Delete?source=SDK', data, callback, onError);
     },
   };
 

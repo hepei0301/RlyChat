@@ -1,103 +1,81 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
-import { Rnd } from 'react-rnd';
+import ResizeMoveDialog from '@/components/ResizeMoveDialog';
 import './index.less';
+export interface RlyPropos {
+  bounds?: string;
+  contactsList?: [any];
+  userInfo?: { userId: string; userName: string };
+  size?: { width: number; height: number };
+  limitSize?: { width: number; height: number };
+  maxSize?: { width: number; height: number };
+}
 
-let fix = false;
-
-export default function Meet() {
-  const [position, setPosition] = useState({ x: -10000, y: -10000 });
-  const [size, setSize] = useState({ width: 1000, height: 780 });
-  const [move, setMove] = useState(false);
-
-  fix = !(position.x === -10000 && position.y === -10000);
-
-  const message = JSON.parse(
-    JSON.stringify({
-      userId: '15071046271',
-      userName: '一个测试的姓2名',
-      type: 'login',
-    })
-  );
+export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
+  const [toggle, setToggle] = useState(false);
 
   const close = () => {
-    setPosition({ x: -10000, y: -10000 });
-    setSize({ width: 1000, height: 780 });
+    setToggle(false);
   };
 
   const open = () => {
-    setPosition({
-      x: Math.ceil((document.documentElement.clientWidth - 1000) / 2),
-      y: Math.ceil((document.documentElement.clientHeight - 780) / 2),
-    });
-    setSize({ width: 1000, height: 780 });
+    setToggle(true);
   };
 
-  useEffect(() => {}, [position, size]);
-
   useEffect(() => {
-    window.addEventListener('message', (res) => {
-      const data = (res && res.data) || { type: '', des: '' };
-      const noti = (des) => {
-        if (fix) return;
-        notification.destroy();
-        notification.info({
-          message: des,
-          placement: 'bottomRight',
-          bottom: 0,
-          duration: 30,
-          btn: (
-            <Button
-              type="primary"
-              size="small"
-              onClick={() => {
-                open();
-                notification.destroy();
-              }}>
-              打开对话框
-            </Button>
-          ),
-        });
-      };
-      switch (data.type) {
-        case 'meet':
-          noti(`${data.des}`);
-          break;
-      }
-    });
-  }, []);
+    const handle = (res: any) => {
+      const data = (res && res.data) || { type: '', name: '' };
+      if (toggle) return;
+      notification.destroy();
+      notification.info({
+        message: data.des,
+        placement: 'bottomRight',
+        bottom: 0,
+        duration: 30,
+        btn: (
+          <Button
+            type="primary"
+            size="small"
+            onClick={() => {
+              open();
+              notification.destroy();
+            }}>
+            打开对话框
+          </Button>
+        ),
+      });
+    };
+    window.addEventListener('message', handle);
+
+    return () => window.removeEventListener('message', handle);
+  }, [toggle]);
 
   return (
-    <Rnd
-      className="MeetMDialog"
-      minWidth={400}
-      minHeight={200}
-      bounds={'.cesium-widget'}
-      dragHandleClassName={'Meetbounds'}
-      size={size}
-      position={position}
-      onResizeStop={(e, direction, ref, delta, position) => {
-        setSize({ width: ref.style.width, height: ref.style.height });
-      }}
-      onDragStart={() => {
-        setMove(true);
-      }}
-      onDragStop={(e, d) => {
-        setMove(false);
-        setPosition({ x: d.x, y: d.y });
-      }}>
-      <div className="Meetevent" style={{ pointerEvents: !move ? 'none' : 'auto' }} />
-      <div className="Meetbounds" />
-      <img src={close_press} className="close" onClick={close} />
-      <Iframe
-        src="meet/index.html"
-        width={'100%'}
-        height={'100%'}
-        allow="geolocation;microphone;camera;midi;encrypted-media"
-        id="meetIframe"
-        onLoad={() => {}}
-      />
-    </Rnd>
+    <>
+      <Button style={{ position: 'absolute', top: 50, left: 20 }} onClick={open}>
+        答案开meet
+      </Button>
+      <ResizeMoveDialog
+        limitSize={limitSize || { width: 400, height: 200 }}
+        size={size || { width: 1100, height: 780 }}
+        close={close}
+        bounds={bounds || 'body'}
+        toggle={toggle}>
+        <Iframe
+          url="meet/index.html"
+          width={'100%'}
+          height={'100%'}
+          allow="geolocation;microphone;camera;midi;encrypted-media"
+          id="RlyChat-Meet"
+          onLoad={() => {
+            (window as any).ChatLogin.init(() => {
+              const contentWindow = (document.getElementById('RlyChat-Meet') as any).contentWindow;
+              contentWindow.postMessage({ userId: '15071046271', userName: '一个测试的姓' });
+            });
+          }}
+        />
+      </ResizeMoveDialog>
+    </>
   );
 }

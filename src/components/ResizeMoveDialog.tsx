@@ -2,47 +2,45 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Rnd } from 'react-rnd';
 import _ from 'lodash';
-import { CloseOutlined } from '@ant-design/icons';
-import RowFlex from '@/components/RowFlex';
+import { RlyPropos } from '@/pages/im';
+import close_press from '@/assets/close_press.png';
 import './ResizeMoveDialog.less';
 
-interface ResizeMoveDialogProps extends React.HTMLAttributes<HTMLDivElement> {
-  bounds?: string;
-  position?: { x: number; y: number };
-  size?: { width: number; height: number };
-  maxSize?: { width: number; height: number };
-  titleClassName?: string;
-  dialogClassName?: string;
-  limitSize?: { width: number; height: number };
+interface ResizeMoveDialogProps extends RlyPropos, React.HTMLAttributes<HTMLDivElement> {
   close?: () => void;
+  toggle: boolean;
 }
 
 export default function ResizeMoveDialog(props: ResizeMoveDialogProps) {
-  const { title, position, children, titleClassName, dialogClassName, limitSize, size, close, maxSize } = props;
-  const [currentPosition, setCurrentPosition] = useState(position);
+  const { limitSize, size, close, maxSize, bounds, children, toggle } = props;
+  const [currentPosition, setCurrentPosition] = useState({ x: -10000, y: -10000 });
   const [currentSize, setCurrentSize] = useState(size);
+  const [mouseState, setMouseState] = useState(false);
 
-  const titleStyle = classNames('dialogTitle', titleClassName);
-  const dialogStyle = classNames('dialogResizeMoveBox', dialogClassName);
+  useEffect(() => {
+    if (toggle) {
+      setCurrentPosition({
+        x: Math.ceil((document.documentElement.clientWidth - _.get(size, 'width', 0)) / 2),
+        y: Math.ceil((document.documentElement.clientHeight - _.get(size, 'height', 0)) / 2),
+      });
+    } else {
+      setCurrentPosition({ x: -10000, y: -10000 });
+      setCurrentSize(size);
+    }
+  }, [toggle]);
 
   const closeDialog = () => {
     close && close();
-    setCurrentPosition({ x: -10000, y: -10000 });
-    setCurrentSize(size);
   };
-
-  useEffect(() => {
-    _.isEqual(currentPosition, { x: -10000, y: -10000 }) && setCurrentPosition(position);
-  }, [position]);
 
   return (
     <Rnd
-      className={dialogStyle}
-      minWidth={_.get(limitSize, 'width', 220)}
-      minHeight={_.get(limitSize, 'height', 130)}
-      maxWidth={_.get(maxSize, 'width', 220)}
-      maxHeight={_.get(maxSize, 'height', 130)}
-      //   bounds={'#root'}
+      className="dialogResizeMoveBox"
+      minWidth={_.get(limitSize, 'width', 120)}
+      minHeight={_.get(limitSize, 'height', 30)}
+      maxWidth={_.get(maxSize, 'width', 2000)}
+      maxHeight={_.get(maxSize, 'height', 3000)}
+      bounds={bounds}
       dragHandleClassName={'dialogTitle'}
       size={{
         width: _.get(currentSize, 'width', 500),
@@ -52,14 +50,22 @@ export default function ResizeMoveDialog(props: ResizeMoveDialogProps) {
         x: _.get(currentPosition, 'x', -10000),
         y: _.get(currentPosition, 'y', -10000),
       }}
+      onDragStart={() => {
+        setMouseState(true);
+      }}
       onDragStop={(e, d) => {
+        setMouseState(false);
         setCurrentPosition({ x: d.x, y: d.y });
       }}
       onResizeStop={(e, direction, ref, delta, position) => {
         setCurrentSize({ width: _.parseInt(ref.style.width), height: _.parseInt(ref.style.height) });
         setCurrentPosition(position);
       }}>
-      <div className="resizeContent">{children}</div>
+      <div className="dialogTitle" />
+      <img src={close_press} className="close" onClick={closeDialog} />
+      <div className="resizeContent" style={{ pointerEvents: mouseState ? 'none' : 'auto' }}>
+        {children}
+      </div>
     </Rnd>
   );
 }

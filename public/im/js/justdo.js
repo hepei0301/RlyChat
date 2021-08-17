@@ -46,24 +46,17 @@
     this.lastGroupId = null; // 上一个群会话id
     this.msgGroups = []; // 群组草稿
     this.hasMsg = false; // 控制联系人和群组按钮切换时的操作
-    this._Notification =
-      window.Notification ||
-      window.mozNotification ||
-      window.webkitNotification ||
-      window.msNotification ||
-      window.webkitNotifications;
+    this._Notification = window.Notification || window.mozNotification || window.webkitNotification || window.msNotification || window.webkitNotifications;
     this.contacts = {};
     this.postMessage = null;
-    this.parentEvent = null;
-    this.useInfo = null;
     this.myUnitContactsList = [];
   }
   YTX.prototype._login_error_show = false;
   YTX.prototype = {
-    loginCallBack: function (user_account, user_name, obj) {
-        console.log('我是一个姓111名', user_account, user_name)
+    loginCallBack: function (user_account, user_name, myUnitContactsList) {
       $('#page_nickname').html(user_name);
       IM.userName = user_name;
+      IM.myUnitContactsList = myUnitContactsList || [];
       IM.user_account = user_account;
       IM.is_online = true;
       $('#login').modal('hide');
@@ -101,34 +94,32 @@
       });
 
       // 服务器连接状态变更时的监听
-      IM._onConnectStateChangeLisenter = window.parent.RL_YTX_NEW.onConnectStateChangeLisenter(
-        function (obj) {
-          // obj.code;//变更状态 1 断开连接 2 重连中 3 重连成功 4 被踢下线 5 断开连接，需重新登录
-          // 断线需要人工重连
-          if (IM.isCalling) {
-            $('[data-btn="cancelVideo"]').click();
-            $('[data-btn="cancelVoip"]').click();
-            $('[data-btn="shutdownVoip"]').click();
-            $('[data-btn="refuseVoip"]').click();
-          }
-          if (1 == obj.code) {
-            console.log('onConnectStateChangeLisenter obj.code:' + obj.msg);
-          } else if (2 == obj.code) {
-            $.scojs_message('网络状况不佳，正在试图重连服务器', $.scojs_message.TYPE_ERROR);
-            $('#pop_videoView').hide();
-          } else if (3 == obj.code) {
-            $.scojs_message('连接成功', $.scojs_message.TYPE_OK);
-          } else if (4 == obj.code) {
-            IM.DO_logout(false);
-            $.scojs_message(obj.msg, $.scojs_message.TYPE_ERROR);
-          } else if (5 == obj.code) {
-            $.scojs_message('网络状况不佳，正在试图重连服务器', $.scojs_message.TYPE_ERROR);
-            IM.getSig(IM.user_account);
-          } else {
-            console.log('onConnectStateChangeLisenter obj.code:' + obj.msg);
-          }
+      IM._onConnectStateChangeLisenter = window.parent.RL_YTX_NEW.onConnectStateChangeLisenter(function (obj) {
+        // obj.code;//变更状态 1 断开连接 2 重连中 3 重连成功 4 被踢下线 5 断开连接，需重新登录
+        // 断线需要人工重连
+        if (IM.isCalling) {
+          $('[data-btn="cancelVideo"]').click();
+          $('[data-btn="cancelVoip"]').click();
+          $('[data-btn="shutdownVoip"]').click();
+          $('[data-btn="refuseVoip"]').click();
         }
-      );
+        if (1 == obj.code) {
+          console.log('onConnectStateChangeLisenter obj.code:' + obj.msg);
+        } else if (2 == obj.code) {
+          $.scojs_message('网络状况不佳，正在试图重连服务器', $.scojs_message.TYPE_ERROR);
+          $('#pop_videoView').hide();
+        } else if (3 == obj.code) {
+          $.scojs_message('连接成功', $.scojs_message.TYPE_OK);
+        } else if (4 == obj.code) {
+          IM.DO_logout(false);
+          $.scojs_message(obj.msg, $.scojs_message.TYPE_ERROR);
+        } else if (5 == obj.code) {
+          $.scojs_message('网络状况不佳，正在试图重连服务器', $.scojs_message.TYPE_ERROR);
+          IM.getSig(IM.user_account);
+        } else {
+          console.log('onConnectStateChangeLisenter obj.code:' + obj.msg);
+        }
+      });
 
       var membs = IM.getContactMember();
       console.log('membs----------------', membs);
@@ -137,21 +128,19 @@
         IM.HTML_addChatToList(i, membs[i].conName, IM._contact_type_c, null, false);
       }
       /*音视频呼叫监听
-                 obj.callId;//唯一消息标识  必有
-                 obj.caller; //主叫号码  必有
-                 obj.called; //被叫无值  必有
-                 obj.callType;//0 音频 1 视频 2落地电话
-                 obj.state;//1 对方振铃 2 呼叫中 3 被叫接受 4 呼叫失败 5 结束通话 6 呼叫到达
-                 obj.reason//拒绝或取消的原因
-                 obj.code//当前浏览器是否支持音视频功能
-                 */
+                   obj.callId;//唯一消息标识  必有
+                   obj.caller; //主叫号码  必有
+                   obj.called; //被叫无值  必有
+                   obj.callType;//0 音频 1 视频 2落地电话
+                   obj.state;//1 对方振铃 2 呼叫中 3 被叫接受 4 呼叫失败 5 结束通话 6 呼叫到达
+                   obj.reason//拒绝或取消的原因
+                   obj.code//当前浏览器是否支持音视频功能
+                   */
       IM._onCallMsgListener = window.parent.RL_Media.onCallMsgListener(function (obj) {
         IM.EV_onCallMsgListener(obj);
       });
       // IM.autoGetUserState();//设置自动获取在线状态
-      IM._onMsgNotifyReceiveListener = window.parent.RL_Chat.onMsgNotifyReceiveListener(function (
-        obj
-      ) {
+      IM._onMsgNotifyReceiveListener = window.parent.RL_Chat.onMsgNotifyReceiveListener(function (obj) {
         if (obj.msgType == 21) {
           //阅后即焚：接收方已删除阅后即焚消息
           console.log('接收方已删除阅后即焚消息obj.msgId=' + obj.msgId);
@@ -175,25 +164,11 @@
     init: function () {
       // window.parent.RL_YTX_NEW.setLogClose();
       console.log('window.localStorage-------------------', localStorage);
+      // 接听父组件消息
       window.addEventListener('message', (event) => {
         IM.postMessage = event.data;
-        IM.parentEvent = event;
-        if (
-          IM.postMessage.type === 'message' ||
-          IM.postMessage.type === 'audio' ||
-          IM.postMessage.type === 'video' ||
-          IM.postMessage.type === 'group'
-        ) {
+        if (IM.postMessage.type === 'message' || IM.postMessage.type === 'audio' || IM.postMessage.type === 'video') {
           IM.handleChat();
-        }
-        if (IM.postMessage.type === 'login') {
-          IM.userInfo = {
-            userId: event.data.userId,
-            userName: event.data.userName,
-          };
-          IM.myUnitContactsList = JSON.parse(
-            event.data.myUnitContactsList ? event.data.myUnitContactsList : '[]'
-          );
         }
         if (IM.postMessage.type === 'openDev') {
           var chats = '13000000001';
@@ -205,6 +180,7 @@
           IM.cancelVoipCall();
         }
       });
+
       var resp = window.parent.RL_YTX_NEW.init({
         appId: this._appid,
         serverIp: ip.serverIp,
@@ -548,13 +524,7 @@
           var files = e.target.files[i];
           var msgid = new Date().getTime();
           var type = files.type.indexOf('image') > -1 ? '4' : '7';
-          IM.EV_sendfile(
-            msgid,
-            files,
-            type,
-            IM.chat_window.attr('data-chat-with').toString(),
-            false
-          );
+          IM.EV_sendfile(msgid, files, type, IM.chat_window.attr('data-chat-with').toString(), false);
         }
         $(this).val('');
       });
@@ -564,13 +534,7 @@
           var files = e.target.files[i];
           var msgid = new Date().getTime();
           var type = '7';
-          IM.EV_sendfile(
-            msgid,
-            files,
-            type,
-            IM.chat_window.attr('data-chat-with').toString(),
-            false
-          );
+          IM.EV_sendfile(msgid, files, type, IM.chat_window.attr('data-chat-with').toString(), false);
         }
         $(this).val('');
       });
@@ -596,12 +560,7 @@
           var vlist = '<ul>';
           for (var i = 0; i < e.value.length; i++) {
             // vlist+="<li onclick='IM.sendVideo("+ e.value[i].deviceId +")'>"+e.value[i].label+"</li>";
-            vlist +=
-              '<li onclick="IM.sendVideo(\'' +
-              e.value[i].deviceId +
-              '\')">' +
-              (e.value[i].label ? e.value[i].label : e.value[i].deviceId) +
-              '</li>';
+            vlist += '<li onclick="IM.sendVideo(\'' + e.value[i].deviceId + '\')">' + (e.value[i].label ? e.value[i].label : e.value[i].deviceId) + '</li>';
           }
           vlist += '</ul>';
 
@@ -828,12 +787,7 @@
             );
             break;
           case 'declared': //群公告
-            IM.EV_setProclamation(
-              groupId,
-              val,
-              $('#group').find('[data-group="gname"]').html(),
-              function (e) {}
-            );
+            IM.EV_setProclamation(groupId, val, $('#group').find('[data-group="gname"]').html(), function (e) {});
           default:
             break;
         }
@@ -995,10 +949,7 @@
       });
       $(document).on('keydown', '[data-chat-type="g"] [data-chat-input="chatinput"]', function (e) {
         //@消息
-        if (
-          e.keyCode == 64 ||
-          (e.shiftKey && e.key == '@' && (e.keyCode == 229 || e.keyCode == 50))
-        ) {
+        if (e.keyCode == 64 || (e.shiftKey && e.key == '@' && (e.keyCode == 229 || e.keyCode == 50))) {
           //输入@
           // role = {"1":"群主","2":"管理员","3":"成员"};
           var groupId = IM.currentChat.attr('data-c-with');
@@ -1008,17 +959,9 @@
             for (var i = 0; i < obj.length; i++) {
               // 群主可以@所有人， @所有人时传群id :groupId
               if (obj[i].member == IM.user_account) {
-                t =
-                  obj[i].role != 3 && obj.length > 2
-                    ? '<button data-atmember="' + groupId + '" >@所有人</button>'
-                    : '';
+                t = obj[i].role != 3 && obj.length > 2 ? '<button data-atmember="' + groupId + '" >@所有人</button>' : '';
               } else {
-                html +=
-                  '<button data-atmember="' +
-                  obj[i].member +
-                  '" >@' +
-                  obj[i].nickName +
-                  '</button>';
+                html += '<button data-atmember="' + obj[i].member + '" >@' + obj[i].nickName + '</button>';
               }
             }
             html = t + html;
@@ -1274,10 +1217,7 @@
       }
       rest.each(function () {
         var _this = $(this);
-        if (
-          (this.offsetTop > scrollTop && this.offsetTop < scrollTop + offHeight + 100) ||
-          scrollTop < offHeight
-        ) {
+        if ((this.offsetTop > scrollTop && this.offsetTop < scrollTop + offHeight + 100) || scrollTop < offHeight) {
           var v = $(this).attr('data-msgid').split('|')[1] + '';
           IM.EV_msgRead(v, function () {
             console.log('已读------------------------v', v);
@@ -1334,10 +1274,7 @@
           $.scojs_message(e.code + ' : ' + e.msg, $.scojs_message.TYPE_ERROR);
           $('[data-msgid=' + msgDiv.msgId + ']').addClass('msgError');
           $('[data-msgid=' + msgDiv.msgId + ']').attr('title', '发送文件失败');
-          $('[data-msgid=' + msgDiv.msgId + ']').attr(
-            'data-msgid',
-            indexMsgId && indexMsgId.split('|')[1]
-          );
+          $('[data-msgid=' + msgDiv.msgId + ']').attr('data-msgid', indexMsgId && indexMsgId.split('|')[1]);
         },
         function (e) {
           //发送进度
@@ -1362,10 +1299,7 @@
       if (contactVal.indexOf('@') > -1) {
         var regx2 = /^([a-zA-Z0-9]{32}#)?[a-zA-Z0-9_-]{1,}@(([a-zA-z0-9]-*){1,}.){1,3}[a-zA-z-]{1,}$/;
         if (regx2.exec(contactVal) == null) {
-          IM.HTML_showAlert(
-            'alert-error',
-            '检查邮箱格式、如果是跨应用再检查应用Id长度是否为32且由数字或字母组成）'
-          );
+          IM.HTML_showAlert('alert-error', '检查邮箱格式、如果是跨应用再检查应用Id长度是否为32且由数字或字母组成）');
           return false;
         }
       } else {
@@ -1392,10 +1326,7 @@
       if (!!type) {
         data.type = type;
       }
-      if (
-        IM.chat_window.find('[data-firemsg]').attr('data-firemsg') == 'true' &&
-        receiver.substring(0, 1) != 'g'
-      ) {
+      if (IM.chat_window.find('[data-firemsg]').attr('data-firemsg') == 'true' && receiver.substring(0, 1) != 'g') {
         data.domain = 'fireMessage';
         if (ms) {
           ms.domain = 'fireMessage';
@@ -1516,11 +1447,7 @@
                 memberRole = 2;
                 groupTar.find('[contenteditable="false"]').attr('contenteditable', true);
               }
-              if (
-                memb[i].member != IM.user_account &&
-                multiArr.length < 2 &&
-                (memberRole == 1 || (memberRole != 1 && memb[i].role == 3))
-              ) {
+              if (memb[i].member != IM.user_account && multiArr.length < 2 && (memberRole == 1 || (memberRole != 1 && memb[i].role == 3))) {
                 multiArr.push(memb[i].member);
               }
             }
@@ -1602,9 +1529,7 @@
                 '">' +
                 '<img src="img/head_portrait/headerX40.png">' +
                 '<p class="cg_name" data-inline="replace" data-replace="membername" contenteditable="' +
-                ((memb[i].role > memberRole && obj.type != 1) || memb[i].member == IM.user_account
-                  ? true
-                  : false) +
+                ((memb[i].role > memberRole && obj.type != 1) || memb[i].member == IM.user_account ? true : false) +
                 '">' +
                 memb[i].nickName +
                 (multiArr.indexOf(memb[i].member) > -1 && memberRole !== 3 ? '-set' : '') +
@@ -1756,38 +1681,21 @@
       }
     },
     handleChat: function () {
-      if (IM.postMessage.type !== 'group') {
-        var obj = new Object();
-        obj['state'] = 2;
-        IM.HTML_addChatToList(
-          String(IM.postMessage.chat.id),
-          String(IM.postMessage.chat.name),
-          IM._contact_type_c,
-          obj,
-          true
-        );
-        IM.createP2pChatWindow(
-          String(IM.postMessage.chat.id),
-          String(IM.postMessage.chat.name),
-          true
-        );
-        $('.contactList').removeClass('active');
-        $('[data-im-contact =' + String(IM.postMessage.chat.id) + ']').addClass('active');
-        if (IM.postMessage.type === 'audio') {
-          $("[data-voip='audio']").click();
-        }
-        if (IM.postMessage.type === 'video') {
-          $("[data-voip='video']").click();
-        }
-      } else {
-        $('.nav .group').click();
-        $('#aboutMore').modal('show');
-        $('.creatGroupButton').click();
-        $('.visibilityFalse').hide();
+      var obj = new Object();
+      obj['state'] = 2;
+      const { userId, userName, type } = IM.postMessage;
+      IM.HTML_addChatToList(String(userId), String(userName), IM._contact_type_c, obj, true);
+      IM.createP2pChatWindow(String(userId), String(userName), true);
+      $('.contactList').removeClass('active');
+      $('[data-im-contact =' + String(userId) + ']').addClass('active');
+      if (type === 'audio') {
+        $("[data-voip='audio']").click();
+      }
+      if (type === 'video') {
+        $("[data-voip='video']").click();
       }
     },
     privateLogin: function (user_account, timestamp, callback, onError) {
-      console.log('privateLogin');
       var data = {
         appid: this._appid,
         username: user_account,
@@ -1889,34 +1797,32 @@
           });
 
           // 服务器连接状态变更时的监听
-          IM._onConnectStateChangeLisenter = window.parent.RL_YTX_NEW.onConnectStateChangeLisenter(
-            function (obj) {
-              // obj.code;//变更状态 1 断开连接 2 重连中 3 重连成功 4 被踢下线 5 断开连接，需重新登录
-              // 断线需要人工重连
-              if (IM.isCalling) {
-                $('[data-btn="cancelVideo"]').click();
-                $('[data-btn="cancelVoip"]').click();
-                $('[data-btn="shutdownVoip"]').click();
-                $('[data-btn="refuseVoip"]').click();
-              }
-              if (1 == obj.code) {
-                console.log('onConnectStateChangeLisenter obj.code:' + obj.msg);
-              } else if (2 == obj.code) {
-                $.scojs_message('网络状况不佳，正在试图重连服务器', $.scojs_message.TYPE_ERROR);
-                $('#pop_videoView').hide();
-              } else if (3 == obj.code) {
-                $.scojs_message('连接成功', $.scojs_message.TYPE_OK);
-              } else if (4 == obj.code) {
-                IM.DO_logout(false);
-                $.scojs_message(obj.msg, $.scojs_message.TYPE_ERROR);
-              } else if (5 == obj.code) {
-                $.scojs_message('网络状况不佳，正在试图重连服务器', $.scojs_message.TYPE_ERROR);
-                IM.getSig(IM.user_account);
-              } else {
-                console.log('onConnectStateChangeLisenter obj.code:' + obj.msg);
-              }
+          IM._onConnectStateChangeLisenter = window.parent.RL_YTX_NEW.onConnectStateChangeLisenter(function (obj) {
+            // obj.code;//变更状态 1 断开连接 2 重连中 3 重连成功 4 被踢下线 5 断开连接，需重新登录
+            // 断线需要人工重连
+            if (IM.isCalling) {
+              $('[data-btn="cancelVideo"]').click();
+              $('[data-btn="cancelVoip"]').click();
+              $('[data-btn="shutdownVoip"]').click();
+              $('[data-btn="refuseVoip"]').click();
             }
-          );
+            if (1 == obj.code) {
+              console.log('onConnectStateChangeLisenter obj.code:' + obj.msg);
+            } else if (2 == obj.code) {
+              $.scojs_message('网络状况不佳，正在试图重连服务器', $.scojs_message.TYPE_ERROR);
+              $('#pop_videoView').hide();
+            } else if (3 == obj.code) {
+              $.scojs_message('连接成功', $.scojs_message.TYPE_OK);
+            } else if (4 == obj.code) {
+              IM.DO_logout(false);
+              $.scojs_message(obj.msg, $.scojs_message.TYPE_ERROR);
+            } else if (5 == obj.code) {
+              $.scojs_message('网络状况不佳，正在试图重连服务器', $.scojs_message.TYPE_ERROR);
+              IM.getSig(IM.user_account);
+            } else {
+              console.log('onConnectStateChangeLisenter obj.code:' + obj.msg);
+            }
+          });
 
           var membs = IM.getContactMember();
           console.log('membs----------------', membs);
@@ -1925,29 +1831,27 @@
             IM.HTML_addChatToList(i, membs[i].conName, IM._contact_type_c, null, false);
           }
           /*音视频呼叫监听
-                 obj.callId;//唯一消息标识  必有
-                 obj.caller; //主叫号码  必有
-                 obj.called; //被叫无值  必有
-                 obj.callType;//0 音频 1 视频 2落地电话
-                 obj.state;//1 对方振铃 2 呼叫中 3 被叫接受 4 呼叫失败 5 结束通话 6 呼叫到达
-                 obj.reason//拒绝或取消的原因
-                 obj.code//当前浏览器是否支持音视频功能
-                 */
+                   obj.callId;//唯一消息标识  必有
+                   obj.caller; //主叫号码  必有
+                   obj.called; //被叫无值  必有
+                   obj.callType;//0 音频 1 视频 2落地电话
+                   obj.state;//1 对方振铃 2 呼叫中 3 被叫接受 4 呼叫失败 5 结束通话 6 呼叫到达
+                   obj.reason//拒绝或取消的原因
+                   obj.code//当前浏览器是否支持音视频功能
+                   */
           IM._onCallMsgListener = window.parent.RL_Media.onCallMsgListener(function (obj) {
             IM.EV_onCallMsgListener(obj);
           });
           // IM.autoGetUserState();//设置自动获取在线状态
-          IM._onMsgNotifyReceiveListener = window.parent.RL_Chat.onMsgNotifyReceiveListener(
-            function (obj) {
-              if (obj.msgType == 21) {
-                //阅后即焚：接收方已删除阅后即焚消息
-                console.log('接收方已删除阅后即焚消息obj.msgId=' + obj.msgId);
-                // var id = obj.sender + "_" + obj.msgId;
-                $('[data-msgid="' + obj.msgId + '"]').remove();
-                $('[data-msgid="' + obj.msgId.split('|')[1] + '"]').remove();
-              }
+          IM._onMsgNotifyReceiveListener = window.parent.RL_Chat.onMsgNotifyReceiveListener(function (obj) {
+            if (obj.msgType == 21) {
+              //阅后即焚：接收方已删除阅后即焚消息
+              console.log('接收方已删除阅后即焚消息obj.msgId=' + obj.msgId);
+              // var id = obj.sender + "_" + obj.msgId;
+              $('[data-msgid="' + obj.msgId + '"]').remove();
+              $('[data-msgid="' + obj.msgId.split('|')[1] + '"]').remove();
             }
-          );
+          });
           //消息置顶  —— 设置消息置顶
           /**
            * @param callback 成功回调  回调函数传入数组对象
@@ -1955,18 +1859,13 @@
           IM.EV_GetTopContact(function (arr) {
             if (arr && arr.length > 0) {
               for (var i = 0; i < arr.length; i++) {
-                $('[data-list="chat"] [data-im-contact="' + arr[i] + '"]').appendTo(
-                  $('.contact_top')
-                );
+                $('[data-list="chat"] [data-im-contact="' + arr[i] + '"]').appendTo($('.contact_top'));
               }
             }
           });
         },
         function (obj) {
-          $.scojs_message(
-            '错误码： ' + obj.code + '; 错误描述：' + obj.msg,
-            $.scojs_message.TYPE_ERROR
-          );
+          $.scojs_message('错误码： ' + obj.code + '; 错误描述：' + obj.msg, $.scojs_message.TYPE_ERROR);
         }
       );
     },
@@ -2027,15 +1926,7 @@
 
     EV_onMsgReceiveListener: function (obj) {
       console.log('------------------------obj', obj);
-      console.log(
-        'Receive message sender:[' +
-          obj.msgSender +
-          ']...msgId:[' +
-          obj.msgId +
-          ']...content[' +
-          obj.msgContent +
-          ']'
-      );
+      console.log('Receive message sender:[' + obj.msgSender + ']...msgId:[' + obj.msgId + ']...content[' + obj.msgContent + ']');
       if (obj.msgType === 12 || obj.msgType === 13) {
         return;
       }
@@ -2059,29 +1950,16 @@
         var version = operate.version;
         var dateCreated = operate.dateCreated;
         IM.deleteMsg(dateCreated + '|' + version);
-        IM.DO_deskNotice(
-          obj.msgSender,
-          obj.senderNickName,
-          '撤回了一条消息',
-          1,
-          false,
-          false,
-          '',
-          false
-        );
+        IM.DO_deskNotice(obj.msgSender, obj.senderNickName, '撤回了一条消息', 1, false, false, '', false);
         return;
       }
       if (obj.msgType == 24) {
         //消息已读
         var objdomain = JSON.parse(obj.msgDomain);
         if (objdomain.groupid && IM.chat_maps[objdomain.groupid]) {
-          var targets = IM.chat_maps[objdomain.groupid]
-            .find('[data-msgid="' + objdomain.dateCreated + '|' + objdomain.version + '"]')
-            .find('.msgread');
+          var targets = IM.chat_maps[objdomain.groupid].find('[data-msgid="' + objdomain.dateCreated + '|' + objdomain.version + '"]').find('.msgread');
           if (targets.length == 0) {
-            targets = IM.chat_maps[objdomain.groupid]
-              .find('[data-msgid="' + objdomain.msgId + '"]')
-              .find('.msgread');
+            targets = IM.chat_maps[objdomain.groupid].find('[data-msgid="' + objdomain.msgId + '"]').find('.msgread');
           }
           if (targets.html() == '未读') {
             targets.html('<b>1</b>人已读');
@@ -2212,25 +2090,19 @@
           if (obj.msgContent.indexOf(IM.username) > -1 || obj.msgContent.indexOf('@所有人') > -1) {
             isatMsg = true;
             if (!o.find('.hasAt').text()) {
-              console.log(
-                'o------------------------------html 没有渲染出来',
-                o.find('.discuss_name').text()
-              );
+              console.log('o------------------------------html 没有渲染出来', o.find('.discuss_name').text());
               o.find('.discuss_name').after('<span class="hasAt">有人@你</span>');
             }
           }
         }
       } else {
         //单人聊天
-        if (obj.msgSender !== IM.userInfo.userId) {
+        if (obj.msgSender !== IM.user_account) {
           const object = {
             type: 'message',
             name: obj.senderNickName || obj.msgSenderNick,
           };
-          IM.parentEvent.source.postMessage(
-            JSON.parse(JSON.stringify(object)),
-            IM.parentEvent.origin
-          );
+          window.parent.postMessage(object);
         }
 
         var msgDiv = {};
@@ -2281,29 +2153,16 @@
                 IM.createP2pChatWindow(obj.msgReceiver, obj.msgReceiver, false);
                 msgDiv['chatWindow'] = IM.chat_maps[obj.msgReceiver];
                 var o = $('[data-im-contact="' + obj.msgReceiver + '"]');
-                kg =
-                  IM.chat_window != null &&
-                  IM.chat_window.attr('data-chat-with') == obj.msgReceiver;
+                kg = IM.chat_window != null && IM.chat_window.attr('data-chat-with') == obj.msgReceiver;
               } else {
                 var o = $('[data-im-contact="' + obj.msgSender + '"]');
-                IM.createP2pChatWindow(
-                  obj.msgSender,
-                  obj.msgSenderNick || obj.senderNickName || obj.msgSender,
-                  false
-                );
+                IM.createP2pChatWindow(obj.msgSender, obj.msgSenderNick || obj.senderNickName || obj.msgSender, false);
                 msgDiv['chatWindow'] = IM.chat_maps[obj.msgSender];
-                kg =
-                  IM.chat_window != null && IM.chat_window.attr('data-chat-with') == obj.msgSender;
+                kg = IM.chat_window != null && IM.chat_window.attr('data-chat-with') == obj.msgSender;
               }
               var stat = {};
               stat['state'] = 1;
-              IM.HTML_addChatToList(
-                obj.msgSender,
-                obj.senderNickName || obj.msgSender,
-                'C',
-                stat,
-                false
-              );
+              IM.HTML_addChatToList(obj.msgSender, obj.senderNickName || obj.msgSender, 'C', stat, false);
               IM.addMsgToChatWindow(msgDiv);
               var i = o.find('.noticeQ');
               document.getElementById('im_ring').play();
@@ -2315,16 +2174,7 @@
               } else {
                 o.find('.noticeQ').html(parseInt(o.find('.noticeQ').html()) + 1);
               }
-              IM.DO_deskNotice(
-                obj.msgSender,
-                obj.senderNickName,
-                obj.msgContent,
-                obj.msgType,
-                firemsg,
-                false,
-                '',
-                isatMsg
-              );
+              IM.DO_deskNotice(obj.msgSender, obj.senderNickName, obj.msgContent, obj.msgType, firemsg, false, '', isatMsg);
             },
             function () {
               console.log('解压缩失败');
@@ -2334,9 +2184,7 @@
         }
         IM.HTML_addChatToList(
           msgDiv['isSender'] ? obj.msgReceiver : obj.msgSender,
-          msgDiv['isSender']
-            ? obj.msgReceiver
-            : obj.senderNickName || obj.msgSenderNick || obj.msgSender,
+          msgDiv['isSender'] ? obj.msgReceiver : obj.senderNickName || obj.msgSenderNick || obj.msgSender,
           'C',
           stat,
           false
@@ -2355,13 +2203,7 @@
         }
         var stat = {};
         stat['state'] = 1;
-        IM.HTML_addChatToList(
-          obj.msgSender,
-          obj.senderNickName || obj.msgSenderNick || obj.msgSender,
-          'C',
-          stat,
-          false
-        );
+        IM.HTML_addChatToList(obj.msgSender, obj.senderNickName || obj.msgSenderNick || obj.msgSender, 'C', stat, false);
         IM.addMsgToChatWindow(msgDiv);
         var i = o.find('.noticeQ');
         document.getElementById('im_ring').play();
@@ -2374,16 +2216,7 @@
           o.find('.noticeQ').html(parseInt(o.find('.noticeQ').html()) + 1);
         }
       }
-      IM.DO_deskNotice(
-        obj.msgSender,
-        obj.senderNickName,
-        obj.msgContent,
-        obj.msgType,
-        firemsg,
-        false,
-        '',
-        isatMsg
-      );
+      IM.DO_deskNotice(obj.msgSender, obj.senderNickName, obj.msgContent, obj.msgType, firemsg, false, '', isatMsg);
     },
     EV_getPersonalInfo: function () {
       popDrag('personInforPopDrag');
@@ -2476,15 +2309,7 @@
         //noticeMsg, autoDismiss, groupId, invitor, name
         msgContent = '[' + people + ']申请加入' + groupTarget + '[' + groupName + '] ';
         // noticeContent = '[' + people + ']申请加入' + groupTarget + '[' + groupName + '] ';
-        this.msgAlert(
-          msgContent,
-          false,
-          obj.groupId,
-          obj.member,
-          obj.memberName,
-          'confirm',
-          'reject'
-        );
+        this.msgAlert(msgContent, false, obj.groupId, obj.member, obj.memberName, 'confirm', 'reject');
         noticeContent = msgContent;
         IM.DO_deskNotice('', '', noticeContent, '', false, false);
         return;
@@ -2495,15 +2320,7 @@
           IM.EV_getGroupList();
         } else {
           msgContent = '[' + obj.groupName + ']管理员邀请您加入群组 [' + obj.groupName + ']';
-          this.msgAlert(
-            msgContent,
-            false,
-            obj.groupId,
-            obj.admin,
-            obj.groupName,
-            'accept',
-            'refuse'
-          );
+          this.msgAlert(msgContent, false, obj.groupId, obj.admin, obj.groupName, 'accept', 'refuse');
           noticeContent = msgContent;
           IM.DO_deskNotice('', '', noticeContent, '', false, false);
           return;
@@ -2637,16 +2454,7 @@
      * inforSender
      * isAtMsg
      * */
-    DO_deskNotice: function (
-      you_sender,
-      nickName,
-      you_msgContent,
-      msgType,
-      isfrieMsg,
-      isCallMsg,
-      inforSender,
-      isAtMsg
-    ) {
+    DO_deskNotice: function (you_sender, nickName, you_msgContent, msgType, isfrieMsg, isCallMsg, inforSender, isAtMsg) {
       var title;
       var body = '';
       if (!!you_sender || !!nickName) {
@@ -2754,7 +2562,6 @@
       }
     },
     addContactMember: function (id, name, urls) {
-        console.log(id, name, urls, 898989, IM.contactMember)
       //不需要传入版本
       if (!urls) {
         urls = 'null';
@@ -2763,11 +2570,7 @@
       if (IM.contactMember[id]) {
         versions = ++IM.contactMember[id].version;
       }
-      if (
-        IM.contactMember[id] &&
-        IM.contactMember[id].conName == name &&
-        IM.contactMember[id].conHead == urls
-      ) {
+      if (IM.contactMember[id] && IM.contactMember[id].conName == name && IM.contactMember[id].conHead == urls) {
         return;
       }
       IM.contactMember[id] = {
@@ -2803,8 +2606,6 @@
         return [];
       }
       IM.contactMember = JSON.parse(obj);
-      console.log(6666, IM.contactMember)
-
       return IM.contactMember;
     },
 
@@ -2835,8 +2636,7 @@
             gLi.dataset['groupname'] = obj[i].name;
             gLi.dataset['groupid'] = obj[i].groupId;
             var headImg = document.createElement('img');
-            headImg.src =
-              'img/head_portrait/discussion_header/discussio_groups_0' + obj[i].target + '.png';
+            headImg.src = 'img/head_portrait/discussion_header/discussio_groups_0' + obj[i].target + '.png';
             gLi.appendChild(headImg);
             var gdiv = document.createElement('div');
             var gName = document.createElement('span');
@@ -2941,14 +2741,12 @@
         var posi = 'oneTextR';
         var msgback = '<i class="msgBack">撤回</i>';
         var leftHeaderImg = '';
-        var rightHeaderImg =
-          '<img src="img/head_portrait/head_portrait_group/groups_head_portrait_02.png" class="left">';
+        var rightHeaderImg = '<img src="img/head_portrait/head_portrait_group/groups_head_portrait_02.png" class="left">';
         var msgRead = '';
         var msgHasRead = obj.domain ? '' : '<i class="msgread">未读</i>';
       } else {
         var posi = 'oneText';
-        var leftHeaderImg =
-          '<img src="img/head_portrait/head_portrait_group/groups_head_portrait_02.png" class="left">';
+        var leftHeaderImg = '<img src="img/head_portrait/head_portrait_group/groups_head_portrait_02.png" class="left">';
         var rightHeaderImg = '';
         var msgback = '';
         var msgRead = 'data-msgread="true"';
@@ -2994,12 +2792,7 @@
       } else if (obj.msgType == 3) {
         codes = '<video src="' + obj.msgFileUrl + '" controls / >';
       } else if (obj.msgType == 4) {
-        codes =
-          '<a target="_blank" href="' +
-          obj.msgFileUrl +
-          '"><img src="' +
-          obj.msgFileUrl +
-          '" /></a>';
+        codes = '<a target="_blank" href="' + obj.msgFileUrl + '"><img src="' + obj.msgFileUrl + '" /></a>';
       } else if (obj.msgType == 7) {
         codes =
           '<a href= ' +
@@ -3015,12 +2808,9 @@
         codes = obj.content;
       }
       if (!!obj.msgDomain && obj.msgDomain.indexOf('fireMessage') > -1) {
-        codes =
-          '<img src="img/fireMessageImg.png" data-msgcontent="' + Base64.encode(codes) + '" />';
+        codes = '<img src="img/fireMessageImg.png" data-msgcontent="' + Base64.encode(codes) + '" />';
       }
-      html += obj.domain
-        ? '<pre class="contentText  fireMessageClass">' + codes + '</pre>'
-        : '<pre class="contentText">' + codes + '</pre>';
+      html += obj.domain ? '<pre class="contentText  fireMessageClass">' + codes + '</pre>' : '<pre class="contentText">' + codes + '</pre>';
       html += '</div>' + msgback + msgHasRead + '</div>';
       obj.chatWindow.append(html);
       setTimeout(function () {
@@ -3125,7 +2915,7 @@
         switch (content_type) {
           case 'C': // 新增了联系人后，当前聊天框不变
             /* $('.contact_list').find('.discuss').find('.active').removeClass('active');
-                        $('[data-im-contact =' + contactId + ']').addClass('active'); */
+                          $('[data-im-contact =' + contactId + ']').addClass('active'); */
             break;
           case 'G':
             $('.group_list').find('.discuss').find('.active').removeClass('active');
@@ -3152,10 +2942,7 @@
           var html = '';
           for (var i = 0; i < obj.length; i++) {
             if (IM.group_list[obj[i].groupId]) {
-              html +=
-                '<li> <img src="img/head_portrait/headerX40.png"> <p class="cg_name">' +
-                obj[i].name +
-                '</p></li>';
+              html += '<li> <img src="img/head_portrait/headerX40.png"> <p class="cg_name">' + obj[i].name + '</p></li>';
             } else {
               html +=
                 '<li> <img src="img/head_portrait/headerX40.png"> <p class="cg_name">' +
@@ -3172,7 +2959,7 @@
         }
       );
     },
-    createAudioView: function (obj, isSender, type) {
+    getContactUserInfo: function (obj) {
       const members = IM.getContactMember();
       let userActive = members && members[obj] ? members[obj].conName : obj;
       IM.myUnitContactsList.forEach((v) => {
@@ -3180,6 +2967,11 @@
           userActive = v.name;
         }
       });
+      return userActive;
+    },
+
+    createAudioView: function (obj, isSender, type) {
+      const userActive = IM.getContactUserInfo(obj);
       var part1 =
         '<div class="audioAline" data-call-with=' +
         obj +
@@ -3253,7 +3045,6 @@
 
       IM.currentCallWith = $('[data-call-with="' + obj + '"]');
       $('#audio_icon').click(function (e) {
-        console.log('关闭声音');
         var f = $(this).attr('data-audioVoice') == 'true' ? true : false;
         // window.parent.RL_Media.deployVideoVoice(!f,"audio");
         if (!f == false) {
@@ -3264,11 +3055,9 @@
         }
         $(this).attr('data-audioVoice', !f);
         $(this).css('background-position', !f ? '0px -23px' : '0px 0px');
-        console.log('fff', f);
       });
     },
     sendVoipCall: function (calledUser, callType, tel, nickName, deviceId) {
-      console.log(888888, window.parent.RL_Media);
       //  window.parent.RL_Media.setUserData('Test1=1000;Test2=2000;Test3=3000')
       window.parent.RL_Media.makeCall(
         {
@@ -3283,14 +3072,14 @@
           console.log('%c*************视频请求成功', 'color:red');
           console.log(e);
           /*
-                setTimeout(function () {
-                    let pr = {};
-                    pr.mediaType = 0;
-                     window.parent.RL_Media.updateCall(pr,
-                        function(){},
-                        function(){});
-                  }, 5*1000);
-                  */
+                  setTimeout(function () {
+                      let pr = {};
+                      pr.mediaType = 0;
+                       window.parent.RL_Media.updateCall(pr,
+                          function(){},
+                          function(){});
+                    }, 5*1000);
+                    */
         },
         function (e) {
           document.getElementById('call_ring').pause();
@@ -3306,11 +3095,11 @@
     },
     EV_onCallMsgListener: function (obj) {
       /*
-            if(obj.code != 200) {
-                console.error(obj.code);
-                return;
-            }
-            */
+              if(obj.code != 200) {
+                  console.error(obj.code);
+                  return;
+              }
+              */
       if (obj.callType == 1) {
         //视频请求
         this.processVideo(obj);
@@ -3360,18 +3149,9 @@
         document.getElementById('call_ring').pause();
         IM.isCalling = false;
       } else if (obj.state == 6) {
-        const members = IM.getContactMember();
-        let userActive = members && members[obj.caller] ? members[obj.caller].conName : obj.caller;
-        IM.myUnitContactsList.forEach((v) => {
-          if (v.id === obj) {
-            userActive = v.name;
-          }
-        });
+        const userActive = IM.getContactUserInfo(obj.caller);
         const object = { type: 'audio', name: userActive };
-        IM.parentEvent.source.postMessage(
-          JSON.parse(JSON.stringify(object)),
-          IM.parentEvent.origin
-        );
+        window.parent.postMessage(object);
         //接到对方发来的通话
         this.createAudioView(obj.caller, false, obj.callType);
         this.currentCallId = obj.callId;
@@ -3420,19 +3200,9 @@
         noticeMsg = '[视频通话结束]';
         IM.isCalling = false;
       } else if (obj.state == 6) {
-        const members = IM.getContactMember();
-        let userActive =
-          members && members[obj.caller].conName ? members[obj.caller].conName : obj.caller;
-        IM.myUnitContactsList.forEach((v) => {
-          if (v.id === obj) {
-            userActive = v.name;
-          }
-        });
+        const userActive = IM.getContactUserInfo(obj.caller);
         const object = { type: 'video', name: userActive };
-        IM.parentEvent.source.postMessage(
-          JSON.parse(JSON.stringify(object)),
-          IM.parentEvent.origin
-        );
+        window.parent.postMessage(object);
         this.createAudioView(obj.caller, false, obj.callType);
         this.currentCallId = obj.callId;
         document.getElementById('call_ring').play();
@@ -3457,7 +3227,7 @@
       window.parent.RL_Media.releaseCall(
         function (e) {
           const obj = JSON.parse(JSON.stringify({ type: 'cancel' }));
-          IM.parentEvent.source.postMessage(obj, IM.parentEvent.origin);
+          window.parents.postMessage(obj);
           console.log('取消呼叫');
         },
         function (e) {
@@ -3589,9 +3359,7 @@
               return;
             }
             IM.currentCallWith.attr('data-call-state', '3');
-            IM.currentCallWith
-              .find('.audioBtn')
-              .html('<button data-btn="cancelVideo">挂断</button>');
+            IM.currentCallWith.find('.audioBtn').html('<button data-btn="cancelVideo">挂断</button>');
             var times = IM.currentCallWith.find('[data-call="msg"]');
             //setTimeWindow_v1(times);
           },
@@ -3760,9 +3528,7 @@
         },
         function (obj) {
           for (i in obj) {
-            _list
-              .find('[data-im-contact="' + obj[i].useracc + '"]')
-              .attr('data-user-state', obj[i].state);
+            _list.find('[data-im-contact="' + obj[i].useracc + '"]').attr('data-user-state', obj[i].state);
           }
         },
         function (e) {
@@ -3865,14 +3631,7 @@
       for (var i in emoji.show_data) {
         var c = emoji.show_data[i];
         var out = emoji.replace_unified(c[0][0]); //'onclick="IM.DO_chooseEmoji(\'' + i + '\', \'' + c[0][0] + '\')" '
-        content_emoji +=
-          '<span data-emoji-unified=' +
-          i +
-          ' data-emoji-unicode=' +
-          c[0][0] +
-          ' imtype="content_emoji">' +
-          out +
-          '</span>';
+        content_emoji += '<span data-emoji-unified=' + i + ' data-emoji-unicode=' + c[0][0] + ' imtype="content_emoji">' + out + '</span>';
       }
       emojiDiv.append(content_emoji);
     },

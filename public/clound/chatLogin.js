@@ -2,10 +2,12 @@ function LOGIN() {
   this._appid = app._appid || '8a2af988536458c301537d7197320004';
   this._appToken = app._appToken || '0f26f16e4a8d4680a586c6eb2a9f4e03';
   this._3rdServer = 'https://imapp.yuntongxun.com/2016-08-15/Corp/yuntongxun/inner/authen/genSig';
+  this._callBacks = [];
 }
 
 LOGIN.prototype = {
   init: function (cb) {
+    this._callBacks.push(cb);
     var resp = RL_YTX_NEW.init({
       appId: this._appid,
       serverIp: ip.serverIp,
@@ -48,7 +50,6 @@ LOGIN.prototype = {
       (now.getHours() >= 10 ? now.getHours() : '0' + now.getHours()) +
       (now.getMinutes() >= 10 ? now.getMinutes() : '0' + now.getMinutes()) +
       (now.getSeconds() >= 10 ? now.getSeconds() : '0' + now.getSeconds());
-    console.log(8888, hex_md5);
 
     var sig = hex_md5(this._appid + account_number + timestamp + this._appToken);
 
@@ -62,17 +63,21 @@ LOGIN.prototype = {
       userName: user_account,
       timestamp: timestamp,
     };
-    RL_YTX_NEW.login(
-      data,
-      function () {
-        RL_YTX_NEW.setLogClose();
-        console.log('登录成功')
-        cb && cb();
-      },
-      function () {
-        console.error('登录失败');
-      }
-    );
+
+    this.ChatLogin._callBacks.length < 2 &&
+      this.RL_YTX_NEW.login(
+        data,
+        function () {
+          RL_YTX_NEW.setLogClose();
+          console.log('登录成功');
+          this.ChatLogin._callBacks.forEach((element) => {
+            element && element();
+          });
+        },
+        function () {
+          console.error('登录失败');
+        }
+      );
   },
 };
 
