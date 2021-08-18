@@ -1,5 +1,4 @@
-// let defineConfig = require('umi');
-import { defineConfig } from 'umi';
+let defineConfig = require('umi');
 
 export default defineConfig({
   nodeModulesTransform: {
