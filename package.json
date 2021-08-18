@@ -1,6 +1,6 @@
 {
   "private": true,
-  "type": "module",
+  "name": "rly-chat",
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
