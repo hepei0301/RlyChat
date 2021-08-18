@@ -1,6 +1,6 @@
 let defineConfig = require('umi');
 
-export default defineConfig({
+const config = defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
@@ -11,3 +11,5 @@ export default defineConfig({
   ],
   fastRefresh: {},
 });
+
+module.exports = config;
