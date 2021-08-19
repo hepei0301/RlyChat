@@ -2,6 +2,9 @@
   "private": true,
   "name": "rly-chat",
   "version": "1.0.0",
+  "description": "chat project",
+  "main": "./umirc.ts",
+  "module": "./umirc.ts",
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
