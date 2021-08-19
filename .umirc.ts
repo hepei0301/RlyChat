@@ -1,7 +1,6 @@
-import * as Symbol1 from 'umi';
-const defineConfig = Symbol1.defineConfig;
-console.log(444555666, Symbol1);
-export default defineConfig({
+const aa = require('umi');
+console.log(444555666, aa);
+const cc = aa.defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
@@ -12,3 +11,5 @@ export default defineConfig({
   ],
   fastRefresh: {},
 });
+
+module.exports = cc;
