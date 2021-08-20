@@ -3,7 +3,7 @@
   "name": "rly-chat",
   "version": "1.0.0",
   "description": "chat project",
-  "main": "./src/pages/index.tsx",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git@github.com/hepei0301/rly-chat.git"
