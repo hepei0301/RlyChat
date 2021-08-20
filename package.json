@@ -5,6 +5,12 @@
   "description": "chat project",
   "main": "./umirc.ts",
   "module": "./umirc.ts",
+  "jsnext:main": "./umirc.ts",
+  "typings": "./umirc.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/hepei0301/rly-chat.git"
+  },
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
