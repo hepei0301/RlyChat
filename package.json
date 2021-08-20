@@ -3,10 +3,7 @@
   "name": "rly-chat",
   "version": "1.0.0",
   "description": "chat project",
-  "main": "./umirc.ts",
-  "module": "./umirc.ts",
-  "jsnext:main": "./umirc.ts",
-  "typings": "./umirc.ts",
+  "main": "./src/pages/index.tsx",
   "repository": {
     "type": "git",
     "url": "git@github.com/hepei0301/rly-chat.git"
