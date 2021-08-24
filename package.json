@@ -1,6 +1,6 @@
 {
   "name": "rly-chat",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "react rly chat",
   "files": [
     "lib",
