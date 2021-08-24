@@ -1,8 +1,9 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
-import ResizeMoveDialog from '@/components/ResizeMoveDialog';
+import ResizeMoveDialog from '../../components/ResizeMoveDialog';
 import './index.less';
+
 export interface RlyPropos {
   bounds?: string;
   contactsList?: [any];
@@ -45,7 +46,8 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
             onClick={() => {
               open();
               notification.destroy();
-            }}>
+            }}
+          >
             打开对话框
           </Button>
         ),
@@ -67,24 +69,25 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
         size={size || { width: 900, height: 600 }}
         close={close}
         bounds={bounds || 'body'}
-        toggle={toggle}>
-        <Iframe
+        toggle={toggle}
+      >
+        {/* <Iframe
           url="im/index.html"
-          width={'100%'}
-          height={'100%'}
+          width="100%"
+          height="100%"
           allow="geolocation;microphone;camera;midi;encrypted-media"
           id="RlyChat-Im"
           onLoad={() => {
-            (window as any).ChatLogin.init(() => {
-              const contentWindow = (document.getElementById('RlyChat-Im') as any).contentWindow;
-              contentWindow.IM.loginCallBack('15071046271', '我是一个名字', [
-                { id: 15071046271, name: '我是一个名字' },
-                { id: 'aa11', name: 'hepeu' },
-                { id: 'bb11', name: '何佩' },
-              ]);
-            });
+            // (window as any).ChatLogin.init(() => {
+            //   const contentWindow = (document.getElementById('RlyChat-Im') as any).contentWindow;
+            //   contentWindow.IM.loginCallBack('15071046271', '我是一个名字', [
+            //     { id: 15071046271, name: '我是一个名字' },
+            //     { id: 'aa11', name: 'hepeu' },
+            //     { id: 'bb11', name: '何佩' },
+            //   ]);
+            // });
           }}
-        />
+        /> */}
       </ResizeMoveDialog>
     </>
   );

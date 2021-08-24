@@ -1,0 +1,27 @@
+.dialogResizeMoveBox {
+  overflow: hidden;
+  border-radius: 2px;
+  border: 1px solid red;
+
+  .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+  }
+
+  .dialogTitle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 20px;
+    cursor: move;
+  }
+
+  .resizeContent {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
+}

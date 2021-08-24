@@ -1,8 +1,9 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
-import ResizeMoveDialog from '@/components/ResizeMoveDialog';
+import ResizeMoveDialog from '../../components/ResizeMoveDialog';
 import './index.less';
+
 export interface RlyPropos {
   bounds?: string;
   contactsList?: [any];
@@ -64,8 +65,8 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
         toggle={toggle}>
         <Iframe
           url="meet/index.html"
-          width={'100%'}
-          height={'100%'}
+          width="100%"
+          height="100%"
           allow="geolocation;microphone;camera;midi;encrypted-media"
           id="RlyChat-Meet"
           onLoad={() => {

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import classNames from 'classnames';
 import { Rnd } from 'react-rnd';
 import _ from 'lodash';
-import { RlyPropos } from '@/pages/im';
-import close_press from '@/assets/close_press.png';
+import { RlyPropos } from '../pages/im';
+import closePress from '../assets/closePress.png';
 import './ResizeMoveDialog.less';
 
 interface ResizeMoveDialogProps extends RlyPropos, React.HTMLAttributes<HTMLDivElement> {
@@ -41,7 +40,7 @@ export default function ResizeMoveDialog(props: ResizeMoveDialogProps) {
       maxWidth={_.get(maxSize, 'width', 2000)}
       maxHeight={_.get(maxSize, 'height', 3000)}
       bounds={bounds}
-      dragHandleClassName={'dialogTitle'}
+      dragHandleClassName="dialogTitle"
       size={{
         width: _.get(currentSize, 'width', 500),
         height: _.get(currentSize, 'height', 700),
@@ -62,7 +61,7 @@ export default function ResizeMoveDialog(props: ResizeMoveDialogProps) {
         setCurrentPosition(position);
       }}>
       <div className="dialogTitle" />
-      <img src={close_press} className="close" onClick={closeDialog} />
+      <img src={closePress} className="close" onClick={closeDialog} />
       <div className="resizeContent" style={{ pointerEvents: mouseState ? 'none' : 'auto' }}>
         {children}
       </div>
