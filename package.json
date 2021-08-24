@@ -7,10 +7,10 @@
     "lib",
     "src"
   ],
-  "main": "lib/index.js",
+  "main": "./sr/index.ts",
   "repository": {
     "type": "git",
-    "url": "git@github.com/hepei0301/rly-chat.git"
+    "url": "https://github.com/hepei0301/rly-chat.git"
   },
   "scripts": {
     "start": "umi dev",
