@@ -7,7 +7,7 @@ import pkg from './package.json';
 
 const external = (id) => !id.startsWith('.') && !id.startsWith('/');
 
-const input = 'src/index.ts';
+const input = './index.ts';
 
 export default {
   input,
