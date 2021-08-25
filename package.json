@@ -1,13 +1,16 @@
 {
   "private": true,
   "name": "rly-chat",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "chat project",
+  "main": "./index.ts",
+  "module": "./index.ts",
+  "jsnext:main": "./index.ts",
+  "typings": "./index.ts",
   "files": [
-    "lib",
-    "src"
+    "src",
+    "index.ts"
   ],
-  "main": "./sr/index.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/hepei0301/rly-chat.git"
