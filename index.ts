@@ -1,4 +1,4 @@
-import IM from './pages/im';
-import Meet from './pages/meet';
+import IM from './src/pages/im';
+import Meet from './src/pages/meet';
 
 export { IM, Meet };
