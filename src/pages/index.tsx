@@ -20,7 +20,7 @@ export default function RlyChat({ userId = '13700000000', userName = '默认昵�
   return (
     <div>
       <IM />
-      <Meet />
+      {/* <Meet /> */}
     </div>
   );
 }

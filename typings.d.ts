@@ -8,3 +8,4 @@ declare module '*.svg' {
   export default url;
 }
 declare module '*.js';
+declare module '*.html';
