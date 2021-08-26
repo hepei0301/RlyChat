@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '@/components/ResizeMoveDialog';
-import { useScript } from '@/utils/useScript';
+import { useScript } from '../../utils/useScript';
 import './index.less';
 export interface RlyPropos {
   bounds?: string;
