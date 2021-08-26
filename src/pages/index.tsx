@@ -5,12 +5,18 @@ import IM from './im/index';
 import Meet from './meet/index';
 import _ from 'lodash';
 import './index.less';
-interface indexProps {
-  type?: 'IM' | 'Meet';
+
+interface contactsProps {
+  id: string | number;
+  name: string;
+}
+interface RlyChatProps {
   userId: string;
   userName: string;
+  contacts?: Array<contactsProps>;
 }
-export default function IndexPage({ type = 'IM', userId = '13700000000', userName = '姓名' }: indexProps) {
+
+export default function RlyChat({ userId = '13700000000', userName = '默认昵称' }: RlyChatProps) {
   return (
     <div>
       <IM />

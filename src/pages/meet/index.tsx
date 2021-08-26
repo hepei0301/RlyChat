@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '@/components/ResizeMoveDialog';
+import { useScript } from '@/utils/useScript';
 import './index.less';
 export interface RlyPropos {
   bounds?: string;
@@ -14,6 +15,7 @@ export interface RlyPropos {
 
 export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
   const [toggle, setToggle] = useState(false);
+  const [init, setInit] = useState(false);
 
   const close = () => {
     setToggle(false);
@@ -51,7 +53,13 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
     return () => window.removeEventListener('message', handle);
   }, [toggle]);
 
-  return (
+  useEffect(() => {
+    useScript().then((res) => {
+      setInit(res);
+    });
+  }, []);
+
+  return !init ? null : (
     <>
       <Button style={{ position: 'absolute', top: 50, left: 20 }} onClick={open}>
         答案开meet
@@ -70,6 +78,7 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
           id="RlyChat-Meet"
           onLoad={() => {
             (window as any).ChatLogin.init(() => {
+              console.log(1111, (window as any).ChatLogin.init);
               const contentWindow = (document.getElementById('RlyChat-Meet') as any).contentWindow;
               contentWindow.postMessage({ userId: '15071046271', userName: '一个测试的姓' });
             });

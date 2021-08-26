@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '@/components/ResizeMoveDialog';
+import { useScript } from '@/utils/useScript';
 import './index.less';
 export interface RlyPropos {
   bounds?: string;
@@ -19,6 +20,7 @@ const info = {
 
 export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
   const [toggle, setToggle] = useState(false);
+  const [init, setInit] = useState(false);
 
   const close = () => {
     setToggle(false);
@@ -56,10 +58,17 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
     return () => window.removeEventListener('message', handle);
   }, [toggle]);
 
-  return (
+  useEffect(() => {
+    useScript().then((res) => {
+      setInit(res);
+    });
+  }, []);
+
+  return !init ? null : (
     <>
+      <script src="clound/config.js" type="text/javascript"></script>
       <Button style={{ position: 'absolute', top: 10, left: 20 }} onClick={open}>
-        答案开im
+        答案开im1
       </Button>
       <ResizeMoveDialog
         limitSize={limitSize || { width: 300, height: 300 }}
