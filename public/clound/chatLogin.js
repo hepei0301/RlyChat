@@ -1,4 +1,5 @@
 function LOGIN() {
+  console.log(222);
   this._appid = app._appid || '8a2af988536458c301537d7197320004';
   this._appToken = app._appToken || '0f26f16e4a8d4680a586c6eb2a9f4e03';
   this._3rdServer = 'https://imapp.yuntongxun.com/2016-08-15/Corp/yuntongxun/inner/authen/genSig';

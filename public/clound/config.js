@@ -1,3 +1,4 @@
+console.log(111);
 var ip = {
   serverIp: 'wss://im.gcnao.cn:9002/ws', //'
   fileServerIp: 'https://im.gcnao.cn:9002/uploadFile', //'

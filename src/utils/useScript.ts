@@ -33,6 +33,6 @@ export const useScript = () => {
     }
     setTimeout(() => {
       resolve(toggle);
-    }, 500);
+    }, 6500);
   });
 };
