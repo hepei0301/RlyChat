@@ -2,8 +2,6 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '@/components/ResizeMoveDialog';
-import { useScript } from '../../utils/useScript';
-import '../../utils/chatLogin.js';
 import './index.less';
 export interface RlyPropos {
   bounds?: string;
@@ -13,10 +11,14 @@ export interface RlyPropos {
   limitSize?: { width: number; height: number };
   maxSize?: { width: number; height: number };
 }
+const info = {
+  message: '信息',
+  audio: '语音通话',
+  video: '视频通话',
+};
 
 export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
   const [toggle, setToggle] = useState(false);
-  const [init, setInit] = useState(true);
 
   const close = () => {
     setToggle(false);
@@ -32,7 +34,7 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
       if (toggle) return;
       notification.destroy();
       notification.info({
-        message: data.des,
+        message: `${data.name}发送${info[data.type]}过来`,
         placement: 'bottomRight',
         bottom: 0,
         duration: 30,
@@ -54,20 +56,15 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
     return () => window.removeEventListener('message', handle);
   }, [toggle]);
 
-  //   useEffect(() => {
-  //     useScript().then((res) => {
-  //       setInit(res);
-  //     });
-  //   }, []);
-
-  return !init ? null : (
+  return (
     <>
-      <Button style={{ position: 'absolute', top: 50, left: 20 }} onClick={open}>
-        答案开meet
+      <Button style={{ position: 'absolute', top: 10, left: 20 }} onClick={open}>
+        答案开
       </Button>
       <ResizeMoveDialog
-        limitSize={limitSize || { width: 400, height: 200 }}
-        size={size || { width: 1100, height: 780 }}
+        limitSize={limitSize || { width: 300, height: 300 }}
+        maxSize={maxSize || { width: 900, height: 600 }}
+        size={size || { width: 900, height: 600 }}
         close={close}
         bounds={bounds || 'body'}
         toggle={toggle}>
@@ -76,11 +73,17 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
           width={'100%'}
           height={'100%'}
           allow="geolocation;microphone;camera;midi;encrypted-media"
-          id="RlyChat-Meet"
+          id="RlyChat-Im"
           onLoad={() => {
             (window as any).ChatLogin.init(() => {
-              const contentWindow = (document.getElementById('RlyChat-Meet') as any).contentWindow;
-              contentWindow.postMessage({ userId: '15071046271', userName: '一个测试的姓' });
+              const contentWindow = (document.getElementById('RlyChat-Im') as any).contentWindow;
+              if (contentWindow) {
+                contentWindow.IM.loginCallBack('15071046271', '我是一个名字', [
+                  { id: 15071046271, name: '我是一个名字' },
+                  { id: 'aa11', name: 'hepeu' },
+                  { id: 'bb11', name: '何佩' },
+                ]);
+              }
             });
           }}
         />

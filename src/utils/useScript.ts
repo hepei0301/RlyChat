@@ -5,15 +5,15 @@ export const useScript = () => {
     if (!toggle) {
       toggle = true;
       const arrJs = [
-        'https://raw.githubusercontent.com/hepei0301/rly-chat/main/public/clound/MD5.min.js',
-        'https://raw.githubusercontent.com/hepei0301/rly-chat/main/public/clound/base64.min.js',
-        'https://raw.githubusercontent.com/hepei0301/rly-chat/main/public/clound/jquery-3.1.0.min.js',
-        'https://raw.githubusercontent.com/hepei0301/rly-chat/main/public/clound/ytx-web-im7.2.2.5.js',
-        'https://raw.githubusercontent.com/hepei0301/rly-chat/main/public/clound/ytx-web-av3.js',
-        'https://raw.githubusercontent.com/hepei0301/rly-chat/main/public/clound/adapter.js',
-        'https://raw.githubusercontent.com/hepei0301/rly-chat/main/public/clound/config.js',
-        'https://raw.githubusercontent.com/hepei0301/rly-chat/main/public/clound/RL_Meet.js',
-        'https://raw.githubusercontent.com/hepei0301/rly-chat/main/public/clound/chatLogin.js',
+        // '/clound/MD5.min.js',
+        // '/clound/base64.min.js',
+        // '/clound/jquery-3.1.0.min.js',
+        // '/clound/ytx-web-im7.2.2.5.js',
+        // '/clound/ytx-web-av3.js',
+        // '/clound/adapter.js',
+        // '/clound/config.js',
+        // '/clound/RL_Meet.js',
+        // '/clound/chatLogin.js',
         'https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js',
       ];
       const arrCss = ['https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css'];
@@ -33,6 +33,6 @@ export const useScript = () => {
     }
     setTimeout(() => {
       resolve(toggle);
-    }, 6500);
+    }, 500);
   });
 };

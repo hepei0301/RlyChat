@@ -3,6 +3,7 @@ import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '@/components/ResizeMoveDialog';
 import { useScript } from '../../utils/useScript';
+import '../../utils/chatLogin.js';
 import './index.less';
 export interface RlyPropos {
   bounds?: string;
@@ -20,7 +21,7 @@ const info = {
 
 export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
   const [toggle, setToggle] = useState(false);
-  const [init, setInit] = useState(false);
+  const [init, setInit] = useState(true);
 
   const close = () => {
     setToggle(false);
@@ -58,11 +59,11 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
     return () => window.removeEventListener('message', handle);
   }, [toggle]);
 
-  useEffect(() => {
-    useScript().then((res) => {
-      setInit(res);
-    });
-  }, []);
+  //   useEffect(() => {
+  //     useScript().then((res) => {
+  //       setInit(res);
+  //     });
+  //   }, []);
 
   return !init ? null : (
     <>
