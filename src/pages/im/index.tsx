@@ -5,8 +5,8 @@ import ResizeMoveDialog from '@/components/ResizeMoveDialog';
 import '../../utils/MD5.min.js';
 import '../../utils/base64.min.js';
 import '../../utils/jquery-3.1.0.min.js';
-import '../../utils/ytx-web-im7.2.2.5.js'
-import '../../utils/ytx-web-av3.js'
+import '../../utils/ytx-web-im7.2.2.5.js';
+import '../../utils/ytx-web-av3.js';
 import '../../utils/adapter.js';
 import '../../utils/config.js';
 import '../../utils/RL_Meet.js';
@@ -75,7 +75,7 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
   return !init ? null : (
     <>
       <Button style={{ position: 'absolute', top: 10, left: 20 }} onClick={open}>
-        答案开im1
+        答案开im122
       </Button>
       <ResizeMoveDialog
         limitSize={limitSize || { width: 300, height: 300 }}
@@ -86,7 +86,7 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
         toggle={toggle}>
         <Iframe
           url={'im/index.html'}
-        // url="im/index.html"
+          // url="im/index.html"
           width={'100%'}
           height={'100%'}
           allow="geolocation;microphone;camera;midi;encrypted-media"

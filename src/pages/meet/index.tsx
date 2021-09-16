@@ -5,8 +5,8 @@ import ResizeMoveDialog from '@/components/ResizeMoveDialog';
 import '../../utils/MD5.min.js';
 import '../../utils/base64.min.js';
 import '../../utils/jquery-3.1.0.min.js';
-import '../../utils/ytx-web-im7.2.2.5.js'
-import '../../utils/ytx-web-av3.js'
+import '../../utils/ytx-web-im7.2.2.5.js';
+import '../../utils/ytx-web-av3.js';
 import '../../utils/adapter.js';
 import '../../utils/config.js';
 import '../../utils/RL_Meet.js';
@@ -64,13 +64,13 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
   return !init ? null : (
     <>
       <Button style={{ position: 'absolute', top: 50, left: 20 }} onClick={open}>
-        答案开meet
+        答案开meet23
       </Button>
       <ResizeMoveDialog
         limitSize={limitSize || { width: 400, height: 200 }}
         size={size || { width: 1100, height: 780 }}
         close={close}
-        bounds={bounds || 'body'}
+        bounds={bounds ? bounds : '#root'}
         toggle={toggle}>
         <Iframe
           url="meet/index.html"

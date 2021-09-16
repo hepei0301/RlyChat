@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Rnd } from 'react-rnd';
 import _ from 'lodash';
-import { RlyPropos } from '@/pages/im';
-import close_press from '@/assets/close_press.png';
+import { RlyPropos } from '../pages/im';
+import close_press from '../assets/close_press.png';
 import './ResizeMoveDialog.less';
 
 interface ResizeMoveDialogProps extends RlyPropos, React.HTMLAttributes<HTMLDivElement> {
@@ -16,6 +16,8 @@ export default function ResizeMoveDialog(props: ResizeMoveDialogProps) {
   const [currentPosition, setCurrentPosition] = useState({ x: -10000, y: -10000 });
   const [currentSize, setCurrentSize] = useState(size);
   const [mouseState, setMouseState] = useState(false);
+
+  console.log('想知道转塔伊', toggle);
 
   useEffect(() => {
     if (toggle) {
