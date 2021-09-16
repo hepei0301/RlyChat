@@ -2,7 +2,14 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '@/components/ResizeMoveDialog';
-import { useScript } from '../../utils/useScript';
+import '../../utils/MD5.min.js';
+import '../../utils/base64.min.js';
+import '../../utils/jquery-3.1.0.min.js';
+import '../../utils/ytx-web-im7.2.2.5.js'
+import '../../utils/ytx-web-av3.js'
+import '../../utils/adapter.js';
+import '../../utils/config.js';
+import '../../utils/RL_Meet.js';
 import '../../utils/chatLogin.js';
 import './index.less';
 export interface RlyPropos {
@@ -53,12 +60,6 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
 
     return () => window.removeEventListener('message', handle);
   }, [toggle]);
-
-  //   useEffect(() => {
-  //     useScript().then((res) => {
-  //       setInit(res);
-  //     });
-  //   }, []);
 
   return !init ? null : (
     <>

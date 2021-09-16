@@ -2,9 +2,16 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '@/components/ResizeMoveDialog';
-import { useScript } from '../../utils/useScript';
+import '../../utils/MD5.min.js';
+import '../../utils/base64.min.js';
+import '../../utils/jquery-3.1.0.min.js';
+import '../../utils/ytx-web-im7.2.2.5.js'
+import '../../utils/ytx-web-av3.js'
+import '../../utils/adapter.js';
+import '../../utils/config.js';
+import '../../utils/RL_Meet.js';
 import '../../utils/chatLogin.js';
-import './index.less';
+
 export interface RlyPropos {
   bounds?: string;
   contactsList?: [any];
@@ -67,7 +74,6 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
 
   return !init ? null : (
     <>
-      <script src="clound/config.js" type="text/javascript"></script>
       <Button style={{ position: 'absolute', top: 10, left: 20 }} onClick={open}>
         答案开im1
       </Button>
@@ -79,7 +85,8 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
         bounds={bounds || 'body'}
         toggle={toggle}>
         <Iframe
-          url="im/index.html"
+          url={'im/index.html'}
+        // url="im/index.html"
           width={'100%'}
           height={'100%'}
           allow="geolocation;microphone;camera;midi;encrypted-media"
@@ -87,7 +94,6 @@ export default function IM({ bounds, size, maxSize, limitSize }: RlyPropos) {
           onLoad={() => {
             (window as any).ChatLogin.init(() => {
               const contentWindow = (document.getElementById('RlyChat-Im') as any).contentWindow;
-              debugger;
               contentWindow.IM.loginCallBack('15071046271', '我是一个名字', [
                 { id: 15071046271, name: '我是一个名字' },
                 { id: 'aa11', name: 'hepeu' },
