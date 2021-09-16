@@ -35,12 +35,12 @@ export default function ResizeMoveDialog(props: ResizeMoveDialogProps) {
 
   return (
     <Rnd
-      className="dialogResizeMoveBox"
+      className="dialogResizeMoveBoxRLY"
       minWidth={_.get(limitSize, 'width', 120)}
       minHeight={_.get(limitSize, 'height', 30)}
       maxWidth={_.get(maxSize, 'width', 2000)}
       maxHeight={_.get(maxSize, 'height', 3000)}
-      bounds={bounds}
+      bounds={bounds ? bounds : '#root'}
       dragHandleClassName={'dialogTitle'}
       size={{
         width: _.get(currentSize, 'width', 500),

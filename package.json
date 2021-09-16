@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "rly-chat",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "chat project",
   "main": "./index.ts",
   "module": "./index.ts",
