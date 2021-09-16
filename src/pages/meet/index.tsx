@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
-import ResizeMoveDialog from '@/components/ResizeMoveDialog';
+import ResizeMoveDialog from '../../components/ResizeMoveDialog';
 import '../../utils/MD5.min.js';
 import '../../utils/base64.min.js';
 import '../../utils/jquery-3.1.0.min.js';
