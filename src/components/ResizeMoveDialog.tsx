@@ -17,8 +17,6 @@ export default function ResizeMoveDialog(props: ResizeMoveDialogProps) {
   const [currentSize, setCurrentSize] = useState(size);
   const [mouseState, setMouseState] = useState(false);
 
-  console.log('想知道转塔伊', toggle);
-
   useEffect(() => {
     if (toggle) {
       setCurrentPosition({

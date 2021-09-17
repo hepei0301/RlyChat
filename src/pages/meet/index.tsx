@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '../../components/ResizeMoveDialog';
+import { EventOpenMeet } from '../../event';
 import '../../utils/MD5.min.js';
 import '../../utils/base64.min.js';
 import '../../utils/jquery-3.1.0.min.js';
@@ -21,7 +22,9 @@ export interface RlyPropos {
   maxSize?: { width: number; height: number };
 }
 
-export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
+export const openIm = () => {};
+
+export default function Meet({ bounds, size, maxSize, limitSize, userInfo }: RlyPropos) {
   const [toggle, setToggle] = useState(false);
   const [init, setInit] = useState(true);
 
@@ -36,7 +39,7 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
   useEffect(() => {
     const handle = (res: any) => {
       const data = (res && res.data) || { type: '', name: '' };
-      if (toggle) return;
+      if (toggle || data.type !== 'meet') return;
       notification.destroy();
       notification.info({
         message: data.des,
@@ -61,31 +64,36 @@ export default function Meet({ bounds, size, maxSize, limitSize }: RlyPropos) {
     return () => window.removeEventListener('message', handle);
   }, [toggle]);
 
+  useEffect(() => {
+    return EventOpenMeet.on((res) => {
+      open();
+    });
+  }, []);
+
   return !init ? null : (
-    <>
-      <Button style={{ position: 'absolute', top: 50, left: 20 }} onClick={open}>
-        答案开meet23
-      </Button>
-      <ResizeMoveDialog
-        limitSize={limitSize || { width: 400, height: 200 }}
-        size={size || { width: 1100, height: 780 }}
-        close={close}
-        bounds={bounds ? bounds : '#root'}
-        toggle={toggle}>
-        <Iframe
-          url="meet/index.html"
-          width={'100%'}
-          height={'100%'}
-          allow="geolocation;microphone;camera;midi;encrypted-media"
-          id="RlyChat-Meet"
-          onLoad={() => {
-            (window as any).ChatLogin.init(() => {
-              const contentWindow = (document.getElementById('RlyChat-Meet') as any).contentWindow;
-              contentWindow.postMessage({ userId: '15071046271', userName: '一个测试的姓' });
-            });
-          }}
-        />
-      </ResizeMoveDialog>
-    </>
+    <ResizeMoveDialog
+      limitSize={limitSize || { width: 400, height: 200 }}
+      size={size || { width: 1100, height: 780 }}
+      close={close}
+      bounds={bounds ? bounds : '#root'}
+      toggle={toggle}>
+      <Iframe
+        url="meet/index.html"
+        width={'100%'}
+        height={'100%'}
+        allow="geolocation;microphone;camera;midi;encrypted-media"
+        id="RlyChat-Meet"
+        onLoad={() => {
+          (window as any).ChatLogin.init(() => {
+            const contentWindow = (document.getElementById('RlyChat-Meet') as any).contentWindow;
+            contentWindow.postMessage(userInfo);
+          });
+        }}
+      />
+    </ResizeMoveDialog>
   );
 }
+
+export const openMeet = () => {
+  EventOpenMeet.emit(999);
+};

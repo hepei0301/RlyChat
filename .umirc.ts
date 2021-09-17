@@ -1,6 +1,5 @@
-const aa = require('umi');
-console.log(444555666, aa);
-const cc = aa.defineConfig({
+const umi = require('umi');
+const content = umi.defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
@@ -12,4 +11,4 @@ const cc = aa.defineConfig({
   fastRefresh: {},
 });
 
-module.exports = cc;
+module.exports = content;
