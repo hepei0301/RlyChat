@@ -1,5 +1,4 @@
-import IM from './src/pages/im';
-import Meet from './src/pages/meet';
-import RlyChat from './src/pages/index';
+import IM, { openIM } from './src/pages/im';
+import Meet, { openMeet } from './src/pages/meet';
 
-export { IM, Meet, RlyChat };
+export { IM, Meet, openIM, openMeet };
