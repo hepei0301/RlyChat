@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '../../components/ResizeMoveDialog';
-import { EventOpenMeet } from '../../event';
+import { EventOpenMeet, MeetProps } from '../../event';
 import '../../utils/MD5.min.js';
 import '../../utils/base64.min.js';
 import '../../utils/jquery-3.1.0.min.js';
@@ -65,10 +65,11 @@ export default function Meet({ bounds, size, maxSize, limitSize, userInfo }: Rly
   }, [toggle]);
 
   useEffect(() => {
-    return EventOpenMeet.on((res) => {
+    return EventOpenMeet.on((res: MeetProps) => {
+      (document as any).getElementById('RlyChat-Meet').contentWindow.postMessage({ ...res });
       open();
     });
-  }, []);
+  }, [toggle]);
 
   return !init ? null : (
     <ResizeMoveDialog
@@ -94,6 +95,6 @@ export default function Meet({ bounds, size, maxSize, limitSize, userInfo }: Rly
   );
 }
 
-export const openMeet = () => {
-  EventOpenMeet.emit(999);
+export const openMeet = (res: MeetProps) => {
+  EventOpenMeet.emit(res);
 };

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '../../components/ResizeMoveDialog';
-import { EventOpenIm } from '../../event';
+import { EventOpenIm, ImProps } from '../../event';
 import '../../utils/MD5.min.js';
 import '../../utils/base64.min.js';
 import '../../utils/jquery-3.1.0.min.js';
@@ -67,10 +67,11 @@ export default function IM({ bounds, size, maxSize, limitSize, userInfo }: RlyPr
   }, [toggle]);
 
   useEffect(() => {
-    return EventOpenIm.on((res) => {
+    return EventOpenIm.on((res: ImProps) => {
+      (document as any).getElementById('RlyChat-Im').contentWindow.postMessage({ ...res });
       open();
     });
-  }, []);
+  }, [toggle]);
 
   return !init ? null : (
     <ResizeMoveDialog
@@ -101,6 +102,6 @@ export default function IM({ bounds, size, maxSize, limitSize, userInfo }: RlyPr
   );
 }
 
-export const openIM = () => {
-  EventOpenIm.emit(999);
+export const openIM = (res: ImProps) => {
+  EventOpenIm.emit(res);
 };
