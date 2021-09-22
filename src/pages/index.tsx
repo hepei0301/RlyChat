@@ -16,7 +16,10 @@ interface RlyChatProps {
   contacts?: Array<contactsProps>;
 }
 
-export default function RlyChat({ userId = '13700000000', userName = '默认昵称' }: RlyChatProps) {
+export default function RlyChat() {
+  useEffect(() => {
+    (window as any).__USERINFO__ = { userId: '13700000000', userName: '默认昵称321' };
+  }, []);
   return (
     <div>
       <Button style={{ position: 'absolute', top: 50, left: 20 }} onClick={() => openIM({ type: 'message', userId: 17887787788, userName: '我是一个姓名' })}>
@@ -28,7 +31,7 @@ export default function RlyChat({ userId = '13700000000', userName = '默认昵�
         答案开im122
       </Button>
       <IM userInfo={{ userId: '13700000000', userName: '默认昵称321' }} contactsList={[]} />
-      <Meet userInfo={{ userId: '13700000000', userName: '默认昵称3213' }} />
+      <Meet userInfo={{ userId: '13700000000', userName: '默认昵称321' }} />
     </div>
   );
 }

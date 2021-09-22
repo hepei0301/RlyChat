@@ -48,8 +48,8 @@ LOGIN.prototype = {
       //不支持音视频呼叫，音视频不可用
       // IM.SendVoiceAndVideo_isDisable();
     }
-    console.log(window, '登录的window---->');
-    this.getSig('15071046271', '', cb);
+    console.log(window.__USERINFO__, '登录的window---->');
+    this.getSig(window.__USERINFO__.phoneNumber, '', cb);
   },
   getSig: function (account_number, pwd, cb) {
     var pass = pwd ? pwd : '';
