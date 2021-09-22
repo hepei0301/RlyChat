@@ -18,7 +18,7 @@ interface RlyChatProps {
 
 export default function RlyChat() {
   useEffect(() => {
-    (window as any).__USERINFO__ = { userId: '13700000000', userName: '默认昵称321' };
+    (window as any).__USERINFO__ = { phoneNumber: '13700000000' };
   }, []);
   return (
     <div>
