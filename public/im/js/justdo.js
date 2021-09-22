@@ -167,6 +167,7 @@
       // 接听父组件消息
       window.addEventListener('message', (event) => {
         IM.postMessage = event.data;
+        console.log('监听消息我想', IM.postMessage);
         if (IM.postMessage.type === 'message' || IM.postMessage.type === 'audio' || IM.postMessage.type === 'video') {
           IM.handleChat();
         }

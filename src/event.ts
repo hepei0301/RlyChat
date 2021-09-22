@@ -2,18 +2,18 @@ import { TypedEvent } from './utils/typedEvent';
 
 export interface ImProps {
   type: string;
-  chat: {
-    id: string | number;
-    name: string;
-  };
+  userId: string | number;
+  userName: string;
+}
+
+export interface MeetChatProps {
+  phone: string | number;
+  name: string;
 }
 
 export interface MeetProps {
   type: string;
-  checkedList: {
-    phone: string | number;
-    name: string;
-  };
+  checkedList: MeetChatProps[];
 }
 
 // 打开Im

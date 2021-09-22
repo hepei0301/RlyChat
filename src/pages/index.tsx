@@ -19,14 +19,16 @@ interface RlyChatProps {
 export default function RlyChat({ userId = '13700000000', userName = '默认昵称' }: RlyChatProps) {
   return (
     <div>
-      <Button style={{ position: 'absolute', top: 50, left: 20 }} onClick={openMeet}>
+      <Button style={{ position: 'absolute', top: 50, left: 20 }} onClick={() => openIM({ type: 'message', userId: 17887787788, userName: '我是一个姓名' })}>
         答案开meet23
       </Button>
-      <Button style={{ position: 'absolute', top: 10, left: 20 }} onClick={openIM}>
+      <Button
+        style={{ position: 'absolute', top: 10, left: 20 }}
+        onClick={() => openMeet({ type: 'meet', checkedList: [{ phone: '21212121212', name: '我是一个名字' }] })}>
         答案开im122
       </Button>
-      <IM userInfo={{ userId: '13700000000', userName: '默认昵称' }} contactsList={[]} />
-      <Meet userInfo={{ userId: '13700000000', userName: '默认昵称' }} />
+      <IM userInfo={{ userId: '13700000000', userName: '默认昵称321' }} contactsList={[]} />
+      <Meet userInfo={{ userId: '13700000000', userName: '默认昵称3213' }} />
     </div>
   );
 }

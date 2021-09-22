@@ -66,7 +66,7 @@ export default function Meet({ bounds, size, maxSize, limitSize, userInfo }: Rly
 
   useEffect(() => {
     return EventOpenMeet.on((res: MeetProps) => {
-      (document as any).getElementById('RlyChat-Meet').contentWindow.postMessage({ ...res });
+      (document.getElementById('RlyChat-Meet') as any).contentWindow.postMessage({ ...res });
       open();
     });
   }, [toggle]);

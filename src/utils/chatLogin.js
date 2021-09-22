@@ -16,7 +16,6 @@ function LOGIN() {
 LOGIN.prototype = {
   init: function (cb) {
     this._callBacks.push(cb);
-    console.log(this, 99);
     if (this._login && this._callBacks.length === 2) {
       this._callBacks[1]();
     }
@@ -49,6 +48,7 @@ LOGIN.prototype = {
       //不支持音视频呼叫，音视频不可用
       // IM.SendVoiceAndVideo_isDisable();
     }
+    console.log(window, '登录的window---->');
     this.getSig('15071046271', '', cb);
   },
   getSig: function (account_number, pwd, cb) {
@@ -64,7 +64,6 @@ LOGIN.prototype = {
       (now.getSeconds() >= 10 ? now.getSeconds() : '0' + now.getSeconds());
 
     var sig = hex_md5(this._appid + account_number + timestamp + this._appToken);
-    console.log(this.EV_login, 55);
     this.EV_login(account_number, pass, sig, timestamp, cb);
   },
   EV_login: function (user_account, pwd, sig, timestamp, cb) {
@@ -75,7 +74,6 @@ LOGIN.prototype = {
       userName: user_account,
       timestamp: timestamp,
     };
-    console.log(this, this.RL_YTX_NEW, this._callBacks);
     if (this._callBacks.length < 2) {
       const that = this;
       window.RL_YTX_NEW.login(

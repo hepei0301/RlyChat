@@ -3,8 +3,8 @@ import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '../../components/ResizeMoveDialog';
 import { EventOpenIm, ImProps } from '../../event';
-import '../../utils/MD5.min.js';
 import '../../utils/base64.min.js';
+import '../../utils/MD5.min.js';
 import '../../utils/jquery-3.1.0.min.js';
 import '../../utils/ytx-web-im7.2.2.5.js';
 import '../../utils/ytx-web-av3.js';
@@ -68,7 +68,8 @@ export default function IM({ bounds, size, maxSize, limitSize, userInfo }: RlyPr
 
   useEffect(() => {
     return EventOpenIm.on((res: ImProps) => {
-      (document as any).getElementById('RlyChat-Im').contentWindow.postMessage({ ...res });
+      console.log(333, res);
+      (document.getElementById('RlyChat-Im') as any).contentWindow.postMessage({ ...res });
       open();
     });
   }, [toggle]);
