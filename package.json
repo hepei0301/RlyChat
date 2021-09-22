@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "rly-chat",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "chat project",
   "main": "./index.ts",
   "module": "./index.ts",
@@ -50,7 +50,6 @@
     "@types/lodash": "^4.14.172",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@umijs / preset-react": "1.x",
     "@umijs/test": "^3.5.14",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
