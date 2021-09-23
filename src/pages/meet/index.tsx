@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 import ResizeMoveDialog from '../../components/ResizeMoveDialog';
@@ -21,8 +21,6 @@ export interface RlyPropos {
   limitSize?: { width: number; height: number };
   maxSize?: { width: number; height: number };
 }
-
-export const openIm = () => {};
 
 export default function Meet({ bounds, size, maxSize, limitSize, userInfo }: RlyPropos) {
   const [toggle, setToggle] = useState(false);
