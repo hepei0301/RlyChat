@@ -1,4 +1,4 @@
-(function () {
+(function() {
   var ROOT = {};
   if (typeof global === 'object') {
     ROOT = global;
@@ -49,7 +49,7 @@
       _WSG_RELEASEVIDEO_NOT_REQ: 174020,
       _GROUP_NO_GROUPID: 170002,
       _TEXT_TOO_LONG: 170001,
-      _FILE_TOO_LARGE: 170001,
+      _FILE_TOO_LARGE: 170001
     }, //错误码
     logPrint: true, //是否打印日志
     reqErrCode: {
@@ -63,7 +63,7 @@
       RegistOver: 529998,
       MsgVersionOverdue: 580005,
       callRouteError: 550001,
-      unknownError: 559999,
+      unknownError: 559999
     },
     //消息类型
     msgTypeNo: {
@@ -200,7 +200,7 @@
           _NotifyAgent_AgentJoinIM: 127,
           _NotifyAgent_AgentEndIMService: 128,
           _NotifyAgent_ExitIMService: 129,
-          _NotifyAgent_TransferResult: 130,
+          _NotifyAgent_TransferResult: 130
         },
         _mcmType: {
           _MCMType_txt: 1,
@@ -208,7 +208,7 @@
           _MCMType_video: 3,
           _MCMType_emotion: 4,
           _MCMType_pos: 5,
-          _MCMType_file: 6,
+          _MCMType_file: 6
         },
         _mcmAgentState: {
           _AgentTelStat_noready: 0,
@@ -223,15 +223,15 @@
           _AgentImStat_offwork: 13,
           _AgentImStat_working: 14,
           _AgentImStat_workingfull: 15,
-          _AgentImStat_suspend: 16,
+          _AgentImStat_suspend: 16
         },
         _mcmChannel: {
           _MCType_im: 0,
           _MCType_wx: 1,
           _MCType_mail: 2,
           _MCType_sms: 3,
-          _MCType_fax: 4,
-        },
+          _MCType_fax: 4
+        }
       },
       _getUserState: 71,
       _callRoute: 127,
@@ -251,18 +251,18 @@
         _updateMyChatroomMemberInfo: 166,
         _kickMember: 167,
         _updateMemberOption: 168,
-        _exitChatRoom: 169,
+        _exitChatRoom: 169
       },
       _ConferenceMessage: 140,
       _ConferenceNotice: 141,
-      _friendMsg: 100,
+      _friendMsg: 100
     },
     httpType: {
       _attachStart: 1,
       _attachEnd: 2,
       _historyMessage: 3,
       _recentContact: 4,
-      _userDevice: 5,
+      _userDevice: 5
     },
     routerSwitch: true, //路由开关
     hasLocalStorage: true,
@@ -275,11 +275,11 @@
     newUserState: false,
     synMsgMaxNumLimit: 100,
     fileSig: '',
-    longTimestamp: 0,
+    longTimestamp: 0
   };
   //公用方法
   var commonMethods = {
-    assign: function () {
+    assign: function() {
       var obj = {};
       for (var i = 0; i < arguments.length; i++) {
         if (typeof arguments[i] === 'object' && arguments[i]) {
@@ -291,14 +291,14 @@
       console.log('assign', obj);
       return obj;
     },
-    getParam: function (param) {
+    getParam: function(param) {
       if (typeof param === 'object' && param.getData) {
         return param.getData();
       } else {
         return param;
       }
     },
-    ajax: function (data) {
+    ajax: function(data) {
       var xmlhttp;
       if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
@@ -307,18 +307,18 @@
       }
       if (data.responseType) xmlhttp.responseType = data.responseType;
       if (data.onload)
-        xmlhttp.onload = function () {
+        xmlhttp.onload = function() {
           if (data.responseType) data.onload(xmlhttp.response);
         };
       if (data.progress) {
-        xmlhttp.upload.onprogress = function (res) {
+        xmlhttp.upload.onprogress = function(res) {
           var percent = parseInt((res.loaded / res.total) * 100);
           console.log('progress', percent);
           data.progress(res, percent);
           console.log('progress', percent);
         };
       }
-      xmlhttp.onreadystatechange = function () {
+      xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState === 4) {
           if (xmlhttp.status === 200) {
             if (data.responseType) return;
@@ -332,12 +332,12 @@
               }
             } catch (e) {
               data.error({
-                msg: response,
+                msg: response
               });
             }
           } else {
             data.error({
-              code: xmlhttp.status,
+              code: xmlhttp.status
             });
           }
         }
@@ -353,23 +353,23 @@
     },
     //日志打印
     logger: {
-      info: function (mess) {
+      info: function(mess) {
         commonMethods.logger.log(mess, 'log');
       },
-      error: function (mess) {
+      error: function(mess) {
         commonMethods.logger.log(mess, 'error');
       },
-      warn: function (mess) {
+      warn: function(mess) {
         commonMethods.logger.log(mess, 'warn');
       },
-      log: function (mess, key) {
+      log: function(mess, key) {
         if (!commonConfig.logPrint) return;
         mess = commonMethods.getTimeStamp() + ':: SDK ::' + mess;
         console[key](mess);
-      },
+      }
     },
     //当前时间
-    getTimeStamp: function () {
+    getTimeStamp: function() {
       //当前时间
       var now = new Date();
       var timestamp =
@@ -382,16 +382,16 @@
         (now.getSeconds() >= 10 ? now.getSeconds() : '0' + now.getSeconds());
       return timestamp;
     },
-    getWindowURL: function () {
+    getWindowURL: function() {
       var url = window.URL || window.webkitURL || window.mozURL || window.msURL;
       return url;
     },
-    parseCodeResp: function (obj) {
+    parseCodeResp: function(obj) {
       var resp = {};
       resp.code = obj['6'];
       return resp;
     },
-    setlocalStorage: function (version) {
+    setlocalStorage: function(version) {
       if (!commonConfig.hasLocalStorage) {
         return commonConfig.msgVersion;
       }
@@ -402,18 +402,20 @@
       window.localStorage[commonConfig.userName + commonConfig.deviceType] = version;
       console.log('setlocalStorage---' + commonConfig.userName + commonConfig.deviceType, version);
     },
-    getlocalStorage: function () {
+    getlocalStorage: function() {
       if (!commonConfig.hasLocalStorage) {
         return commonConfig.msgVersion;
       }
       var s = null;
-      if ((s = window.localStorage[commonConfig.userName + commonConfig.deviceType]) === undefined) {
+      if (
+        (s = window.localStorage[commonConfig.userName + commonConfig.deviceType]) === undefined
+      ) {
         window.localStorage[commonConfig.userName + commonConfig.deviceType] = 0;
         return '0';
       }
       console.log('getlocalStorage---' + commonConfig.userName + commonConfig.deviceType, s);
       return s;
-    },
+    }
   };
 
   // ws造函数
@@ -447,13 +449,13 @@
     loginTypeNo: {
       LoginByUserName: 1,
       LoginByOther: 2,
-      LoginByVoip: 3,
+      LoginByVoip: 3
     },
     loginStatus: 1, //登录状态
     loginStatusNo: {
       NoLogin: 1,
       LoggingIn: 2,
-      Logined: 3,
+      Logined: 3
     },
     network: 1,
     loginMode: 1,
@@ -463,7 +465,7 @@
       _3G: 90,
       _4G: 180,
       _WIFI: 15,
-      _RECONNECT: 15,
+      _RECONNECT: 15
     }, //心跳间隔
     heartBeatTimeOut: 5, //心跳超时时间
     heartBeatErrNum: 0, //心跳错误次数
@@ -488,8 +490,8 @@
         _LAN: 1 * 1000,
         _4G: 3 * 1000,
         _GPRS: 20 * 1000,
-        _OTHER: 10 * 1000,
-      },
+        _OTHER: 10 * 1000
+      }
     },
     reconnectInterval: null, //重连定时器
     reconnectIntervalTime: 15, //重连定时器时间
@@ -497,12 +499,12 @@
     maxReconnectNum: 45, //最大重连次数
     sessionId: null,
     isOpenOfflineSwitch: true,
-    isV3: false, //判断是否接入的v3版本媒体
+    isV3: false //判断是否接入的v3版本媒体
   };
 
   //私有方法
   var YTX_Methods = {
-    jsonp: function (url, param, callback, onError) {
+    jsonp: function(url, param, callback, onError) {
       var p = '';
       if (param) {
         p = '&';
@@ -512,7 +514,7 @@
       }
 
       var c = 'ytx' + parseInt(Math.random() * 1000000) + '_' + new Date().getTime();
-      window[c] = function (e) {
+      window[c] = function(e) {
         callback(e);
       };
       var urq = url + '?cb=' + c + p;
@@ -520,16 +522,16 @@
       s.src = urq;
       var tar = document.querySelector('body');
       tar.appendChild(s);
-      s.onload = function (e) {
+      s.onload = function(e) {
         tar.removeChild(s);
         delete window[c];
       };
-      s.onerror = function (err) {
+      s.onerror = function(err) {
         onError(err);
         delete window[c];
       };
     },
-    checkFileReader: function () {
+    checkFileReader: function() {
       var FileReader = FileReader || window.FileReader;
       if (!FileReader) {
         return false;
@@ -537,35 +539,35 @@
       return true;
     },
     //  发送心跳
-    heartBeat: function () {
+    heartBeat: function() {
       if (YTX_CONFIG.reconnectNum === 0) {
-        var id = setTimeout(function () {
+        var id = setTimeout(function() {
           YTX_Methods.heartBeatCallBackErr(++YTX_CONFIG.heartBeatErrNum);
         }, YTX_CONFIG.heartBeatTimeOut * 1000);
         var str = JSON.stringify({
-          hb: id,
+          hb: id
         });
         YTX_Methods.sendMsg(str);
       }
     },
-    heartBeatCallBack: function (obj) {
+    heartBeatCallBack: function(obj) {
       YTX_CONFIG.heartBeatErrNum = 0;
       if (!!obj) {
         clearTimeout(obj);
       }
       commonMethods.logger.info('heartBeat succ');
     },
-    heartBeatCallBackErr: function () {
+    heartBeatCallBackErr: function() {
       commonMethods.logger.info('heart beak err');
       YTX_CONFIG.loginStatus = YTX_CONFIG.loginStatusNo.NoLogin;
       if (YTX_CONFIG.intervalId) clearInterval(YTX_CONFIG.intervalId);
       if (YTX_CONFIG.reconnectNum === 0) {
-        YTX_Methods.reconnect(function () {});
+        YTX_Methods.reconnect(function() {});
       }
     },
-    _reauthListener: function (res) {},
-    _connectStatListener: function (res) {},
-    doIpSpeedTest: function (ipSpeedTestPolicy) {
+    _reauthListener: function(res) {},
+    _connectStatListener: function(res) {},
+    doIpSpeedTest: function(ipSpeedTestPolicy) {
       var type = ipSpeedTestPolicy['1'];
       if (type === 2) {
         var ipAdds = ipSpeedTestPolicy['2'];
@@ -574,9 +576,15 @@
           if (ipAdd['3'] !== YTX_CONFIG.WS_TYPE) {
             continue;
           }
-          var count = !!ipSpeedTestPolicy['3'] ? ipSpeedTestPolicy['3'] : YTX_CONFIG.ipSpeedTestConfig._count;
-          var interval = !!ipSpeedTestPolicy['4'] ? ipSpeedTestPolicy['4'] : YTX_CONFIG.ipSpeedTestConfig._interval;
-          var timeout = !!ipSpeedTestPolicy['5'] ? ipSpeedTestPolicy['5'] : YTX_CONFIG.ipSpeedTestConfig._timeout._WIFI;
+          var count = !!ipSpeedTestPolicy['3']
+            ? ipSpeedTestPolicy['3']
+            : YTX_CONFIG.ipSpeedTestConfig._count;
+          var interval = !!ipSpeedTestPolicy['4']
+            ? ipSpeedTestPolicy['4']
+            : YTX_CONFIG.ipSpeedTestConfig._interval;
+          var timeout = !!ipSpeedTestPolicy['5']
+            ? ipSpeedTestPolicy['5']
+            : YTX_CONFIG.ipSpeedTestConfig._timeout._WIFI;
           var num = 0,
             receiveNum = 0;
           var webSocket = new WebSocket('ws://' + ipAdd['1'] + ':' + ipAdd['2']);
@@ -585,7 +593,7 @@
             maxDelay = 0,
             minDelay = 0,
             totalDelay = 0;
-          var tId = setTimeout(function () {
+          var tId = setTimeout(function() {
             commonMethods.logger.info('ipSpeedTest timeout...');
             webSocket.close();
           }, interval * count + timeout);
@@ -594,10 +602,10 @@
           webSocket._port = ipAdd['2'];
           webSocket.num = 0;
           webSocket.receiveNum = 0;
-          webSocket.onopen = function (event) {
+          webSocket.onopen = function(event) {
             var wb = this;
             commonMethods.logger.info('start ipSpeedTest...');
-            var intervalId = setInterval(function () {
+            var intervalId = setInterval(function() {
               var tstamp = new Date().getTime();
               if (wb.num === 0) {
                 wb.startTime = tstamp;
@@ -610,7 +618,7 @@
               }
             }, interval);
           };
-          webSocket.onmessage = function (event) {
+          webSocket.onmessage = function(event) {
             var data = event.data;
             data = JSON.parse(data);
             this.endTime = new Date().getTime();
@@ -642,10 +650,17 @@
               this.close();
             }
           };
-          webSocket.onclose = function (event) {
+          webSocket.onclose = function(event) {
             commonMethods.logger.info('ipSpeedTest complete...');
             if (event.code > 1000) {
-              console.warn('ipspeed socket has closed, error code :' + event.code + ': ' + event.reason + ': ' + event.wasClean);
+              console.warn(
+                'ipspeed socket has closed, error code :' +
+                  event.code +
+                  ': ' +
+                  event.reason +
+                  ': ' +
+                  event.wasClean
+              );
             }
             var netWork = 1;
             var lost, averageDelay, costtime;
@@ -655,7 +670,18 @@
             } else {
               lost = 100;
             }
-            var jsonStr = '{"IpSpeedResult":{"1":' + netWork + ',' + '"3":"' + this._ip + '",' + '"4":' + this._port + ',' + '"5":' + lost;
+            var jsonStr =
+              '{"IpSpeedResult":{"1":' +
+              netWork +
+              ',' +
+              '"3":"' +
+              this._ip +
+              '",' +
+              '"4":' +
+              this._port +
+              ',' +
+              '"5":' +
+              lost;
             if (averageDelay > 0) {
               jsonStr += ',"6":' + averageDelay;
             }
@@ -669,7 +695,8 @@
               jsonStr += ',"11":"' + ipSpeedTestPolicy['7'] + '"';
             }
             jsonStr += '}}';
-            var str = '{"MsgLite":{"1":' + commonConfig.msgTypeNo._ipSpeedTest + ',"2":' + jsonStr + '}}';
+            var str =
+              '{"MsgLite":{"1":' + commonConfig.msgTypeNo._ipSpeedTest + ',"2":' + jsonStr + '}}';
             if (YTX_CONFIG.loginStatus === YTX_CONFIG.loginStatusNo.Logined) {
               YTX_Methods.sendMsg(str);
             }
@@ -678,7 +705,7 @@
       }
     },
     //生成流水号
-    generateClientNo: function (param, callback, onError) {
+    generateClientNo: function(param, callback, onError) {
       var clientNo;
       if (param.notUpdate) {
         clientNo = commonConfig.ClientNo;
@@ -687,7 +714,7 @@
       }
       param.callback = callback;
       param.onError = onError;
-      var i = setTimeout(function () {
+      var i = setTimeout(function() {
         var resp = {};
         if (YTX_CONFIG.loginStatus === YTX_CONFIG.loginStatusNo.LoggingIn) {
           YTX_CONFIG.loginStatus = YTX_CONFIG.loginStatusNo.NoLogin;
@@ -709,7 +736,7 @@
       return clientNo;
     },
     //消息发送
-    sendMsg: function (content) {
+    sendMsg: function(content) {
       var json = JSON.parse(content);
       var msgLite = json['MsgLite'];
       if (msgLite) {
@@ -717,14 +744,14 @@
         var request = YTX_CONFIG.clientMap[clientNo];
       } else if (json['hb']) {
         var request = {
-          timeout: json['hb'],
+          timeout: json['hb']
         };
       }
-      var onError = function () {};
+      var onError = function() {};
       if (request && request.onError) onError = request.onError;
       if (
         content.indexOf('UserAuth') === -1 &&
-        !ytx.checkOnline(function () {
+        !ytx.checkOnline(function() {
           commonMethods.logger.info('user not onLine');
           if (request && request.timeout) clearTimeout(request.timeout);
           var resp = {};
@@ -760,7 +787,7 @@
         commonMethods.logger.info('request too quick, please wait a minute.');
       }
     },
-    checkH5: function () {
+    checkH5: function() {
       try {
         window.localStorage.testItem = 'test';
         window.localStorage.removeItem('testItem');
@@ -784,11 +811,11 @@
         return false;
       }
     },
-    setAuthSigTime: function (reqSig, longTimestamp, reqAuth) {
+    setAuthSigTime: function(reqSig, longTimestamp, reqAuth) {
       commonConfig.reqSig = reqSig;
       commonConfig.reqTimestamp = longTimestamp;
       commonConfig.reqAuth = reqAuth;
-      setTimeout(function () {
+      setTimeout(function() {
         commonMethods.logger.info('auth sig is out of time , reAuth ...');
         YTX_CONFIG.reqTimestamp = null;
         YTX_CONFIG.reqSig = null;
@@ -796,7 +823,7 @@
         YTX_Methods._reauthListener();
       }, 8280000);
     },
-    onHttpResonse: function (obj) {
+    onHttpResonse: function(obj) {
       obj = obj['Http'];
       if (!obj) {
         return;
@@ -821,7 +848,7 @@
       }
       Chat.receiveHttpResponse(obj, request.callback);
     },
-    onRequestResp: function (obj) {
+    onRequestResp: function(obj) {
       console.log(obj, '_onRequestResp');
       obj = obj['resp'];
       var request = YTX_CONFIG.clientMap[obj['3']];
@@ -842,7 +869,7 @@
       obj['2']['fileUrl'] = Base64.decode(YTX_CONFIG.lvsServer);
       callback(obj['2']);
     },
-    onResponse: function (obj) {
+    onResponse: function(obj) {
       commonMethods.logger.info('receive msg : ' + obj);
       try {
         obj = JSON.parse(obj);
@@ -925,7 +952,10 @@
         Chat.confirmMsg();
         ytx.logout();
         return;
-      } else if (type === commonConfig.msgTypeNo._chatRoom.MSG_SEND_LiveChatRoom_MESSAGE && !obj['3']) {
+      } else if (
+        type === commonConfig.msgTypeNo._chatRoom.MSG_SEND_LiveChatRoom_MESSAGE &&
+        !obj['3']
+      ) {
         if (ytx.chatActive) Chat.receiveChatRoomMsg(obj);
         return;
       } else if (type === commonConfig.msgTypeNo._ConferenceNotice) {
@@ -963,21 +993,21 @@
         }
         window.addEventListener(
           'offline',
-          function () {
+          function() {
             console.log('offline---');
             YTX_CONFIG.isOffLine = true;
             if (YTX_CONFIG.reconnectNum === 0 && commonConfig.token) {
-              YTX_Methods.reconnect(function () {});
+              YTX_Methods.reconnect(function() {});
             }
           },
           true
         );
         window.addEventListener(
           'online',
-          function () {
+          function() {
             YTX_CONFIG.isOffLine = false;
             if (commonConfig.token) {
-              YTX_Methods.reconnect(function () {});
+              YTX_Methods.reconnect(function() {});
             }
           },
           true
@@ -1046,7 +1076,10 @@
         if (!!YTX_CONFIG.intervalId) {
           window.clearInterval(YTX_CONFIG.intervalId);
         }
-        YTX_CONFIG.intervalId = window.setInterval(YTX_Methods.heartBeat, YTX_CONFIG.heartBeatInterval._WIFI * 1000);
+        YTX_CONFIG.intervalId = window.setInterval(
+          YTX_Methods.heartBeat,
+          YTX_CONFIG.heartBeatInterval._WIFI * 1000
+        );
         if (!!YTX_CONFIG.failIntervalId) {
           clearInterval(YTX_CONFIG.failIntervalId);
           YTX_CONFIG.failIntervalId = null;
@@ -1060,10 +1093,10 @@
         }
         if (parseInt(commonMethods.getlocalStorage()) === 0) {
           YTX_Methods.uploadUserDevice(
-            function (res) {
+            function(res) {
               console.log('uploadUserDevice---succ', res);
             },
-            function (err) {
+            function(err) {
               console.log('uploadUserDevice---err', err);
             }
           );
@@ -1075,7 +1108,10 @@
         callback(commonMethods.parseCodeResp(obj));
       } else if (type === commonConfig.msgTypeNo._sendMsg) {
         if (ytx.chatActive) Chat.receiveMsgResp(obj, request, 'parseSendMsgResp');
-      } else if (type === commonConfig.msgTypeNo._getMyInfo || type == commonConfig.msgTypeNo._setMyInfo) {
+      } else if (
+        type === commonConfig.msgTypeNo._getMyInfo ||
+        type == commonConfig.msgTypeNo._setMyInfo
+      ) {
         if (ytx.chatActive) Chat.receiveMsgResp(obj, request, 'parseGetMyInfo');
       } else if (type === commonConfig.msgTypeNo._createGroup) {
         if (ytx.chatActive) Chat.receiveMsgResp(obj, request, 'parseCreateGroupResp');
@@ -1123,23 +1159,26 @@
         delete YTX_CONFIG.clientMap[obj['3']];
       }
     },
-    onResponseErr: function (obj) {
+    onResponseErr: function(obj) {
       var request = YTX_CONFIG.clientMap[obj['3']];
       if (YTX_CONFIG.loginStatus === YTX_CONFIG.loginStatusNo.LoggingIn) {
         YTX_CONFIG.loginStatus = YTX_CONFIG.loginStatusNo.NoLogin;
       }
-      var onError = function () {};
-      var callback = function () {};
+      var onError = function() {};
+      var callback = function() {};
       if (!!request) {
-        onError = request.onError || function () {};
-        callback = request.callback || function () {};
+        onError = request.onError || function() {};
+        callback = request.callback || function() {};
         try {
           clearTimeout(request.timeout);
         } catch (e) {
           console.log("Cannot read property 'timeout' of undefined");
         }
       }
-      if (obj['1'] === commonConfig.msgTypeNo._getMyInfo && obj['6'] == commonConfig.reqErrCode.AccountInexistent) {
+      if (
+        obj['1'] === commonConfig.msgTypeNo._getMyInfo &&
+        obj['6'] == commonConfig.reqErrCode.AccountInexistent
+      ) {
         var resp = {};
         resp.version = 1;
         resp.nickName = commonConfig.userName;
@@ -1147,17 +1186,23 @@
         resp.birth = '1970-01-01';
         callback(resp);
       } else if (
-        (obj['6'] >= commonConfig.reqErrCode.NoAppkey && obj['6'] <= commonConfig.reqErrCode.MissingLoginParam + 1) ||
-        (obj['6'] >= commonConfig.reqErrCode.MissingPwd && obj['6'] <= commonConfig.reqErrCode.IncorrectPwd) ||
-        (obj['6'] >= commonConfig.reqErrCode.IncorrectAccount && obj['6'] <= commonConfig.reqErrCode.IncorrectAccount) ||
-        (obj['6'] >= commonConfig.reqErrCode.AccountIllegal && obj['6'] <= commonConfig.reqErrCode.AccountIllegal) ||
+        (obj['6'] >= commonConfig.reqErrCode.NoAppkey &&
+          obj['6'] <= commonConfig.reqErrCode.MissingLoginParam + 1) ||
+        (obj['6'] >= commonConfig.reqErrCode.MissingPwd &&
+          obj['6'] <= commonConfig.reqErrCode.IncorrectPwd) ||
+        (obj['6'] >= commonConfig.reqErrCode.IncorrectAccount &&
+          obj['6'] <= commonConfig.reqErrCode.IncorrectAccount) ||
+        (obj['6'] >= commonConfig.reqErrCode.AccountIllegal &&
+          obj['6'] <= commonConfig.reqErrCode.AccountIllegal) ||
         obj['6'] === commonConfig.reqErrCode.RegistOver
       ) {
         onError(commonMethods.parseCodeResp(obj));
         return;
       } else if (
-        (obj['6'] >= commonConfig.reqErrCode.NoAppkey - 1 && obj['6'] <= commonConfig.reqErrCode.RegistOver + 1) ||
-        (obj['6'] >= commonConfig.reqErrCode.callRouteError - 1 && obj['6'] <= commonConfig.reqErrCode.unknownError) ||
+        (obj['6'] >= commonConfig.reqErrCode.NoAppkey - 1 &&
+          obj['6'] <= commonConfig.reqErrCode.RegistOver + 1) ||
+        (obj['6'] >= commonConfig.reqErrCode.callRouteError - 1 &&
+          obj['6'] <= commonConfig.reqErrCode.unknownError) ||
         obj['6'] == 219000
       ) {
         YTX_CONFIG.reconnectNum = 0;
@@ -1165,7 +1210,7 @@
         YTX_CONFIG.reLoginNum = 1;
         YTX_CONFIG.loginStatus = YTX_CONFIG.loginStatusNo.NoLogin;
         if (!!YTX_CONFIG.socket) {
-          YTX_CONFIG.socket.onclose = function () {};
+          YTX_CONFIG.socket.onclose = function() {};
           YTX_CONFIG.socket.close();
           YTX_CONFIG.socket = null;
         }
@@ -1178,7 +1223,9 @@
         YTX_CONFIG.loginStatus = YTX_CONFIG.loginStatusNo.NoLogin;
       }
       if (obj['1'] === commonConfig.msgTypeNo._sendMsg) {
-        onError ? onError(YTX_Methods.parseSendMsgRespErr(obj, request)) : console.log('onError is missing,lack of onerror callback');
+        onError
+          ? onError(YTX_Methods.parseSendMsgRespErr(obj, request))
+          : console.log('onError is missing,lack of onerror callback');
         return;
       }
       delete YTX_CONFIG.clientMap[obj['3']];
@@ -1203,19 +1250,19 @@
         onError(commonMethods.parseCodeResp(obj));
       }
     },
-    generateImei: function () {
+    generateImei: function() {
       commonConfig.imei = hex_md5(commonConfig.appId + commonConfig.userName + YTX_CONFIG.sdkName);
     },
-    reconnect: function (callback) {
+    reconnect: function(callback) {
       //重连
       YTX_CONFIG.reconnectInterval && clearInterval(YTX_CONFIG.reconnectInterval);
       YTX_CONFIG.reconnectNum = 0;
       YTX_Methods.reconnectFn(callback);
-      YTX_CONFIG.reconnectInterval = setInterval(function () {
+      YTX_CONFIG.reconnectInterval = setInterval(function() {
         YTX_Methods.reconnectFn(callback);
       }, YTX_CONFIG.reconnectIntervalTime * 1000);
     },
-    reconnectFn: function (callback) {
+    reconnectFn: function(callback) {
       YTX_CONFIG.reconnectNum++;
       console.log('YTX_CONFIG.reconnectNum-------------', YTX_CONFIG.reconnectNum);
       if (YTX_CONFIG.reconnectNum > YTX_CONFIG.maxReconnectNum) {
@@ -1236,13 +1283,13 @@
           sig: null,
           timestamp: null,
           reset: true,
-          isReconnect: true,
+          isReconnect: true
         },
         callback,
-        function () {}
+        function() {}
       );
     },
-    buildLogin: function (data, callback, onError) {
+    buildLogin: function(data, callback, onError) {
       //生成登录消息
       if (!commonConfig.imei) {
         YTX_Methods.generateImei();
@@ -1252,10 +1299,10 @@
         1: data.type,
         2: commonConfig.appId,
         8: commonConfig.imei,
-        10: YTX_CONFIG.network,
+        10: YTX_CONFIG.network
       };
       MsgLiteObj = {
-        1: commonConfig.msgTypeNo._login,
+        1: commonConfig.msgTypeNo._login
       };
       if (data.type !== YTX_CONFIG.loginTypeNo.LoginByOther) {
         //完整认证
@@ -1277,14 +1324,14 @@
           sendObj: sendObj,
           MsgLiteObj: MsgLiteObj,
           msgKey: 'UserAuth',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
       return loginJsonStr;
     },
-    msgBuild: function (data, callback, onError) {
+    msgBuild: function(data, callback, onError) {
       /*
        * data结构
        * {
@@ -1328,7 +1375,7 @@
       console.log('sendMsg---', msgLite);
       return JSON.stringify(msgLite);
     },
-    getServerIp: function (data, callback, onError) {
+    getServerIp: function(data, callback, onError) {
       if (!YTX_CONFIG.getServer) {
         YTX_Methods.initScoket(data, callback, onError);
         return;
@@ -1352,16 +1399,18 @@
         userName: commonConfig.userName,
         authorization: data.timestamp,
         version: YTX_CONFIG.version,
-        type: data.type.toString(),
+        type: data.type.toString()
       };
       console.log(datas.authorization);
       YTX_Methods.jsonp(
         Base64.decode(YTX_CONFIG.appServer) + w + accunt + '/GetServerBalance',
         datas,
-        function (e) {
+        function(e) {
           var lvs = 'https://' + e['LVS'][0].host + ':' + e['LVS'][0].port;
-          var fileurl = 'wss://' + e['webSocketServer'][0].host + ':' + e['webSocketServer'][0].port + '/ws';
-          var server = 'wss://' + e['webSocketServer'][0].host + ':' + e['webSocketServer'][0].port + '/ws';
+          var fileurl =
+            'wss://' + e['webSocketServer'][0].host + ':' + e['webSocketServer'][0].port + '/ws';
+          var server =
+            'wss://' + e['webSocketServer'][0].host + ':' + e['webSocketServer'][0].port + '/ws';
           // if (ytx.chatActive) Chat.setConfig({
           //   lvsServer: [Base64.encode(lvs)],
           //   fileServerWs: Base64.encode(fileurl)
@@ -1369,7 +1418,7 @@
           YTX_CONFIG.serverIp = [Base64.encode(server)];
           YTX_Methods.initScoket(data, callback, onError);
         },
-        function (e) {
+        function(e) {
           var resp = {};
           resp.code = '510100';
           resp.msg = 'get server failed, please check the parameter';
@@ -1377,18 +1426,21 @@
         }
       );
     },
-    initScoket: function (data, callback, onError) {
+    initScoket: function(data, callback, onError) {
       //当重连次数超过最大重连数，停止重连
       if (data.isReconnect && YTX_CONFIG.reconnectNum > YTX_CONFIG.maxReconnectNum) return;
       console.log('data---', data);
-      if (data.type === undefined || (data.type === YTX_CONFIG.loginTypeNo.LoginByUserName && data.sig === undefined)) {
+      if (
+        data.type === undefined ||
+        (data.type === YTX_CONFIG.loginTypeNo.LoginByUserName && data.sig === undefined)
+      ) {
         var resp = {};
         resp.code = commonConfig.errCode._NO_REQUIRED_PARAM;
         resp.msg = 'login type or sig is empty';
         onError(resp);
         return;
       }
-      window.onbeforeunload = function (event) {
+      window.onbeforeunload = function(event) {
         Chat.confirmMsg();
         if (!!YTX_CONFIG.beforeUnLoad) {
           for (var i in YTX_CONFIG.beforeUnLoad) {
@@ -1408,7 +1460,7 @@
       };
       if (data.reset) {
         if (!!YTX_CONFIG.socket) {
-          YTX_CONFIG.socket.onclose = function () {};
+          YTX_CONFIG.socket.onclose = function() {};
           if (YTX_CONFIG.socket && YTX_CONFIG.socket.close) YTX_CONFIG.socket.close();
           YTX_CONFIG.socket = null;
         }
@@ -1420,7 +1472,7 @@
           var serverip = Base64.decode(YTX_CONFIG.serverIp[0]);
           YTX_CONFIG.socket = new WebSocket(serverip);
           YTX_CONFIG.isConnecting = true;
-          var tId = setTimeout(function () {
+          var tId = setTimeout(function() {
             if (YTX_CONFIG.isConnecting) {
               YTX_CONFIG.isConnecting = false;
               var resp = {};
@@ -1431,7 +1483,7 @@
             }
           }, YTX_CONFIG.timeOutSecond * 1000);
           var sessionId = YTX_CONFIG.currentSession;
-          YTX_CONFIG.socket.onopen = function (event) {
+          YTX_CONFIG.socket.onopen = function(event) {
             if (!!tId) {
               clearTimeout(tId);
             }
@@ -1448,16 +1500,25 @@
               YTX_Methods.sendMsg(sendStr);
             }
           };
-          YTX_CONFIG.socket.onmessage = function (event) {
+          YTX_CONFIG.socket.onmessage = function(event) {
             if (sessionId !== YTX_CONFIG.currentSession) {
               return;
             }
-            commonMethods.logger.info(commonMethods.getTimeStamp() + ' Client received a message:' + JSON.stringify(event));
+            commonMethods.logger.info(
+              commonMethods.getTimeStamp() + ' Client received a message:' + JSON.stringify(event)
+            );
             YTX_Methods.onResponse(event.data);
           };
-          YTX_CONFIG.socket.onclose = function (event) {
+          YTX_CONFIG.socket.onclose = function(event) {
             if (event.code > 1000) {
-              commonMethods.logger.warn('main websocket has closed, error code :' + event.code + ': ' + event.reason + ': ' + event.wasClean);
+              commonMethods.logger.warn(
+                'main websocket has closed, error code :' +
+                  event.code +
+                  ': ' +
+                  event.reason +
+                  ': ' +
+                  event.wasClean
+              );
             }
             if (!!tId) {
               clearTimeout(tId);
@@ -1472,7 +1533,7 @@
               YTX_CONFIG.loginStatus = YTX_CONFIG.loginStatusNo.NoLogin;
               if (YTX_CONFIG.reconnectNum === 0) {
                 YTX_Methods.connectStateChange(1, 'connect closed');
-                YTX_Methods.reconnect(function () {});
+                YTX_Methods.reconnect(function() {});
               }
             } else if (YTX_CONFIG.isConnecting) {
               YTX_CONFIG.isConnecting = false;
@@ -1501,25 +1562,25 @@
         }
       }
     },
-    connectStateChange: function (code, msg, errCode) {
+    connectStateChange: function(code, msg, errCode) {
       var resp = {};
       resp.code = code;
       resp.msg = msg;
       resp.errCode = errCode || '';
       YTX_Methods._connectStatListener(resp);
     },
-    uploadUserDevice: function (callback, onError) {
+    uploadUserDevice: function(callback, onError) {
       var sig = commonConfig.fileSig;
       var sendObj = {
         1: commonConfig.appId,
         2: commonConfig.userName,
-        3: commonConfig.deviceType,
+        3: commonConfig.deviceType
       };
       var ua = window.navigator.userAgent;
       if (!!ua) {
         sendObj[4] = ua;
       }
-      var sendFunc = function () {
+      var sendFunc = function() {
         sendObj[11] = YTX_CONFIG.version;
         sendObj[12] = commonConfig.imei;
         ytx.sendMsg(
@@ -1527,10 +1588,10 @@
             sendObj: sendObj,
             MsgLiteObj: {
               1: 5,
-              4: sig,
+              4: sig
             },
             msgKey: 'UserDevice',
-            MsgLiteKey: 'Http',
+            MsgLiteKey: 'Http'
           },
           callback,
           onError
@@ -1539,10 +1600,10 @@
       if (window.navigator.geolocation) {
         var options = {
           enableHighAccuracy: true,
-          timeout: 1000,
+          timeout: 1000
         };
         window.navigator.geolocation.getCurrentPosition(
-          function (pos) {
+          function(pos) {
             var coords = pos.coords;
             var latitude = coords.latitude * 1000;
             var longitude = coords.longitude * 1000;
@@ -1557,7 +1618,7 @@
         sendFunc();
       }
     },
-    parseSendMsgRespErr: function (obj, request) {
+    parseSendMsgRespErr: function(obj, request) {
       var resp = {};
       var clientNo = obj['3'];
       resp.msgClientNo = request.msgId;
@@ -1565,7 +1626,7 @@
       resp.code = obj['6'];
       return resp;
     },
-    parseLoginResp: function (obj) {
+    parseLoginResp: function(obj) {
       var data = obj['2'];
       data = data['UserAuthResp'];
       var resp = {};
@@ -1582,19 +1643,19 @@
       resp.multLine = data['18'];
       return resp;
     },
-    parseKickOffResp: function (obj) {
+    parseKickOffResp: function(obj) {
       var data = obj['2'];
       data = data['UserAuthResp'];
       var resp = {};
       resp.code = 4;
       resp.msg = data['2'];
       return resp;
-    },
+    }
   };
   var RL_Media;
   RLYTX.prototype = {
     //登录初始化
-    init: function (config) {
+    init: function(config) {
       /*
        * data = {
        *   appId: appId,
@@ -1626,7 +1687,8 @@
         ROOT.RL_Builder = new RL_Builder();
       }
       if (config.deviceType) commonConfig.deviceType = config.deviceType;
-      if (typeof config.isOpenOfflineSwitch === 'boolean') YTX_CONFIG.isOpenOfflineSwitch = config.isOpenOfflineSwitch;
+      if (typeof config.isOpenOfflineSwitch === 'boolean')
+        YTX_CONFIG.isOpenOfflineSwitch = config.isOpenOfflineSwitch;
       if (config.maxReconnectNum) YTX_CONFIG.maxReconnectNum = config.maxReconnectNum;
       YTX_CONFIG.isV3 = config.isV3;
       RL_Media = config.RL_Media || ROOT.RL_Media;
@@ -1651,9 +1713,13 @@
 
       //消息提醒
       YTX_CONFIG.Notification =
-        window.Notification || window.mozNotification || window.webkitNotification || window.msNotification || window.webkitNotifications;
+        window.Notification ||
+        window.mozNotification ||
+        window.webkitNotification ||
+        window.msNotification ||
+        window.webkitNotifications;
       if (!!YTX_CONFIG.Notification) {
-        YTX_CONFIG.Notification.requestPermission(function (permission) {
+        YTX_CONFIG.Notification.requestPermission(function(permission) {
           if (YTX_CONFIG.Notification.permission !== 'granted') {
             YTX_CONFIG.Notification.permission = 'granted';
           }
@@ -1667,11 +1733,11 @@
         appId: commonConfig.appId,
         timeOutSecond: YTX_CONFIG.timeOutSecond,
         logPrint: commonConfig.logPrint,
-        useBuilder: commonConfig.useBuilder,
+        useBuilder: commonConfig.useBuilder
       };
       ROOT.commonMethods = {
         logger: commonMethods.logger,
-        getWindowURL: commonMethods.getWindowURL,
+        getWindowURL: commonMethods.getWindowURL
       };
       commonConfig.fileSig = config.fileSig;
       commonConfig.appId = config.appId;
@@ -1681,7 +1747,7 @@
       return resp;
     },
     //初始化会议功能
-    meetInit: function (data) {
+    meetInit: function(data) {
       if (!ROOT.RL_AV) return { code: 501, msg: '当前版本不支持会议功能' };
       ROOT.RL_MEET = new RL_MEET();
       Meet = ROOT.RL_MEET;
@@ -1690,7 +1756,7 @@
       return { code: 200, msg: 'success' };
     },
     //初始化聊天功能
-    chatInit: function (data) {
+    chatInit: function(data) {
       ROOT.RL_Chat = new RL_Chat();
       Chat = ROOT.RL_Chat;
       this.RL_Chat = Chat;
@@ -1699,7 +1765,7 @@
       return { code: 200, msg: 'success' };
     },
     //登陆
-    login: function (data, callback, onError) {
+    login: function(data, callback, onError) {
       /*
        *data = {
        *   appId: appId,
@@ -1779,13 +1845,13 @@
           sig: data.sig,
           timestamp: data.timestamp,
           reset: true,
-          clientIp: data.clientIp,
+          clientIp: data.clientIp
         },
         callback,
         onError
       );
     },
-    logout: function (callback, onError) {
+    logout: function(callback, onError) {
       if (YTX_CONFIG.loginStatus !== YTX_CONFIG.loginStatusNo.Logined) return;
       Chat.confirmMsg();
       if (!commonConfig.imei) {
@@ -1794,13 +1860,13 @@
       this.sendMsg(
         {
           sendObj: {
-            1: commonConfig.imei,
+            1: commonConfig.imei
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._logout,
+            1: commonConfig.msgTypeNo._logout
           },
           msgKey: 'Logout',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
@@ -1838,17 +1904,17 @@
       if (this.meetActive) Meet.unLoad();
       callback && callback();
     },
-    setConfig: function (data) {
+    setConfig: function(data) {
       if (typeof data !== 'object') return;
       YTX_CONFIG = commonMethods.assign(YTX_CONFIG, data);
     },
-    reauthListener: function (callback) {
+    reauthListener: function(callback) {
       YTX_Methods._reauthListener = callback;
     },
-    onConnectStateChangeLisenter: function (callback) {
+    onConnectStateChangeLisenter: function(callback) {
       YTX_Methods._connectStatListener = callback;
     },
-    checkOnline: function (onErr, msgId, msgClientNo) {
+    checkOnline: function(onErr, msgId, msgClientNo) {
       var resp = {};
       if (!commonConfig.userName) {
         resp.code = commonConfig.errCode._NO_LOGIN;
@@ -1881,72 +1947,72 @@
       }
       return true;
     },
-    sendMsg: function (data, callback, onError) {
+    sendMsg: function(data, callback, onError) {
       var sendStr = YTX_Methods.msgBuild(data, callback, onError);
       if (sendStr) YTX_Methods.sendMsg(sendStr);
     },
-    destroy: function () {
+    destroy: function() {
       if (!!YTX_CONFIG.socket) {
         YTX_CONFIG.socket.close();
       }
     },
-    bindBeforeUnLoad: function (callback) {
+    bindBeforeUnLoad: function(callback) {
       if (!!YTX_CONFIG.beforeUnLoad) {
         YTX_CONFIG.beforeUnLoad[YTX_CONFIG.beforeUnLoad.length] = callback;
       }
       return YTX_CONFIG.beforeUnLoad.length - 1;
     },
-    unbindBeforeUnLoad: function (i) {
+    unbindBeforeUnLoad: function(i) {
       YTX_CONFIG.beforeUnLoad[i] = null;
     },
-    setReqSigTime: function (reqSig, longTimestamp) {
+    setReqSigTime: function(reqSig, longTimestamp) {
       YTX_CONFIG.setAuthSigTime(reqSig, longTimestamp);
     },
-    setLogClose: function () {
+    setLogClose: function() {
       commonConfig.logPrint = false;
     },
-    setHeartBeatTime: function (hbTime) {
+    setHeartBeatTime: function(hbTime) {
       if (typeof hbTime === 'number') YTX_CONFIG.heartBeatInterval._WIFI = hbTime;
       else throw 'heart beat time must be number';
     },
-    setMsgVersion: function (version, callback, onError) {
+    setMsgVersion: function(version, callback, onError) {
       if (typeof version !== 'number') {
         commonMethods.logger.info('param version is NaN');
         onError({
-          msg: 'param version is NaN',
+          msg: 'param version is NaN'
         });
         return;
       }
       commonConfig.msgVersion = version;
       callback({
         code: 200,
-        msg: 'success',
+        msg: 'success'
       });
-    },
+    }
   };
 
   //builder类，兼容老版本sdk的传值方式
   function RL_Builder() {}
   var builderMethods = {
-    productBuilder: function (data) {
+    productBuilder: function(data) {
       return function Builder() {
         var builderData = {};
         var self = this;
         for (var param in data) {
-          (function (name, key) {
-            self['set' + name[0].toUpperCase() + name.substr(1)] = function (val) {
+          (function(name, key) {
+            self['set' + name[0].toUpperCase() + name.substr(1)] = function(val) {
               builderData[key] = val;
             };
-            self['get' + name[0].toUpperCase() + name.substr(1)] = function () {
+            self['get' + name[0].toUpperCase() + name.substr(1)] = function() {
               return builderData[key];
             };
           })(param, data[param]);
         }
-        this.getData = function () {
+        this.getData = function() {
           return builderData;
         };
       };
-    },
+    }
   };
   RL_Builder.prototype = {
     LoginBuilder: builderMethods.productBuilder({
@@ -1956,7 +2022,7 @@
       sig: 'sig',
       timestamp: 'timestamp',
       authSig: 'authSig',
-      reqAuth: 'reqAuth',
+      reqAuth: 'reqAuth'
     }),
     MsgBuilder: builderMethods.productBuilder({
       id: 'id',
@@ -1966,32 +2032,32 @@
       receiver: 'receiver',
       domain: 'domain',
       fileName: 'fileName',
-      atAccounts: 'atAccounts',
+      atAccounts: 'atAccounts'
     }),
     ChatroomMsgBuilder: builderMethods.productBuilder({
       id: 'id',
       text: 'content',
       type: 'type',
       receiver: 'receiver',
-      domain: 'domain',
+      domain: 'domain'
     }),
     SyncMsgBuilder: builderMethods.productBuilder({
       sVersion: 'startVersion',
       eVersion: 'endVersion',
-      type: 'type',
+      type: 'type'
     }),
     UploadPersonInfoBuilder: builderMethods.productBuilder({
       nickName: 'nickName',
       sex: 'sex',
       birth: 'birth',
-      sign: 'sign',
+      sign: 'sign'
     }),
     GetHistoryMsgBuilder: builderMethods.productBuilder({
       pageSize: 'pageSize',
       talker: 'talker',
       order: 'order',
       time: 'time',
-      msgDecompression: 'msgDecompression',
+      msgDecompression: 'msgDecompression'
     }),
     CreateGroupBuilder: builderMethods.productBuilder({
       groupName: 'groupName',
@@ -2003,68 +2069,68 @@
       permission: 'permission',
       mode: 'mode',
       groupDomain: 'groupDomain',
-      target: 'target',
+      target: 'target'
     }),
     DismissGroupBuilder: builderMethods.productBuilder({
-      groupId: 'groupId',
+      groupId: 'groupId'
     }),
     InviteJoinGroupBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
       declared: 'declared',
       members: 'members',
-      confirm: 'confirm',
+      confirm: 'confirm'
     }),
     ConfirmInviteJoinGroupBuilder: builderMethods.productBuilder({
       invitor: 'inviter',
       groupId: 'groupId',
-      confirm: 'confirm',
+      confirm: 'confirm'
     }),
     QuitGroupBuilder: builderMethods.productBuilder({
-      groupId: 'groupId',
+      groupId: 'groupId'
     }),
     GetGroupListBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
       pageSize: 'pageSize',
-      target: 'target',
+      target: 'target'
     }),
     GetGroupMemberListBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
       pageSize: 'pageSize',
-      memberId: 'memberId',
+      memberId: 'memberId'
     }),
     JoinGroupBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
-      declared: 'declared',
+      declared: 'declared'
     }),
     ConfirmJoinGroupBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
       memberId: 'memberId',
-      confirm: 'confirm',
+      confirm: 'confirm'
     }),
     GetGroupDetailBuilder: builderMethods.productBuilder({
-      groupId: 'groupId',
+      groupId: 'groupId'
     }),
     SearchGroupsBuilder: builderMethods.productBuilder({
       searchType: 'searchType',
-      keywords: 'keyWords',
+      keywords: 'keyWords'
     }),
     DeleteGroupMemberBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
-      memberId: 'memberId',
+      memberId: 'memberId'
     }),
     ForbidMemberSpeakBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
       memberId: 'memberId',
-      forbidState: 'forbidState',
+      forbidState: 'forbidState'
     }),
     SetGroupMessageRuleBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
       isNotice: 'isNotice',
-      isApplePush: 'isApplePush',
+      isApplePush: 'isApplePush'
     }),
     QueryGroupMemberCardBuilder: builderMethods.productBuilder({
       memberId: 'memberId',
-      belong: 'belong',
+      belong: 'belong'
     }),
     ModifyMemberCardBuilder: builderMethods.productBuilder({
       memberId: 'memberId',
@@ -2072,7 +2138,7 @@
       display: 'display',
       phone: 'phone',
       mail: 'mail',
-      remark: 'remark',
+      remark: 'remark'
     }),
     ModifyGroupBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
@@ -2083,16 +2149,16 @@
       scope: 'scope',
       declared: 'declared',
       permission: 'permission',
-      groupDomain: 'groupDomain',
+      groupDomain: 'groupDomain'
     }),
     GetUserStateBuilder: builderMethods.productBuilder({
       useracc: 'userAcc',
-      newUserstate: 'newUserState',
+      newUserstate: 'newUserState'
     }),
     SetGroupMemberRoleBuilder: builderMethods.productBuilder({
       groupId: 'groupId',
       memberId: 'memberId',
-      role: 'role',
+      role: 'role'
     }),
     MakeCallBuilder: builderMethods.productBuilder({
       called: 'called',
@@ -2100,69 +2166,69 @@
       role: 'role',
       deviceId: 'deviceId',
       tel: 'tel',
-      nickname: 'nickName',
+      nickname: 'nickName'
     }),
     AcceptCallBuilder: builderMethods.productBuilder({
       callId: 'callId',
       caller: 'caller',
       callType: 'isVoipCall',
-      deviceId: 'deviceId',
+      deviceId: 'deviceId'
     }),
     RejectCallBuilder: builderMethods.productBuilder({
       callId: 'callId',
       caller: 'caller',
-      userData: 'userData',
+      userData: 'userData'
     }),
     ReleaseCallBuilder: builderMethods.productBuilder({
       callId: 'callId',
       caller: 'caller',
-      called: 'called',
+      called: 'called'
     }),
     DeleteReadMsgBuilder: builderMethods.productBuilder({
       msgid: 'msgId',
-      version: 'version',
+      version: 'version'
     }),
     MsgOperationBuilder: builderMethods.productBuilder({
       msgid: 'msgId',
       version: 'version',
-      type: 'type',
+      type: 'type'
     }),
     GetRecentContactListBuilder: builderMethods.productBuilder({
       time: 'time',
-      limit: 'limit',
+      limit: 'limit'
     }),
     MsgBackBuilder: builderMethods.productBuilder({
       msgId: 'msgId',
-      version: 'version',
+      version: 'version'
     }),
     MsgReadBuilder: builderMethods.productBuilder({
       msgId: 'msgId',
-      version: 'version',
+      version: 'version'
     }),
     SetTopContactBuilder: builderMethods.productBuilder({
       contact: 'contact',
-      type: 'type',
+      type: 'type'
     }),
     EnterChatroomBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
       nickName: 'nickName',
       infoExt: 'infoExt',
       needNotify: 'needNotify',
-      notifyExt: 'notifyExt',
+      notifyExt: 'notifyExt'
     }),
     ExitChatroomBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
       needNotify: 'needNotify',
-      notifyExt: 'notifyExt',
+      notifyExt: 'notifyExt'
     }),
     FetchChatroomInfoBuilder: builderMethods.productBuilder({
-      roomId: 'roomId',
+      roomId: 'roomId'
     }),
     AllMuteBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
       allMuteMode: 'allMuteMode',
       needNotify: 'needNotify',
-      notifyExt: 'notifyExt',
+      notifyExt: 'notifyExt'
     }),
     UpdateChatroomInfoBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
@@ -2171,32 +2237,32 @@
       roomExt: 'roomExt',
       allMuteMode: 'allMuteMode',
       needNotify: 'needNotify',
-      notifyExt: 'notifyExt',
+      notifyExt: 'notifyExt'
     }),
     UpdateChatRoomMemberRoleBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
       userId: 'userId',
       type: 'type',
       needNotify: 'needNotify',
-      notifyExt: 'notifyExt',
+      notifyExt: 'notifyExt'
     }),
     FetchChatroomMembersBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
       userId: 'userId',
       type: 'type',
       needNotify: 'needNotify',
-      notifyExt: 'notifyExt',
+      notifyExt: 'notifyExt'
     }),
     UpdateMyChatroomMemberInfoBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
       nickName: 'nickName',
-      infoExt: 'infoExt',
+      infoExt: 'infoExt'
     }),
     KickMemberBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
       userIds: 'userId',
       notifyExt: 'notifyExt',
-      needNotify: 'needNotify',
+      needNotify: 'needNotify'
     }),
     UpdateMemberOptionBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
@@ -2205,7 +2271,7 @@
       enable: 'enable',
       muteDuration: 'muteDuration',
       notifyExt: 'notifyExt',
-      needNotify: 'needNotify',
+      needNotify: 'needNotify'
     }),
     UpdateMemberStateBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
@@ -2213,19 +2279,19 @@
       state: 'state',
       muteDuration: 'muteDuration',
       notifyExt: 'notifyExt',
-      needNotify: 'needNotify',
+      needNotify: 'needNotify'
     }),
     ConnectMediaBuilder: builderMethods.productBuilder({
       called: 'called',
       callType: 'isVoipCall',
-      deviceId: 'deviceId',
+      deviceId: 'deviceId'
     }),
     DefriendMemberBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
       userId: 'userId',
       state: 'state',
       needNotify: 'needNotify',
-      notifyExt: 'notifyExt',
+      notifyExt: 'notifyExt'
     }),
     ForbidChatRoomMemberBuilder: builderMethods.productBuilder({
       roomId: 'roomId',
@@ -2233,62 +2299,62 @@
       state: 'state',
       muteDuration: 'muteDuration',
       needNotify: 'needNotify',
-      notifyExt: 'notifyExt',
+      notifyExt: 'notifyExt'
     }),
     ConferenceMsgBuilder: builderMethods.productBuilder({
       path: 'path',
-      content: 'content',
+      content: 'content'
     }),
     GetFriendsBuilder: builderMethods.productBuilder({
       size: 'size',
-      isUpdate: 'isUpdate',
+      isUpdate: 'isUpdate'
     }),
     AddFriendsBuilder: builderMethods.productBuilder({
       friendUseracc: 'friendUserAcc',
       message: 'message',
-      source: 'source',
+      source: 'source'
     }),
     SetFriendRemarkBuilder: builderMethods.productBuilder({
       friendUseracc: 'friendUserAcc',
-      remarkName: 'remarkName',
+      remarkName: 'remarkName'
     }),
     DelFriendBuilder: builderMethods.productBuilder({
       friendUseracc: 'friendUserAcc',
-      allDel: 'allDel',
+      allDel: 'allDel'
     }),
     GetRequestHistoryListBuilder: builderMethods.productBuilder({
       timestamp: 'timestamp',
-      size: 'size',
+      size: 'size'
     }),
     GetOtherInfoBuilder: builderMethods.productBuilder({
-      searchContent: 'friendUserAcc',
+      searchContent: 'friendUserAcc'
     }),
     SetUserVerifyBuilder: builderMethods.productBuilder({
-      needVerify: 'addVerify',
+      needVerify: 'addVerify'
     }),
     AgreeFriendRequestBuilder: builderMethods.productBuilder({
-      friendUseracc: 'friendUserAcc',
+      friendUseracc: 'friendUserAcc'
     }),
     RefuseFriendRequestBuilder: builderMethods.productBuilder({
       friendUseracc: 'friendUserAcc',
-      message: 'message',
+      message: 'message'
     }),
     GetFriendInfoBuilder: builderMethods.productBuilder({
-      friendUseracc: 'friendUserAcc',
+      friendUseracc: 'friendUserAcc'
     }),
     UploadAvatarBuilder: builderMethods.productBuilder({
-      file: 'file',
+      file: 'file'
     }),
     ReqMeetingMemberVideoBuilder: builderMethods.productBuilder({
       memberid: 'memberId',
       reqssrc: 'ssrc',
       videosource: 'videoSource',
       videocodec: 'videocodec',
-      video: 'video',
+      video: 'video'
     }),
     ReleaseMeetingMemberVideoBuilder: builderMethods.productBuilder({
-      memberid: 'memberId',
-    }),
+      memberid: 'memberId'
+    })
   };
 
   //聊天构造函数
@@ -2309,7 +2375,7 @@
       _sendAtMsg: 11,
       _userMsgState: 12,
       _Readed: 24,
-      _COMMAND: 26,
+      _COMMAND: 26
     };
     this.maxSyncNum = 200;
     this.maxFileLen = chatConfig.maxFileLen;
@@ -2327,8 +2393,8 @@
       _groupArray: [],
       _groupMemberArray: [],
       _builder: {
-        pageSize: 0,
-      },
+        pageSize: 0
+      }
     },
     maxMsgLen: 2048,
     getStateTime: null,
@@ -2409,15 +2475,15 @@
       '3gp': 'video/3gpp',
       '3g2': 'video/3gpp2',
       '7z': 'application/x-7z-compressed',
-      amr: 'audio/x-wav',
-    },
+      amr: 'audio/x-wav'
+    }
   };
   var chatMethods = {
-    processOfflineMsg: function () {
+    processOfflineMsg: function() {
       return -1;
     },
     //数据解析
-    parseGetHistoryMsg: function (obj) {
+    parseGetHistoryMsg: function(obj) {
       var resp = [];
       var data = obj['2'];
       for (var i in data) {
@@ -2503,7 +2569,7 @@
       }
       return resp;
     },
-    parseNoticeMsg: function (obj) {
+    parseNoticeMsg: function(obj) {
       var domain = obj.msgDomain;
       domain = Base64.decode(domain).replace(new RegExp(/(')/g), '"');
       var domainInfo = JSON.parse(domain);
@@ -2533,7 +2599,7 @@
       }
       return commonMethods.assign(resp, obj, domainInfo);
     },
-    parseGetRecentContactList: function (obj) {
+    parseGetRecentContactList: function(obj) {
       var resp = [];
       var data = obj['2'];
       for (var i in data) {
@@ -2549,7 +2615,7 @@
       }
       return resp;
     },
-    parseMsgNotify: function (obj) {
+    parseMsgNotify: function(obj) {
       var domain = obj.msgDomain;
       var domainInfo = JSON.parse(domain);
       var msgId = domainInfo.msgid;
@@ -2560,7 +2626,7 @@
       resp.dateCreated = obj.dateCreated;
       return resp;
     },
-    parseChatRoomMsgInner: function (obj) {
+    parseChatRoomMsgInner: function(obj) {
       if (!obj.msgDomain) {
         return obj;
       }
@@ -2579,7 +2645,7 @@
       if (data.notifyExt) resp['notifyExt'] = Base64.decode(data.notifyExt);
       return resp;
     },
-    parsePushMsgResp: function (obj) {
+    parsePushMsgResp: function(obj) {
       var data = obj['2'];
       data = data['PushMsg'];
       var resp = {};
@@ -2639,14 +2705,14 @@
       }
       return resp;
     },
-    parsePushMsgNotifyResp: function (obj) {
+    parsePushMsgNotifyResp: function(obj) {
       var data = obj['2'];
       data = data['PushMsgNotify'];
       var resp = {};
       resp.version = data['1'];
       return resp;
     },
-    parseSyncMsgResp: function (obj) {
+    parseSyncMsgResp: function(obj) {
       var data = obj['2'];
       data = data['SyncMsgResp'];
       var resp = [];
@@ -2719,11 +2785,11 @@
       }
       return resp;
     },
-    parseChatRoomMsg: function (obj) {
+    parseChatRoomMsg: function(obj) {
       var data = obj['2'];
       if (!data) {
         return {
-          code: obj[6],
+          code: obj[6]
         };
       }
       data = data['PushMsg'];
@@ -2746,7 +2812,7 @@
       }
       return resp;
     },
-    parseSendMsgResp: function (obj, request) {
+    parseSendMsgResp: function(obj, request) {
       var data = obj['2'];
       var resp = {};
       if (!!data && !!data['SendMsgResp']) {
@@ -2760,7 +2826,7 @@
       resp.msgClientNo = msgClientNo;
       return resp;
     },
-    parseGetMyInfo: function (obj) {
+    parseGetMyInfo: function(obj) {
       var data = obj['2'];
       data = data['PersonInfoResp'];
       var resp = {};
@@ -2771,7 +2837,7 @@
       resp.sign = data['5'];
       return resp;
     },
-    parseCreateGroupResp: function (obj) {
+    parseCreateGroupResp: function(obj) {
       var data = obj['2'];
       if (!data) {
         return;
@@ -2781,7 +2847,7 @@
       msg.data = data['1'];
       return msg;
     },
-    parseGetGroupListResp: function (obj, callback, onErr) {
+    parseGetGroupListResp: function(obj, callback, onErr) {
       var data = obj['2'];
       if (!data) {
         callback(chatConfig.groupConfig._groupArray);
@@ -2814,7 +2880,7 @@
         chatConfig.groupConfig._groupArray = [];
       }
     },
-    parseGetGroupMemberListResp: function (obj, callback, onErr) {
+    parseGetGroupMemberListResp: function(obj, callback, onErr) {
       var data = obj['2'];
       if (!data) {
         callback(chatConfig.groupConfig._groupMemberArray);
@@ -2844,7 +2910,7 @@
         chatConfig.groupConfig._groupMemberArray = [];
       }
     },
-    parseGetGroupDetailResp: function (obj) {
+    parseGetGroupDetailResp: function(obj) {
       var data = obj['2'];
       var resp = {};
       data = data['GetGroupDetailResp'];
@@ -2871,7 +2937,7 @@
       resp.checkAdminFlag = data['21'];
       return resp;
     },
-    parseSearchGroupsResp: function (obj) {
+    parseSearchGroupsResp: function(obj) {
       var data = obj['2'];
       var resp = new Array();
       if (!data) {
@@ -2893,7 +2959,7 @@
       }
       return resp;
     },
-    parseQueryGroupMemberCard: function (obj) {
+    parseQueryGroupMemberCard: function(obj) {
       var data = obj['2'];
       var resp = {};
       if (!data) {
@@ -2911,7 +2977,7 @@
       resp.sex = data['9'];
       return resp;
     },
-    parseEnterChatRoomResp: function (obj) {
+    parseEnterChatRoomResp: function(obj) {
       var data = obj['2'];
       data = data['EnterChatroomResp'];
       var resp = {};
@@ -2931,7 +2997,7 @@
       resp.enterTime = data['11'];
       return resp;
     },
-    parseFetchChatRoomInfoResp: function (obj) {
+    parseFetchChatRoomInfoResp: function(obj) {
       var data = obj['2'];
       data = data['FetchChatroomInfoResp'];
       var resp = {};
@@ -2946,7 +3012,7 @@
       resp.roomExt = data['6'];
       return resp;
     },
-    parseFetchChatRoomMembersResp: function (obj) {
+    parseFetchChatRoomMembersResp: function(obj) {
       var data = obj['2']['FetchChatroomMembersResp'];
       var resp = [];
       if (!data) {
@@ -2966,17 +3032,17 @@
       }
       return resp;
     },
-    parseSendChatRoomMsgResp: function (obj, request) {
+    parseSendChatRoomMsgResp: function(obj, request) {
       var resp = {};
       resp.msgId = request.msgId;
       resp.msgClientNo = request.msgClinetNo;
       resp.code = obj['6'];
       return resp;
     },
-    parseGetTopContactResp: function (obj) {
+    parseGetTopContactResp: function(obj) {
       return obj['2']['GetTopContactResp'];
     },
-    parseGetUserState_multy: function (obj) {
+    parseGetUserState_multy: function(obj) {
       var data;
       var resp = {};
       if (!!obj['2']['GetMultiUserStateResp']) {
@@ -3018,13 +3084,15 @@
       }
       return resp;
     },
-    parseGetUserState: function (obj) {
+    parseGetUserState: function(obj) {
       var data = obj['2'];
       var resp = {};
       if (!data || (data['GetMultiUserStateResp'] && !data['GetMultiUserStateResp'][0])) {
         return resp;
       }
-      data = data['GetUserStateResp'] ? data['GetUserStateResp'] : data['GetMultiUserStateResp'][0]['GetUserStateResp'];
+      data = data['GetUserStateResp']
+        ? data['GetUserStateResp']
+        : data['GetMultiUserStateResp'][0]['GetUserStateResp'];
       resp.useracc = data['1'];
       resp.network = data['2'];
       resp.state = data['3'];
@@ -3032,17 +3100,17 @@
       return resp;
     },
     //消息监听
-    _noticeListener: function (res) {},
-    _msgNotifyListener: function (res) {},
-    _charRoomListener: function (res) {},
-    _friendNoticeMsgListener: function (res) {},
+    _noticeListener: function(res) {},
+    _msgNotifyListener: function(res) {},
+    _charRoomListener: function(res) {},
+    _friendNoticeMsgListener: function(res) {},
     _pushListener: [],
-    _OnLineStateNotifyListener: function (res) {},
+    _OnLineStateNotifyListener: function(res) {},
     //功能实现
-    generateFullMsgId: function (msgId) {
+    generateFullMsgId: function(msgId) {
       return commonConfig.token + '|' + msgId;
     },
-    sendParamCheck: function (data, onError) {
+    sendParamCheck: function(data, onError) {
       var funName = 'sendParamCheck---';
       var allMsgId = chatMethods.generateFullMsgId(data.msgId);
       if (!data.receiver) {
@@ -3074,7 +3142,7 @@
       }
       return true;
     },
-    buildSyncMessage: function (data, onError) {
+    buildSyncMessage: function(data, onError) {
       var funName = 'buildSyncMessage---';
       if (isNaN(data.startVersion) || isNaN(data.endVersion) || (!!data.type && isNaN(data.type))) {
         var resp = {};
@@ -3105,20 +3173,20 @@
         {
           sendObj: sendJsonStr,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._syncMsg,
+            1: commonConfig.msgTypeNo._syncMsg
           },
           msgKey: 'SyncMsg',
           clientData: {
             endVersion: data.endVersion,
             type: data.type,
-            repeat: data.repeat,
-          },
+            repeat: data.repeat
+          }
         },
-        function () {},
+        function() {},
         onError
       );
     },
-    upload: function (data, callback, onError) {
+    upload: function(data, callback, onError) {
       var ytx_params = JSON.stringify({
         appId: commonConfig.appId,
         msgType: data.type,
@@ -3130,30 +3198,33 @@
         msgId: data.msgId,
         deviceNo: commonConfig.imei,
         rotate: data.rotate,
-        deviceType: commonConfig.deviceType,
+        deviceType: commonConfig.deviceType
       });
       var postUrl =
-        chatConfig.fileServerIp + '/2015-03-26/Corp/yuntongxun/Upload/Attach?sig=2B9C64616C98A93F1375BF0A2F6429E7&token=' + commonConfig.token + '&type=1';
+        chatConfig.fileServerIp +
+        '/2015-03-26/Corp/yuntongxun/Upload/Attach?sig=2B9C64616C98A93F1375BF0A2F6429E7&token=' +
+        commonConfig.token +
+        '&type=1';
       var sendData = {
         url: postUrl,
         header: {
           'Content-type': 'application/octet-stream;',
           Accept: 'application/xml;',
-          ytx_params: Base64.encode(ytx_params),
+          ytx_params: Base64.encode(ytx_params)
         },
         sendData: data.result,
         progress: data.progress,
         success: callback,
-        error: onError,
+        error: onError
       };
       if (data.progress) {
-        sendData.progress = function (res) {
+        sendData.progress = function(res) {
           data.progress(res.loaded, res.total, data.msgId);
         };
       }
       commonMethods.ajax(sendData);
     },
-    buildSendFile: function (data, callback, onError) {
+    buildSendFile: function(data, callback, onError) {
       var funName = 'buildSendFile---';
       if (!data.file || !data.receiver || !data.type) {
         var resp = {};
@@ -3164,20 +3235,20 @@
       }
       if (data.file.size > chatConfig.maxFileLen) {
         onError({
-          msg: '文件超出最大可上传大小',
+          msg: '文件超出最大可上传大小'
         });
         return;
       }
       var fileReader = new FileReader();
       fileReader.readAsArrayBuffer(data.file);
-      fileReader.onload = function () {
+      fileReader.onload = function() {
         //压缩文件
         if (data.type === 6) {
           var binaryString = pako.gzip(fileReader.result);
           var blob = new Blob([binaryString]);
           var reader = new FileReader();
           reader.readAsArrayBuffer(blob);
-          reader.onload = function () {
+          reader.onload = function() {
             data.result = reader.result;
             chatMethods.upload(data, callback, onError);
           };
@@ -3187,7 +3258,7 @@
         }
       };
     },
-    buildSendTxt: function (data, callback, onError) {
+    buildSendTxt: function(data, callback, onError) {
       var funName = 'buildSendTxt---';
       if (!chatMethods.sendParamCheck(data, onError)) return;
       var compress = false,
@@ -3239,20 +3310,20 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._sendMsg,
+            1: commonConfig.msgTypeNo._sendMsg
           },
           msgKey: 'SendMsg',
           clientData: {
             msgId: data.msgId,
             orignMsgId: data.id,
-            notUpdate: true,
-          },
+            notUpdate: true
+          }
         },
         callback,
         onError
       );
     },
-    buildSendChatroomMsg: function (data, callback, onError) {
+    buildSendChatroomMsg: function(data, callback, onError) {
       if (!chatMethods.sendParamCheck(data, onError)) return;
       data.content = Base64.encode(data.content);
       var sendJsonStr = {
@@ -3260,7 +3331,7 @@
         2: data.msgId + '',
         3: data.content,
         4: commonConfig.userName,
-        5: data.receiver,
+        5: data.receiver
       };
       if (!!data.domain || 0 === data.domain) {
         sendJsonStr['6'] = data.domain;
@@ -3269,20 +3340,20 @@
         {
           sendObj: sendJsonStr,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom.MSG_SEND_LiveChatRoom_MESSAGE,
+            1: commonConfig.msgTypeNo._chatRoom.MSG_SEND_LiveChatRoom_MESSAGE
           },
           msgKey: 'SendMsg',
           clientData: {
             msgId: data.msgId,
             orignMsgId: data.id,
-            notUpdate: true,
-          },
+            notUpdate: true
+          }
         },
         callback,
         onError
       );
     },
-    buildGetNickNameByAcc: function (data, callback, onError) {
+    buildGetNickNameByAcc: function(data, callback, onError) {
       var funName = 'buildGetNickNameByAcc---';
       if (!data.account) {
         var resp = {};
@@ -3294,19 +3365,19 @@
       RL_YTX.sendMsg(
         {
           sendObj: {
-            1: data.account,
+            1: data.account
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._getMyInfo,
+            1: commonConfig.msgTypeNo._getMyInfo
           },
           msgKey: 'QueryPersonInfo',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
     },
-    buildUploadPersonInfo: function (data, callback, onError) {
+    buildUploadPersonInfo: function(data, callback, onError) {
       var funName = 'buildUploadPersonInfo---';
       if (!data.nickName) {
         var resp = {};
@@ -3320,7 +3391,9 @@
         if (regx.exec(data.birth) == null) {
           var resp = {};
           resp.code = commonConfig.errCode._PARAM_TYPE_ERR;
-          resp.msg = funName + 'upload personInfo,birth is error, only accept format yyyy-MM-dd, eg:1990-01-01';
+          resp.msg =
+            funName +
+            'upload personInfo,birth is error, only accept format yyyy-MM-dd, eg:1990-01-01';
           onError(resp);
           return;
         }
@@ -3343,7 +3416,7 @@
         return;
       }
       var sendObj = {
-        1: data.nickName,
+        1: data.nickName
       };
       if (data.sex) sendObj[2] = data.sex;
       if (data.birth) sendObj[3] = data.birth;
@@ -3352,16 +3425,16 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._setMyInfo,
+            1: commonConfig.msgTypeNo._setMyInfo
           },
           msgKey: 'PersonInfo',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
     },
-    buildGetHistoryMessage: function (data, callback, onError) {
+    buildGetHistoryMessage: function(data, callback, onError) {
       var funName = 'buildGetHistoryMessage---';
       if (!data.talker) {
         var resp = {};
@@ -3375,7 +3448,7 @@
         userName: commonConfig.userName,
         pgeSize: data.pageSize,
         talker: data.talker,
-        order: data.order,
+        order: data.order
       };
       if (data.time) {
         sendObj.time = data.time;
@@ -3390,13 +3463,13 @@
           MsgLiteObj: {},
           msgKey: 'ClientHistroyMsg',
           clientData: {},
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildCreateGroup: function (data, callback, onError) {
+    buildCreateGroup: function(data, callback, onError) {
       var funName = 'buildCreateGroup---';
       console.log(funName, data);
       data.scope = data.scope || 1;
@@ -3421,7 +3494,7 @@
         6: data.scope,
         8: parseInt(data.permission),
         9: data.mode,
-        11: data.target,
+        11: data.target
       };
       if (data.province) sendObj[4] = data.province;
       if (data.city) sendObj[5] = data.city;
@@ -3433,16 +3506,16 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._createGroup,
+            1: commonConfig.msgTypeNo._createGroup
           },
           msgKey: 'CreateGroup',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
     },
-    buildDismissGroup: function (data, callback, onError) {
+    buildDismissGroup: function(data, callback, onError) {
       var funName = 'buildDismissGroup---';
       if (!data.groupId) {
         var resp = {};
@@ -3453,19 +3526,19 @@
       RL_YTX.sendMsg(
         {
           sendObj: {
-            2: data.groupId,
+            2: data.groupId
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._dismissGroup,
+            1: commonConfig.msgTypeNo._dismissGroup
           },
           msgKey: 'DismissGroup',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
     },
-    buildInviteJoinGroup: function (data, callback, onError) {
+    buildInviteJoinGroup: function(data, callback, onError) {
       var funName = 'buildInviteJoinGroup---';
       if (!data.groupId || !data.members) {
         var resp = {};
@@ -3495,7 +3568,7 @@
       var sendObj = {
         2: data.groupId,
         4: data.members,
-        5: confirm,
+        5: confirm
       };
       if (data.declared) {
         sendObj[3] = data.declared;
@@ -3504,16 +3577,16 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._inviteJoinGroup,
+            1: commonConfig.msgTypeNo._inviteJoinGroup
           },
           msgKey: 'InviteJoinGroup',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
     },
-    buildConfirmInviteJoinGroup: function (data, callback, onError) {
+    buildConfirmInviteJoinGroup: function(data, callback, onError) {
       var funName = 'buildConfirmInviteJoinGroup---';
       console.log(funName, data);
       if (!data.groupId || !data.confirm) {
@@ -3534,22 +3607,22 @@
       var sendObj = {
         1: data.groupId,
         2: data.inviter,
-        3: data.confirm,
+        3: data.confirm
       };
       RL_YTX.sendMsg(
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._confirmInviteJoin,
+            1: commonConfig.msgTypeNo._confirmInviteJoin
           },
           msgKey: 'ConfirmInviteJoinGroup',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
     },
-    buildQuitGroup: function (data, callback, onError) {
+    buildQuitGroup: function(data, callback, onError) {
       var funName = 'buildQuitGroup---';
       if (!data.groupId) {
         var resp = {};
@@ -3561,19 +3634,19 @@
       RL_YTX.sendMsg(
         {
           sendObj: {
-            2: data.groupId,
+            2: data.groupId
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._quitGroup,
+            1: commonConfig.msgTypeNo._quitGroup
           },
           msgKey: 'QuitGroup',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
     },
-    buildGetGroupList: function (data, callback, onError) {
+    buildGetGroupList: function(data, callback, onError) {
       var funName = 'buildGetGroupList---';
       if (!data.pageSize) {
         var resp = {};
@@ -3594,19 +3667,19 @@
           sendObj: {
             2: data.groupId,
             3: data.pageSize,
-            4: data.target,
+            4: data.target
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._getOwnGroups,
+            1: commonConfig.msgTypeNo._getOwnGroups
           },
           msgKey: 'GetOwnerGroups',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
     },
-    buildGetGroupMemberList: function (data, callback, onError) {
+    buildGetGroupMemberList: function(data, callback, onError) {
       var funName = 'buildGetGroupMemberList---';
       data.pageSize = data.pageSize || 50;
       if (!data.pageSize || !data.groupId) {
@@ -3628,18 +3701,18 @@
           sendObj: {
             1: data.groupId,
             3: data.memberId,
-            4: data.pageSize,
+            4: data.pageSize
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._queryGroupMembers,
+            1: commonConfig.msgTypeNo._queryGroupMembers
           },
-          msgKey: 'GetGroupMembers',
+          msgKey: 'GetGroupMembers'
         },
         callback,
         onError
       );
     },
-    buildJoinGroup: function (data, callback, onError) {
+    buildJoinGroup: function(data, callback, onError) {
       var funName = 'buildJoinGroup---';
       if (!data.groupId) {
         var resp = {};
@@ -3650,22 +3723,22 @@
       }
       var sendObj = {
         2: data.groupId,
-        3: data.declared,
+        3: data.declared
       };
       if (data.ext) sendObj[4] = data.ext;
       RL_YTX.sendMsg(
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._joinGroup,
+            1: commonConfig.msgTypeNo._joinGroup
           },
-          msgKey: 'JoinGroup',
+          msgKey: 'JoinGroup'
         },
         callback,
         onError
       );
     },
-    buildConfirmJoinGroup: function (data, callback, onError) {
+    buildConfirmJoinGroup: function(data, callback, onError) {
       var funName = 'buildConfirmJoinGroup---';
       if (!data.groupId || !data.memberId || !data.confirm) {
         var resp = {};
@@ -3677,7 +3750,7 @@
       var sendObj = {
         2: data.groupId,
         3: data.memberId,
-        4: data.confirm,
+        4: data.confirm
       };
       if (data.memberArr) sendObj[5] = data.memberArr;
       if (data.ext) sendObj[6] = data.ext;
@@ -3685,15 +3758,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._confirmJoinGroup,
+            1: commonConfig.msgTypeNo._confirmJoinGroup
           },
-          msgKey: 'ConfirmJoinGroup',
+          msgKey: 'ConfirmJoinGroup'
         },
         callback,
         onError
       );
     },
-    buildGetGroupDetail: function (data, callback, onError) {
+    buildGetGroupDetail: function(data, callback, onError) {
       var funName = 'buildGetGroupDetail---';
       if (!data.groupId) {
         var resp = {};
@@ -3705,18 +3778,18 @@
       RL_YTX.sendMsg(
         {
           sendObj: {
-            2: data.groupId,
+            2: data.groupId
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._getGroupDetail,
+            1: commonConfig.msgTypeNo._getGroupDetail
           },
-          msgKey: 'GetGroupDetail',
+          msgKey: 'GetGroupDetail'
         },
         callback,
         onError
       );
     },
-    buildSearchGroups: function (data, callback, onError) {
+    buildSearchGroups: function(data, callback, onError) {
       var funName = 'buildSearchGroups---';
       if (!data.searchType || !data.keyWords) {
         var resp = {};
@@ -3729,18 +3802,18 @@
         {
           sendObj: {
             2: data.searchType,
-            3: data.keyWords,
+            3: data.keyWords
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._searchGroups,
+            1: commonConfig.msgTypeNo._searchGroups
           },
-          msgKey: 'SearchGroups',
+          msgKey: 'SearchGroups'
         },
         callback,
         onError
       );
     },
-    buildDeleteGroupMember: function (data, callback, onError) {
+    buildDeleteGroupMember: function(data, callback, onError) {
       var funName = 'buildDeleteGroupMember---';
       if (!data.groupId || !data.memberId) {
         var resp = {};
@@ -3753,18 +3826,18 @@
         {
           sendObj: {
             2: data.groupId,
-            3: data.memberId,
+            3: data.memberId
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._deleteGroupMember,
+            1: commonConfig.msgTypeNo._deleteGroupMember
           },
-          msgKey: 'DeleteGroupMember',
+          msgKey: 'DeleteGroupMember'
         },
         callback,
         onError
       );
     },
-    buildForbidMemberSpeak: function (data, callback, onError) {
+    buildForbidMemberSpeak: function(data, callback, onError) {
       var funName = 'buildForbidMemberSpeak---';
       if (!data.groupId) {
         var resp = {};
@@ -3791,7 +3864,7 @@
         1: commonConfig.userName,
         2: data.groupId,
         4: data.forbidState,
-        5: data.allForbid || 0,
+        5: data.allForbid || 0
       };
       if (data.memberId) sendObj[3] = data.memberId;
       if (data.member) sendObj[6] = data.member.join();
@@ -3799,15 +3872,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._forbidMemberSpeak,
+            1: commonConfig.msgTypeNo._forbidMemberSpeak
           },
-          msgKey: 'ForbidMemberSpeak',
+          msgKey: 'ForbidMemberSpeak'
         },
         callback,
         onError
       );
     },
-    buildSetGroupMessageRule: function (data, callback, onError) {
+    buildSetGroupMessageRule: function(data, callback, onError) {
       var funName = 'buildSetGroupMessageRule---';
       if (!data.groupId) {
         var resp = {};
@@ -3817,7 +3890,7 @@
         return;
       }
       var sendObj = {
-        1: data.groupId,
+        1: data.groupId
       };
       if (data.isNotice) sendObj[2] = data.isNotice;
       if (data.isApplePush) sendObj[3] = data.isApplePush;
@@ -3825,15 +3898,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._setGroupMessageRule,
+            1: commonConfig.msgTypeNo._setGroupMessageRule
           },
-          msgKey: 'SetGroupMessagRule',
+          msgKey: 'SetGroupMessagRule'
         },
         callback,
         onError
       );
     },
-    buildQueryGroupMemberCard: function (data, callback, onError) {
+    buildQueryGroupMemberCard: function(data, callback, onError) {
       var funName = 'buildQueryGroupMemberCard---';
       if (!data.memberId || !data.belong) {
         var resp = {};
@@ -3846,18 +3919,18 @@
         {
           sendObj: {
             1: data.memberId,
-            2: data.belong,
+            2: data.belong
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._queryGroupMemberCard,
+            1: commonConfig.msgTypeNo._queryGroupMemberCard
           },
-          msgKey: 'QueryGroupMemberCard',
+          msgKey: 'QueryGroupMemberCard'
         },
         callback,
         onError
       );
     },
-    buildModifyMemberCard: function (data, callback, onError) {
+    buildModifyMemberCard: function(data, callback, onError) {
       var funName = 'buildModifyMemberCard---';
       if (!data.memberId || !data.belong) {
         var resp = {};
@@ -3868,7 +3941,7 @@
       }
       var sendObj = {
         1: data.belong,
-        2: data.memberId,
+        2: data.memberId
       };
       if (data.display) sendObj[3] = data.display;
       if (data.phone) sendObj[4] = data.phone;
@@ -3878,15 +3951,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._modifyMemberCard,
+            1: commonConfig.msgTypeNo._modifyMemberCard
           },
-          msgKey: 'ModifyMemberCard',
+          msgKey: 'ModifyMemberCard'
         },
         callback,
         onError
       );
     },
-    buildModifyGroup: function (data, callback, onError) {
+    buildModifyGroup: function(data, callback, onError) {
       var funName = 'buildModifyGroup---';
       if (!data.groupId || !data.groupName) {
         var resp = {};
@@ -3898,7 +3971,7 @@
       var sendObj = {
         1: commonConfig.userName,
         2: data.groupId,
-        3: data.groupName,
+        3: data.groupName
       };
       if (data.type) sendObj[4] = data.type;
       if (data.province) sendObj[5] = data.province;
@@ -3916,15 +3989,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._modifyGroup,
+            1: commonConfig.msgTypeNo._modifyGroup
           },
-          msgKey: 'ModifyGroup',
+          msgKey: 'ModifyGroup'
         },
         callback,
         onError
       );
     },
-    buildGetUserState: function (data, callback, onError) {
+    buildGetUserState: function(data, callback, onError) {
       var funName = 'buildGetUserState---';
       var curTime = new Date().getTime();
       if (!chatConfig.getStateTime) {
@@ -3953,18 +4026,18 @@
       RL_YTX.sendMsg(
         {
           sendObj: {
-            1: data.userAcc,
+            1: data.userAcc
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._getUserState,
+            1: commonConfig.msgTypeNo._getUserState
           },
-          msgKey: 'GetUserState',
+          msgKey: 'GetUserState'
         },
         callback,
         onError
       );
     },
-    buildSetGroupMemberRole: function (data, callback, onError) {
+    buildSetGroupMemberRole: function(data, callback, onError) {
       var funName = 'buildSetGroupMemberRole---';
       if (!data.groupId || (!data.memberId && !data.member) || !data.role) {
         var resp = {};
@@ -3989,7 +4062,7 @@
       }
       var sendObj = {
         1: data.groupId,
-        3: data.role,
+        3: data.role
       };
       if (data.memberId) sendObj[2] = data.memberId;
       if (data.member) sendObj[4] = data.member.join();
@@ -3997,15 +4070,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._setGroupMemberRole,
+            1: commonConfig.msgTypeNo._setGroupMemberRole
           },
-          msgKey: 'SetGroupMemberRole',
+          msgKey: 'SetGroupMemberRole'
         },
         callback,
         onError
       );
     },
-    buildMsgOperation: function (data, callback, onError) {
+    buildMsgOperation: function(data, callback, onError) {
       var funName = 'buildMsgOperation---';
       if (!data.version && !data.msgId) {
         var resp = {};
@@ -4022,15 +4095,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._msgOperation,
+            1: commonConfig.msgTypeNo._msgOperation
           },
-          msgKey: 'MsgOperation',
+          msgKey: 'MsgOperation'
         },
         callback,
         onError
       );
     },
-    buildDeleteReadMsg: function (data, callback, onError) {
+    buildDeleteReadMsg: function(data, callback, onError) {
       var funName = 'buildDeleteReadMsg---';
       if (!data.msgId) {
         var resp = {};
@@ -4048,22 +4121,22 @@
         {
           sendObj: {
             1: version,
-            2: commonConfig.userName,
+            2: commonConfig.userName
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._deleteReadMsg,
+            1: commonConfig.msgTypeNo._deleteReadMsg
           },
-          msgKey: 'MsgOperation',
+          msgKey: 'MsgOperation'
         },
         callback,
         onError
       );
     },
-    buildGetRecentContactList: function (data, callback, onError) {
+    buildGetRecentContactList: function(data, callback, onError) {
       var funName = 'buildGetRecentContactList---';
       var sendObj = {
         1: commonConfig.appId,
-        2: commonConfig.userName,
+        2: commonConfig.userName
       };
       if (data.time) sendObj[3] = data.time;
       if (data.limit) sendObj[4] = data.limit;
@@ -4071,16 +4144,16 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.httpType._recentContact,
+            1: commonConfig.httpType._recentContact
           },
           msgKey: 'RecentlyContactsList',
-          MsgLiteKey: 'Http',
+          MsgLiteKey: 'Http'
         },
         callback,
         onError
       );
     },
-    buildEnterChatroom: function (data, callback, onError) {
+    buildEnterChatroom: function(data, callback, onError) {
       var funName = 'buildEnterChatroom---';
       if (!data.roomId) {
         var resp = {};
@@ -4094,7 +4167,7 @@
       chatConfig.chatRoomInfoExt = data.infoExt;
       chatConfig.enterChatRoomData = data;
       var sendObj = {
-        1: data.roomId,
+        1: data.roomId
       };
       if (data.nickName) sendObj[2] = data.nickName;
       if (data.infoExt) sendObj[3] = data.infoExt;
@@ -4105,14 +4178,14 @@
           sendObj: sendObj,
           msgKey: 'EnterChatroom',
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom._enterChatRoom,
-          },
+            1: commonConfig.msgTypeNo._chatRoom._enterChatRoom
+          }
         },
         callback,
         onError
       );
     },
-    buildExitChatroom: function (data, callback, onError) {
+    buildExitChatroom: function(data, callback, onError) {
       var funName = 'buildExitChatroom---';
       if (!data.roomId) {
         var resp = {};
@@ -4122,7 +4195,7 @@
         return;
       }
       var sendObj = {
-        1: data.roomId,
+        1: data.roomId
       };
       if (data.needNotify) sendObj[2] = data.needNotify;
       if (data.notifyExt) sendObj[3] = data.notifyExt;
@@ -4131,14 +4204,14 @@
           sendObj: sendObj,
           msgKey: 'ExitChatroom',
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom._exitChatRoom,
-          },
+            1: commonConfig.msgTypeNo._chatRoom._exitChatRoom
+          }
         },
         callback,
         onError
       );
     },
-    buildFetchChatroomInfo: function (data, callback, onError) {
+    buildFetchChatroomInfo: function(data, callback, onError) {
       var funName = 'buildFetchChatroomInfo---';
       if (!data.roomId) {
         var resp = {};
@@ -4150,18 +4223,18 @@
       RL_YTX.sendMsg(
         {
           sendObj: {
-            1: data.roomId,
+            1: data.roomId
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom._fetchChatroomInfo,
+            1: commonConfig.msgTypeNo._chatRoom._fetchChatroomInfo
           },
-          msgKey: 'FetchChatroomInfo',
+          msgKey: 'FetchChatroomInfo'
         },
         callback,
         onError
       );
     },
-    buildFetchChatroomMembers: function (data, callback, onError) {
+    buildFetchChatroomMembers: function(data, callback, onError) {
       var funName = 'buildFetchChatroomMembers---';
       if (!data.roomId) {
         var resp = {};
@@ -4176,18 +4249,18 @@
             1: data.roomId,
             2: data.userId,
             3: data.type || 1,
-            4: data.pageSize,
+            4: data.pageSize
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom._fetchChatroomMembers,
+            1: commonConfig.msgTypeNo._chatRoom._fetchChatroomMembers
           },
-          msgKey: 'FetchChatroomMembers',
+          msgKey: 'FetchChatroomMembers'
         },
         callback,
         onError
       );
     },
-    buildUpdateChatroomInfo: function (data, callback, onError) {
+    buildUpdateChatroomInfo: function(data, callback, onError) {
       var funName = 'buildUpdateChatroomInfo---';
       if (!data.roomId) {
         var resp = {};
@@ -4197,7 +4270,7 @@
         return;
       }
       var sendObj = {
-        1: data.roomId,
+        1: data.roomId
       };
       if (data.roomName) sendObj[2] = data.roomName;
       if (data.announcement) sendObj[3] = data.announcement;
@@ -4209,15 +4282,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom._updateChatroomInfo,
+            1: commonConfig.msgTypeNo._chatRoom._updateChatroomInfo
           },
-          msgKey: 'UpdateChatroomInfo',
+          msgKey: 'UpdateChatroomInfo'
         },
         callback,
         onError
       );
     },
-    buildUpdateChatRoomMemberRole: function (data, callback, onError) {
+    buildUpdateChatRoomMemberRole: function(data, callback, onError) {
       var funName = 'buildUpdateChatRoomMemberRole---';
       if (!data.roomId || !data.userId || !data.type) {
         var resp = {};
@@ -4229,7 +4302,7 @@
       var sendObj = {
         1: data.roomId,
         2: data.userId,
-        3: data.type,
+        3: data.type
       };
       if (data.needNotify) sendObj[4] = data.needNotify;
       if (data.notifyExt) sendObj[5] = data.notifyExt;
@@ -4237,15 +4310,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom._updateChatRoomMemberRole,
+            1: commonConfig.msgTypeNo._chatRoom._updateChatRoomMemberRole
           },
-          msgKey: 'UpdateChatRoomMemberRole',
+          msgKey: 'UpdateChatRoomMemberRole'
         },
         callback,
         onError
       );
     },
-    buildUpdateMemberOption: function (data, callback, onError) {
+    buildUpdateMemberOption: function(data, callback, onError) {
       var funName = 'buildUpdateMemberOption---';
       if (!data.roomId || !data.userId) {
         var resp = {};
@@ -4256,7 +4329,7 @@
       }
       var sendObj = {
         1: data.roomId,
-        2: data.userId,
+        2: data.userId
       };
       if (data.state) sendObj[3] = data.state;
       if (data.muteDuration) sendObj[4] = data.muteDuration;
@@ -4266,15 +4339,15 @@
         {
           sendObj: sendObj,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom._updateMemberOption,
+            1: commonConfig.msgTypeNo._chatRoom._updateMemberOption
           },
-          msgKey: 'UpdateMemberOption',
+          msgKey: 'UpdateMemberOption'
         },
         callback,
         onError
       );
     },
-    buildUpdateMyChatroomMemberInfo: function (data, callback, onError) {
+    buildUpdateMyChatroomMemberInfo: function(data, callback, onError) {
       var funName = 'buildUpdateMyChatroomMemberInfo---';
       if (!data.roomId) {
         var resp = {};
@@ -4288,18 +4361,18 @@
           sendObj: {
             1: data.roomId,
             2: data.nickName,
-            3: data.infoExt,
+            3: data.infoExt
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom._updateMyChatroomMemberInfo,
+            1: commonConfig.msgTypeNo._chatRoom._updateMyChatroomMemberInfo
           },
-          msgKey: 'UpdateMyChatroomMemberInfo',
+          msgKey: 'UpdateMyChatroomMemberInfo'
         },
         callback,
         onError
       );
     },
-    buildKickMember: function (data, callback, onError) {
+    buildKickMember: function(data, callback, onError) {
       var funName = 'buildKickMember---';
       if (!data.roomId || !data.userId) {
         var resp = {};
@@ -4314,18 +4387,18 @@
             1: data.roomId,
             2: data.userId,
             3: data.notifyExt,
-            4: data.needNotify,
+            4: data.needNotify
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._chatRoom._kickMember,
+            1: commonConfig.msgTypeNo._chatRoom._kickMember
           },
-          msgKey: 'KickMember',
+          msgKey: 'KickMember'
         },
         callback,
         onError
       );
     },
-    buildSetTopContact: function (data, callback, onError) {
+    buildSetTopContact: function(data, callback, onError) {
       var funName = 'buildSetTopContact---';
       if (!data.contact || !data.type) {
         var resp = {};
@@ -4338,35 +4411,35 @@
         {
           sendObj: {
             1: data.contact,
-            2: data.type,
+            2: data.type
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._setTopContact,
+            1: commonConfig.msgTypeNo._setTopContact
           },
-          msgKey: 'SetTopContact',
+          msgKey: 'SetTopContact'
         },
         callback,
         onError
       );
     },
-    buildGetTopContact: function (callback, onError) {
+    buildGetTopContact: function(callback, onError) {
       var funName = 'buildGetTopContact---';
       RL_YTX.sendMsg(
         {
           sendObj: null,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._getTopContact,
+            1: commonConfig.msgTypeNo._getTopContact
           },
-          msgKey: '',
+          msgKey: ''
         },
         callback,
         onError
       );
     },
-    buildGetFriend: function (data, callback, onError) {
+    buildGetFriend: function(data, callback, onError) {
       var funName = 'buildGetFriend---';
       var sendObj = {
-        useracc: commonConfig.userAcc,
+        useracc: commonConfig.userAcc
       };
       sendObj.timestamp = chatConfig.fTimestamp ? commonConfig.reqTimestamp : '';
       sendObj.size = data.size || '';
@@ -4376,13 +4449,13 @@
           sendObj: sendObj,
           MsgLiteObj: {},
           msgKey: 'getFriends',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildAddFriend: function (data, callback, onError) {
+    buildAddFriend: function(data, callback, onError) {
       var funName = 'buildAddFriend---';
       if (!data.friendUseracc) {
         var resp = {};
@@ -4397,17 +4470,17 @@
             useracc: commonConfig.userAcc,
             friendUseracc: commonConfig.appId + '#' + data.friendUseracc,
             message: data.message,
-            source: data.source,
+            source: data.source
           },
           MsgLiteObj: {},
           msgKey: 'addFriend',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildSetFriendRemark: function (data, callback, onError) {
+    buildSetFriendRemark: function(data, callback, onError) {
       var funName = 'buildSetFriendRemark---';
       if (!data.friendUseracc) {
         var resp = {};
@@ -4421,17 +4494,17 @@
           sendObj: {
             useracc: commonConfig.userAcc,
             friendUseracc: commonConfig.appId + '#' + data.friendUseracc,
-            remarkName: data.remarkName,
+            remarkName: data.remarkName
           },
           MsgLiteObj: {},
           msgKey: 'setFriendRemark',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildDelFriend: function (data, callback, onError) {
+    buildDelFriend: function(data, callback, onError) {
       var funName = 'buildDelFriend---';
       if (!data.friendUseracc) {
         var resp = {};
@@ -4445,34 +4518,34 @@
           sendObj: {
             useracc: commonConfig.userAcc,
             friendUseracc: commonConfig.appId + '#' + data.friendUseracc,
-            allDel: data.allDel,
+            allDel: data.allDel
           },
           MsgLiteObj: {},
           msgKey: 'delFriend',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildGetRequestHistoryList: function (data, callback, onError) {
+    buildGetRequestHistoryList: function(data, callback, onError) {
       var funName = 'buildGetRequestHistoryList---';
       RL_YTX.sendMsg(
         {
           sendObj: {
             useracc: commonConfig.userAcc,
             timestamp: data.timestamp || '',
-            size: data.size || '',
+            size: data.size || ''
           },
           MsgLiteObj: {},
           msgKey: 'friendMessage',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildGetOtherInfo: function (data, callback, onError) {
+    buildGetOtherInfo: function(data, callback, onError) {
       var funName = 'buildGetOtherInfo---';
       if (!data.searchContent) {
         var resp = {};
@@ -4485,33 +4558,33 @@
         {
           sendObj: {
             useracc: commonConfig.userAcc,
-            friendUseracc: commonConfig.appId + '#' + data.searchContent,
+            friendUseracc: commonConfig.appId + '#' + data.searchContent
           },
           MsgLiteObj: {},
           msgKey: 'getPersonInfo',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildSetUserVerify: function (data, callback, onError) {
+    buildSetUserVerify: function(data, callback, onError) {
       var funName = 'buildSetUserVerify---';
       RL_YTX.sendMsg(
         {
           sendObj: {
             useracc: commonConfig.userAcc,
-            addVerify: data.needVerify,
+            addVerify: data.needVerify
           },
           MsgLiteObj: {},
           msgKey: 'setUserVerify',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildAgreeFriendRequest: function (data, callback, onError) {
+    buildAgreeFriendRequest: function(data, callback, onError) {
       var funName = 'buildAgreeFriendRequest---';
       if (!data.friendUseracc) {
         var resp = {};
@@ -4524,17 +4597,17 @@
         {
           sendObj: {
             useracc: commonConfig.userAcc,
-            friendUseracc: commonConfig.appId + '#' + data.friendUseracc,
+            friendUseracc: commonConfig.appId + '#' + data.friendUseracc
           },
           MsgLiteObj: {},
           msgKey: 'friendAgree',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildRefuseFriendRequest: function (data, callback, onError) {
+    buildRefuseFriendRequest: function(data, callback, onError) {
       var funName = 'buildRefuseFriendRequest---';
       if (!data.friendUseracc) {
         var resp = {};
@@ -4548,17 +4621,17 @@
           sendObj: {
             useracc: commonConfig.userAcc,
             friendUseracc: commonConfig.appId + '#' + data.friendUseracc,
-            message: data.message,
+            message: data.message
           },
           MsgLiteObj: {},
           msgKey: 'friendRefuse',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildGetFriendInfo: function (data, callback, onError) {
+    buildGetFriendInfo: function(data, callback, onError) {
       var funName = 'buildGetFriendInfo---';
       if (!data.friendUseracc) {
         var resp = {};
@@ -4571,17 +4644,17 @@
         {
           sendObj: {
             useracc: commonConfig.userAcc,
-            friendUseracc: commonConfig.appId + '#' + data.friendUseracc,
+            friendUseracc: commonConfig.appId + '#' + data.friendUseracc
           },
           MsgLiteObj: {},
           msgKey: 'getFriendInfo',
-          MsgLiteKey: 'request',
+          MsgLiteKey: 'request'
         },
         callback,
         onError
       );
     },
-    buildUploadAvatar: function (data, callback, onError, progress) {
+    buildUploadAvatar: function(data, callback, onError, progress) {
       var funName = 'buildUploadAvatar---';
       if (!data.file) {
         var resp = {};
@@ -4596,13 +4669,13 @@
           type: 6,
           id: commonConfig.userName,
           file: data.file,
-          progress: progress,
+          progress: progress
         },
         callback,
         onError
       );
     },
-    buildGetFileBlob: function (data, callback, onError, progress) {
+    buildGetFileBlob: function(data, callback, onError, progress) {
       if (!data.url.startWith('http')) data.url = chatConfig.lvsServer + data.url;
       commonMethods.ajax({
         type: 'GET',
@@ -4611,24 +4684,24 @@
         responseType: 'blob',
         progress: progress,
         error: onError,
-        onload: function (blob) {
+        onload: function(blob) {
           console.log(blob);
           var fr = new FileReader();
           if (data.type === 'zip') {
             fr.readAsBinaryString(blob);
-            fr.onload = function () {
+            fr.onload = function() {
               var re = fr.result;
               try {
                 var binary = pako.inflate(re, {
                   gzip: true,
-                  windowBits: 32,
+                  windowBits: 32
                 }); //解压缩
                 // console.log(binary);
                 var fileType = data.url.substr(data.url.lastIndexOf('.') + 1);
                 var blobType = chatConfig.blobType[fileType] || 'application/octet-binary';
                 console.log('blobType---', fileType, blobType);
                 var b = new Blob([binary], {
-                  type: blobType,
+                  type: blobType
                 });
                 var url = window.URL.createObjectURL(b);
                 callback({ url: url });
@@ -4644,11 +4717,11 @@
             };
           } else if (data.type === 'amr') {
             fr.readAsArrayBuffer(blob);
-            fr.onload = function () {
+            fr.onload = function() {
               var data = new Uint8Array(fr.result);
               var buffer = AMR.toWAV(data);
               var b = new Blob([buffer], {
-                type: 'audio/x-wav',
+                type: 'audio/x-wav'
               });
               var url = window.URL.createObjectURL(b);
               callback({ url: url });
@@ -4658,7 +4731,7 @@
             callback({ url: url });
           }
 
-          fr.onerror = function () {
+          fr.onerror = function() {
             switch (evt.target.error.code) {
               case evt.target.error.NOT_FOUND_ERR:
                 console.log('File Not Found!');
@@ -4676,10 +4749,10 @@
             resp.msg = 'method FileReader() occur error！';
             onError(resp);
           };
-        },
+        }
       });
     },
-    noticeAppFn: function (obj) {
+    noticeAppFn: function(obj) {
       obj.msgId = obj.msgDateCreated + '|' + obj.version;
       if ((obj.msgType === 25 || obj.msgType === 24) && obj.msgDomain) {
         try {
@@ -4726,7 +4799,7 @@
         }
       }
     },
-    buildUploadUserDeviceDetail: function (data, callback, onError) {
+    buildUploadUserDeviceDetail: function(data, callback, onError) {
       var funName = 'buildUploadUserDeviceDetail---';
       if (!data.ip || !data.appVersion) {
         var resp = {};
@@ -4735,7 +4808,9 @@
         onError(resp);
         return;
       }
-      var postUrl = chatConfig.fileServerIp + '/2015-03-26/Corp/yuntongxun/IM/UserDeviceDetail?sig=2B9C64616C98A93F1375BF0A2F6429E7';
+      var postUrl =
+        chatConfig.fileServerIp +
+        '/2015-03-26/Corp/yuntongxun/IM/UserDeviceDetail?sig=2B9C64616C98A93F1375BF0A2F6429E7';
       var userAgent = navigator.userAgent.split(' ');
       userAgent = userAgent[userAgent.length - 2] + ' ' + userAgent[userAgent.length - 1];
       var send = {
@@ -4747,23 +4822,23 @@
         deviceModel: navigator.vendor,
         deviceSystemVersion: userAgent,
         softVersion: RL_YTX.version,
-        appVersion: data.appVersion,
+        appVersion: data.appVersion
       };
       var sendData = {
         url: postUrl,
         header: {
           'Content-type': 'pplication/json;charset=utf-8;',
-          Accept: 'application/json;',
+          Accept: 'application/json;'
         },
         sendData: JSON.stringify(send),
         success: callback,
-        error: onError,
+        error: onError
       };
       commonMethods.ajax(sendData);
-    },
+    }
   };
   RL_Chat.prototype = {
-    unLoad: function () {
+    unLoad: function() {
       chatConfig.chatRoomId = null;
       chatConfig.chatRommNickName = null;
       chatConfig.chatRommInfoExt = null;
@@ -4774,13 +4849,13 @@
       chatConfig.syncMsgPorcessing = false;
       chatConfig.receiveMsgBuf = {};
     },
-    setConfig: function (val) {
+    setConfig: function(val) {
       chatConfig = commonMethods.assign(chatConfig, val);
       this.maxFileLen = chatConfig.maxFileLen;
       if (val.maxSyncNum && typeof val.maxSyncNum === 'number') this.maxSyncNum = val.maxSyncNum;
       console.log('RL_Chat set config succ');
     },
-    uploadUserDeviceDetail: function (data, callback, onError) {
+    uploadUserDeviceDetail: function(data, callback, onError) {
       /*
        * data = {
        *   appVersion,
@@ -4791,7 +4866,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildUploadUserDeviceDetail(data, callback, onError);
     },
-    sendMsg: function (data, callback, onError, progress) {
+    sendMsg: function(data, callback, onError, progress) {
       /*
        * data = {
        *   id: '',
@@ -4834,7 +4909,7 @@
           console.log('commonConfig.ClientNo', commonConfig.ClientNo);
           data.progress =
             progress ||
-            function (res, percent) {
+            function(res, percent) {
               console.log('上传进度', percent);
             };
           data.msgId = msgToken;
@@ -4848,7 +4923,7 @@
         return msgToken;
       }
     },
-    sendChatroomMsg: function (data, callback, onError) {
+    sendChatroomMsg: function(data, callback, onError) {
       /*
        * data = {
        *   type,
@@ -4864,7 +4939,7 @@
       msgToken = chatMethods.generateFullMsgId(msgToken);
       return msgToken;
     },
-    syncMsg: function (data, onError) {
+    syncMsg: function(data, onError) {
       /*
        * data = {
        *   startVersion,
@@ -4875,7 +4950,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildSyncMessage(data, onError);
     },
-    getNickNameByAcc: function (data, callBack, onError) {
+    getNickNameByAcc: function(data, callBack, onError) {
       /*
        * data = {
        *   account
@@ -4884,7 +4959,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetNickNameByAcc(data, callBack, onError);
     },
-    uploadPersonInfo: function (data, callback, onError) {
+    uploadPersonInfo: function(data, callback, onError) {
       /*
        * data = {
        *   nickName,
@@ -4896,7 +4971,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildUploadPersonInfo(data, callback, onError);
     },
-    getHistoryMessage: function (data, callback, onError) {
+    getHistoryMessage: function(data, callback, onError) {
       /*
        * data = {
        *   talker,
@@ -4907,7 +4982,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetHistoryMessage(data, callback, onError);
     },
-    createGroup: function (data, callback, onError) {
+    createGroup: function(data, callback, onError) {
       /*
        * data = {
        *   groupName,
@@ -4925,7 +5000,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildCreateGroup(data, callback, onError);
     },
-    dismissGroup: function (data, callback, onError) {
+    dismissGroup: function(data, callback, onError) {
       /*
        * data = {
        *   groupId
@@ -4934,7 +5009,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildDismissGroup(data, callback, onError);
     },
-    inviteJoinGroup: function (data, callback, onError) {
+    inviteJoinGroup: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -4946,7 +5021,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildInviteJoinGroup(data, callback, onError);
     },
-    confirmInviteJoinGroup: function (data, callback, onError) {
+    confirmInviteJoinGroup: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -4957,7 +5032,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildConfirmInviteJoinGroup(data, callback, onError);
     },
-    quitGroup: function (data, callback, onError) {
+    quitGroup: function(data, callback, onError) {
       /*
        * data = {
        *   groupId
@@ -4966,7 +5041,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildQuitGroup(data, callback, onError);
     },
-    getGroupMemberList: function (data, callback, onError) {
+    getGroupMemberList: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -4977,7 +5052,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetGroupMemberList(data, callback, onError);
     },
-    joinGroup: function (data, callback, onError) {
+    joinGroup: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -4987,7 +5062,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildJoinGroup(data, callback, onError);
     },
-    confirmJoinGroup: function (data, callback, onError) {
+    confirmJoinGroup: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -4998,7 +5073,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildConfirmJoinGroup(data, callback, onError);
     },
-    getGroupDetail: function (data, callback, onError) {
+    getGroupDetail: function(data, callback, onError) {
       /*
        * data = {
        *   groupId
@@ -5007,7 +5082,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetGroupDetail(data, callback, onError);
     },
-    searchGroups: function (data, callback, onError) {
+    searchGroups: function(data, callback, onError) {
       /*
        * data = {
        *   searchType,
@@ -5017,7 +5092,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildSearchGroups(data, callback, onError);
     },
-    deleteGroupMember: function (data, callback, onError) {
+    deleteGroupMember: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -5027,7 +5102,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildDeleteGroupMember(data, callback, onError);
     },
-    forbidMemberSpeak: function (data, callback, onError) {
+    forbidMemberSpeak: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -5039,7 +5114,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildForbidMemberSpeak(data, callback, onError);
     },
-    setGroupMessageRule: function (data, callback, onError) {
+    setGroupMessageRule: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -5050,7 +5125,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildSetGroupMessageRule(data, callback, onError);
     },
-    queryGroupMemberCard: function (data, callback, onError) {
+    queryGroupMemberCard: function(data, callback, onError) {
       /*
        * data = {
        *   belong,
@@ -5060,7 +5135,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildQueryGroupMemberCard(data, callback, onError);
     },
-    modifyMemberCard: function (data, callback, onError) {
+    modifyMemberCard: function(data, callback, onError) {
       /*
        * data = {
        *   belong,
@@ -5074,7 +5149,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildModifyMemberCard(data, callback, onError);
     },
-    modifyGroup: function (data, callback, onError) {
+    modifyGroup: function(data, callback, onError) {
       /*
        * data = {
        *   groupName,
@@ -5084,7 +5159,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildModifyGroup(data, callback, onError);
     },
-    getUserState: function (data, callback, onError) {
+    getUserState: function(data, callback, onError) {
       /*
        * data = {
        *   userAcc
@@ -5094,7 +5169,7 @@
       commonConfig.newUserState = data.newUserState ? true : false;
       chatMethods.buildGetUserState(data, callback, onError);
     },
-    setGroupMemberRole: function (data, callback, onError) {
+    setGroupMemberRole: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -5105,7 +5180,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildSetGroupMemberRole(data, callback, onError);
     },
-    msgOperation: function (data, callback, onerror) {
+    msgOperation: function(data, callback, onerror) {
       /*
        * data = {
        *   version,
@@ -5116,35 +5191,35 @@
       data = commonMethods.getParam(data);
       chatMethods.buildMsgOperation(data, callback, onerror);
     },
-    msgRead: function (data, callback, onerror) {
+    msgRead: function(data, callback, onerror) {
       data = commonMethods.getParam(data);
       this.msgOperation(
         commonMethods.assign(data, { type: 3 }),
-        function (e) {
+        function(e) {
           callback(e);
         },
-        function (e) {
+        function(e) {
           if (onerror) {
             onerror(e);
           }
         }
       );
     }, //可直接调用msgOperation方法
-    msgBack: function (data, callback, onerror) {
+    msgBack: function(data, callback, onerror) {
       data = commonMethods.getParam(data);
       this.msgOperation(
         commonMethods.assign(data, { type: 1 }),
-        function (e) {
+        function(e) {
           callback(e);
         },
-        function (e) {
+        function(e) {
           if (onerror) {
             onerror(e);
           }
         }
       );
     }, //可直接调用msgOperation方法
-    deleteReadMsg: function (data, callback, onError) {
+    deleteReadMsg: function(data, callback, onError) {
       /*
        * data = {
        *   msgId
@@ -5153,7 +5228,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildDeleteReadMsg(data, callback, onError);
     },
-    presetSyncMsgLimit: function (numLimit, callback, onError) {
+    presetSyncMsgLimit: function(numLimit, callback, onError) {
       if (!isNaN(numLimit) && numLimit >= 0) {
         commonConfig.synMsgMaxNumLimit = numLimit;
         var respObj = {};
@@ -5166,7 +5241,7 @@
         onError(respObj);
       }
     },
-    getRecentContactList: function (data, callback, onError) {
+    getRecentContactList: function(data, callback, onError) {
       /*
        * data = {
        *   time，
@@ -5176,35 +5251,35 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetRecentContactList(data, callback, onError);
     },
-    getFileBlob: function (data, callback, onError) {
+    getFileBlob: function(data, callback, onError) {
       data = commonMethods.getParam(data);
       chatMethods.buildGetFileBlob(data, callback, onError);
     },
-    getFileSource: function (url, callback, onError) {
+    getFileSource: function(url, callback, onError) {
       chatMethods.buildGetFileBlob(
         {
           url: url,
-          type: 'zip',
+          type: 'zip'
         },
         callback,
         onError
       );
     },
-    getAudioSource: function (url, callback, onError) {
+    getAudioSource: function(url, callback, onError) {
       chatMethods.buildGetFileBlob(
         {
           url: url,
-          type: 'amr',
+          type: 'amr'
         },
         callback,
         onError
       );
     },
-    setReauth: function (reqSig, longTimestamp) {
+    setReauth: function(reqSig, longTimestamp) {
       commonConfig.longTimestamp = longTimestamp;
       commonConfig.reqSig = reqSig;
     },
-    enterChatroom: function (data, callback, onError) {
+    enterChatroom: function(data, callback, onError) {
       /*
        * data = {
        *   roomId,
@@ -5217,7 +5292,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildEnterChatroom(data, callback, onError);
     },
-    exitChatroom: function (data, callback, onError) {
+    exitChatroom: function(data, callback, onError) {
       /*
        * data = {
        *   roomId,
@@ -5228,7 +5303,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildExitChatroom(data, callback, onError);
     },
-    fetchChatroomInfo: function (data, callback, onError) {
+    fetchChatroomInfo: function(data, callback, onError) {
       /*
        * data = {
        *   roomId
@@ -5237,7 +5312,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildFetchChatroomInfo(data, callback, onError);
     },
-    fetchChatroomMembers: function (data, callback, onError) {
+    fetchChatroomMembers: function(data, callback, onError) {
       /*
        * data = {
        *   roomId,
@@ -5249,7 +5324,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildFetchChatroomMembers(data, callback, onError);
     },
-    updateChatroomInfo: function (data, callback, onError) {
+    updateChatroomInfo: function(data, callback, onError) {
       /*
        * data = {
        *   roomId,
@@ -5264,7 +5339,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildUpdateChatroomInfo(data, callback, onError);
     },
-    updateChatRoomMemberRole: function (data, callback, onError) {
+    updateChatRoomMemberRole: function(data, callback, onError) {
       /*
        * data = {
        *   roomId,
@@ -5277,7 +5352,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildUpdateChatRoomMemberRole(data, callback, onError);
     },
-    updateMemberOption: function (data, callback, onError) {
+    updateMemberOption: function(data, callback, onError) {
       /*
        * data = {
        *   roomId,
@@ -5291,7 +5366,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildUpdateMemberOption(data, callback, onError);
     },
-    updateMyChatroomMemberInfo: function (data, callback, onError) {
+    updateMyChatroomMemberInfo: function(data, callback, onError) {
       /*
        * data = {
        *   roomId,
@@ -5302,7 +5377,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildUpdateMyChatroomMemberInfo(data, callback, onError);
     },
-    kickMember: function (data, callback, onError) {
+    kickMember: function(data, callback, onError) {
       /*
        * data = {
        *   roomId,
@@ -5314,19 +5389,19 @@
       data = commonMethods.getParam(data);
       chatMethods.buildKickMember(data, callback, onError);
     },
-    allMuteMode: function (data, callback, onError) {
+    allMuteMode: function(data, callback, onError) {
       data = commonMethods.getParam(data);
       this.updateChatroomInfo(data, callback, onError);
     }, //可直接调用updateChatroomInfo方法
-    defriendMember: function (data, callback, onError) {
+    defriendMember: function(data, callback, onError) {
       data = commonMethods.getParam(data);
       this.updateMemberOption(data, callback, onError);
     }, //可直接调用updateMemberOption方法
-    forbidChatRoomMember: function (data, callback, onError) {
+    forbidChatRoomMember: function(data, callback, onError) {
       data = commonMethods.getParam(data);
       this.updateMemberOption(data, callback, onError);
     }, //可直接调用updateMemberOption方法
-    setTopContact: function (data, callback, onerror) {
+    setTopContact: function(data, callback, onerror) {
       /*
        * data = {
        *   contact,
@@ -5336,14 +5411,14 @@
       data = commonMethods.getParam(data);
       chatMethods.buildSetTopContact(data, callback, onerror);
     },
-    getTopContact: function (callback, onerror) {
+    getTopContact: function(callback, onerror) {
       chatMethods.buildGetTopContact(callback, onerror);
     },
-    setOfflineMsgCount: function (callback) {
+    setOfflineMsgCount: function(callback) {
       if (typeof callback !== 'function') throw 'param type err';
       chatMethods.processOfflineMsg = callback;
     },
-    getFriends: function (data, callback, onError) {
+    getFriends: function(data, callback, onError) {
       /*
        * data = {
        *   timestamp,
@@ -5354,7 +5429,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetFriend(data, callback, onError);
     },
-    addFriends: function (data, callback, onError) {
+    addFriends: function(data, callback, onError) {
       /*
        * data = {
        *   friendUseracc,
@@ -5365,7 +5440,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildAddFriend(data, callback, onError);
     },
-    setRemark: function (data, callback, onError) {
+    setRemark: function(data, callback, onError) {
       /*
        * data = {
        *   friendUseracc,
@@ -5375,7 +5450,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildSetFriendRemark(data, callback, onError);
     },
-    delFriend: function (data, callback, onError) {
+    delFriend: function(data, callback, onError) {
       /*
        * data = {
        *   friendUseracc,
@@ -5385,7 +5460,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildDelFriend(data, callback, onError);
     },
-    getRequestHistoryList: function (data, callback, onError) {
+    getRequestHistoryList: function(data, callback, onError) {
       /*
        * data = {
        *   timestamp,
@@ -5395,7 +5470,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetRequestHistoryList(data, callback, onError);
     },
-    getOtherInfo: function (data, callback, onError) {
+    getOtherInfo: function(data, callback, onError) {
       /*
        * data = {
        *   friendUseracc
@@ -5404,7 +5479,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetOtherInfo(data, callback, onError);
     },
-    getUserVerify: function (data, callback, onError) {
+    getUserVerify: function(data, callback, onError) {
       /*
        * data = {
        *   addVerify
@@ -5413,7 +5488,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildSetUserVerify(data, callback, onError);
     },
-    agreeFriendRequest: function (data, callback, onError) {
+    agreeFriendRequest: function(data, callback, onError) {
       /*
        * data = {
        *   friendUseracc
@@ -5422,7 +5497,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildAgreeFriendRequest(data, callback, onError);
     },
-    refuseFriendRequest: function (data, callback, onError) {
+    refuseFriendRequest: function(data, callback, onError) {
       /*
        * data = {
        *   friendUseracc,
@@ -5432,7 +5507,7 @@
       data = commonMethods.getParam(data);
       chatMethods.buildRefuseFriendRequest(data, callback, onError);
     },
-    getFriendInfo: function (data, callback, onError) {
+    getFriendInfo: function(data, callback, onError) {
       /*
        * data = {
        *   friendUseracc
@@ -5441,25 +5516,25 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetFriendInfo(data, callback, onError);
     },
-    uploadAvatar: function (data, callback, onError, process) {
+    uploadAvatar: function(data, callback, onError, process) {
       data = commonMethods.getParam(data);
       chatMethods.buildUploadAvatar(data, callback, onError, process);
     },
-    getMyInfo: function (callback, onError) {
+    getMyInfo: function(callback, onError) {
       RL_YTX.sendMsg(
         {
           sendObj: null,
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._getMyInfo,
+            1: commonConfig.msgTypeNo._getMyInfo
           },
           msgKey: '',
-          clientData: {},
+          clientData: {}
         },
         callback,
         onError
       );
     },
-    getGroupList: function (data, callback, onError) {
+    getGroupList: function(data, callback, onError) {
       /*
        * data = {
        *   groupId,
@@ -5470,25 +5545,25 @@
       data = commonMethods.getParam(data);
       chatMethods.buildGetGroupList(data, callback, onError);
     },
-    confirmMsg: function () {
+    confirmMsg: function() {
       RL_YTX.sendMsg(
         {
           sendObj: {
-            1: commonConfig.msgVersion,
+            1: commonConfig.msgVersion
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._confirmMsg,
+            1: commonConfig.msgTypeNo._confirmMsg
           },
           msgKey: 'ConfirmMsg',
-          clientData: {},
+          clientData: {}
         },
-        function () {
+        function() {
           commonConfig.syncMsgVersion = commonConfig.msgVersion;
         },
-        function () {}
+        function() {}
       );
     },
-    processSyncMsg: function (type, endVersion, requestType, repeat) {
+    processSyncMsg: function(type, endVersion, requestType, repeat) {
       if (1 === type && commonConfig.syncMsgPorcessing) {
         return;
       }
@@ -5500,7 +5575,7 @@
             startVersion: commonConfig.msgVersion + 1,
             endVersion: endVersion,
             type: type,
-            repeat: repeat,
+            repeat: repeat
           },
           reGet
         );
@@ -5509,7 +5584,11 @@
         // 本地消息版本号小于本地最大消息版本号，中间缺消息
         var end = commonConfig.maxMsgVersion;
         var msgArr = [];
-        console.log('chatConfig.receiveMsgBuf', JSON.stringify(chatConfig.receiveMsgBuf), commonConfig.msgVersion);
+        console.log(
+          'chatConfig.receiveMsgBuf',
+          JSON.stringify(chatConfig.receiveMsgBuf),
+          commonConfig.msgVersion
+        );
         for (var i in chatConfig.receiveMsgBuf) {
           //循环消息暂存里的消息
           if (parseInt(i) === commonConfig.msgVersion + 1) {
@@ -5537,7 +5616,7 @@
               startVersion: commonConfig.msgVersion + 1,
               endVersion: end,
               type: 0,
-              repeat: repeat,
+              repeat: repeat
             },
             reGet
           );
@@ -5553,7 +5632,7 @@
         if (err.code && err.code !== 171139) {
           //离线消息拉取失败，进行重新拉取
           commonConfig.syncMsgPorcessing = false;
-          setTimeout(function () {
+          setTimeout(function() {
             this.processSyncMsg(type, endVersion, requestType, repeat);
           }, 2000);
         } else {
@@ -5564,10 +5643,10 @@
         }
       }
     },
-    noticeApp: function (obj) {
+    noticeApp: function(obj) {
       var msgObj = {};
       if (Array.isArray(obj)) {
-        obj.forEach(function (item) {
+        obj.forEach(function(item) {
           msgObj[item.msgType] = msgObj[item.msgType] || [];
           msgObj[item.msgType].push(chatMethods.noticeAppFn(item));
         });
@@ -5583,11 +5662,17 @@
           //cmd消息
           chatMethods._noticeListener(msgObj[val]);
           console.log('_noticeListener send', msgObj[val]);
-        } else if (parseInt(val) === commonConfig.msgTypeNo._msg_DEL && chatMethods._msgNotifyListener) {
+        } else if (
+          parseInt(val) === commonConfig.msgTypeNo._msg_DEL &&
+          chatMethods._msgNotifyListener
+        ) {
           //阅后即焚删除消息
           chatMethods._msgNotifyListener(msgObj[val]);
           console.log('_msgNotifyListener send', msgObj[val]);
-        } else if (parseInt(val) === commonConfig.msgTypeNo._chatRoom.ChatRoom_MESSAGE && chatMethods._charRoomListener) {
+        } else if (
+          parseInt(val) === commonConfig.msgTypeNo._chatRoom.ChatRoom_MESSAGE &&
+          chatMethods._charRoomListener
+        ) {
           //聊天室推送消息
           chatMethods._charRoomListener(msgObj[val]);
           console.log('_charRoomListener send', msgObj[val]);
@@ -5597,7 +5682,7 @@
           console.log('_friendNoticeMsgListener send', msgObj[val]);
         } else {
           if (!!chatMethods._pushListener) {
-            chatMethods._pushListener.forEach((v) => {
+            chatMethods._pushListener.forEach(v => {
               v(msgObj[val]);
             });
 
@@ -5606,33 +5691,33 @@
         }
       }
     },
-    onNoticeReceiveListener: function (callback) {
+    onNoticeReceiveListener: function(callback) {
       chatMethods._noticeListener = callback;
     },
-    onMsgNotifyReceiveListener: function (callback) {
+    onMsgNotifyReceiveListener: function(callback) {
       chatMethods._msgNotifyListener = callback;
     },
-    OnLineStateNotifyListener: function (callback) {
+    OnLineStateNotifyListener: function(callback) {
       chatMethods._OnLineStateNotifyListener = callback;
     },
-    onChatRoomEventListener: function (callback) {
+    onChatRoomEventListener: function(callback) {
       chatMethods._charRoomListener = callback;
     },
-    onMsgReceiveListener: function (callback) {
+    onMsgReceiveListener: function(callback) {
       chatMethods._pushListener.push(callback);
     },
-    onProcessFriendReqListener: function (callback) {
+    onProcessFriendReqListener: function(callback) {
       chatMethods._friendNoticeMsgListener = callback;
     },
-    _meetListener: function (res) {},
-    onSantiMsgReceiveListener: function (callback) {
+    _meetListener: function(res) {},
+    onSantiMsgReceiveListener: function(callback) {
       this._meetListener = callback;
     },
-    receiveRequestResponse: function (obj, callback) {
+    receiveRequestResponse: function(obj, callback) {
       obj['2']['fileUrl'] = Base64.decode(chatConfig.lvsServer);
       callback(obj['2']);
     },
-    receiveHttpResponse: function (obj, callback) {
+    receiveHttpResponse: function(obj, callback) {
       var type = obj['1'];
       if (type === commonConfig.httpType._historyMessage) {
         var data = obj;
@@ -5646,19 +5731,22 @@
         callback(commonMethods.parseCodeResp(obj));
       }
     },
-    receiveOnLineStateNotify: function (obj) {
+    receiveOnLineStateNotify: function(obj) {
       var msg = obj[2]['PublishPresenceResp'];
       chatMethods._OnLineStateNotifyListener(msg);
       console.log('_OnLineStateNotifyListener', msg);
     },
-    receivePushMsg: function (obj) {
+    receivePushMsg: function(obj) {
       var pushs = obj['2']['PushMsg'];
       if (pushs[2] === 13) return;
       if (pushs['1'] && commonConfig.hasLocalStorage) {
         commonMethods.setlocalStorage(pushs['1']);
       }
       var pushMsg = chatMethods.parsePushMsgResp(obj);
-      if (pushMsg.msgType === commonConfig.msgTypeNo._cmdMsg && pushMsg.msgSender !== commonConfig.userName) {
+      if (
+        pushMsg.msgType === commonConfig.msgTypeNo._cmdMsg &&
+        pushMsg.msgSender !== commonConfig.userName
+      ) {
         try {
           var msgDomain = JSON.parse(pushMsg.msgDomain);
           if (msgDomain.SanTi) {
@@ -5684,7 +5772,10 @@
         }
       } else if (pushMsg.version > commonConfig.msgVersion) {
         console.log('commonConfig.maxMsgVersion---', commonConfig.maxMsgVersion);
-        commonConfig.maxMsgVersion = commonConfig.maxMsgVersion < pushMsg.version ? pushMsg.version : commonConfig.maxMsgVersion;
+        commonConfig.maxMsgVersion =
+          commonConfig.maxMsgVersion < pushMsg.version
+            ? pushMsg.version
+            : commonConfig.maxMsgVersion;
         chatConfig.receiveMsgBuf[pushMsg.version] = pushMsg;
         this.processSyncMsg(1);
       }
@@ -5692,13 +5783,13 @@
         this.confirmMsg();
       }
     },
-    receivePushMsgNotify: function (obj) {
+    receivePushMsgNotify: function(obj) {
       var notifyResp = chatMethods.parsePushMsgNotifyResp(obj);
       var msgVersion = notifyResp.version;
       commonConfig.maxMsgVersion = msgVersion;
       this.processSyncMsg(1);
     },
-    receiveSyncMsg: function (obj, request) {
+    receiveSyncMsg: function(obj, request) {
       var resps = chatMethods.parseSyncMsgResp(obj);
       var continues = true;
       var end = request.endVersion;
@@ -5751,11 +5842,11 @@
         this.processSyncMsg(2);
       }
     },
-    receiveChatRoomMsg: function (obj) {
+    receiveChatRoomMsg: function(obj) {
       var chatRoomMsg = chatMethods.parseChatRoomMsg(obj);
       this.noticeApp(chatRoomMsg);
     },
-    receiveMsgResp: function (obj, request, key) {
+    receiveMsgResp: function(obj, request, key) {
       var callback = request.callback;
       if (key === 'parseGetGroupListResp' || key === 'parseGetGroupMemberListResp') {
         chatMethods[key](obj, callback, request.onError);
@@ -5763,13 +5854,9 @@
         callback(chatMethods[key](obj, request));
       }
     },
-    enterRoom: function () {
+    enterRoom: function() {
       if (chatConfig.chatRoomId) {
-        this.enterChatroom(
-          chatConfig.enterChatRoomData,
-          function () {},
-          function () {}
-        );
+        this.enterChatroom(chatConfig.enterChatRoomData, function() {}, function() {});
       }
       // else {
       //     YTX_CONFIG.chatRoomId = RL_YTX.chatRoomId;
@@ -5777,7 +5864,7 @@
       //     YTX_CONFIG.chatRoomInfoExt = RL_YTX.chatRoomInfoExt;
       // }
     },
-    fileUpload: function (data, callback, onError, onProgress) {
+    fileUpload: function(data, callback, onError, onProgress) {
       if (!data.file || !data.fileName) {
         var resp = {};
         resp.code = commonConfig.errCode._LOGIN_NO_PWD;
@@ -5787,7 +5874,7 @@
       }
       var fileReader = new FileReader();
       fileReader.readAsArrayBuffer(data.file);
-      fileReader.onload = function () {
+      fileReader.onload = function() {
         var postUrl =
           chatConfig.fileServerIp +
           '/2015-03-26/Corp/yuntongxun/Upload/VTM?sig=2B9C64616C98A93F1375BF0A2F6429E7&appId=' +
@@ -5800,16 +5887,16 @@
           url: postUrl,
           header: {
             'Content-type': 'application/octet-stream;',
-            Accept: 'application/xml;',
+            Accept: 'application/xml;'
           },
           sendData: fileReader.result,
           progress: onProgress,
           success: callback,
-          error: onError,
+          error: onError
         };
         commonMethods.ajax(sendData);
       };
-    },
+    }
   };
 
   //会议构造函数
@@ -5822,16 +5909,16 @@
   var meetConfig = {
     confId: '',
     isInMeeting: false,
-    meetRouterMap: {},
+    meetRouterMap: {}
   };
   var meetMethods = {
-    _conferenceNotifyListener: function (res) {},
+    _conferenceNotifyListener: function(res) {},
     //数据解析
-    parseConferenceNotice: function (obj) {
+    parseConferenceNotice: function(obj) {
       var data = obj['2'];
       if (!data) {
         return {
-          code: obj[6],
+          code: obj[6]
         };
       }
       var reData = data['ConferenceNotification'];
@@ -5841,14 +5928,14 @@
       }
       return resp;
     },
-    parseConferenceMessageResp: function (obj) {
+    parseConferenceMessageResp: function(obj) {
       var resp = {};
       resp.code = obj['6'];
       resp.result = Base64.decode(obj['2']['ConferenceMessageResp']['1']);
       return resp;
     },
     //功能实现
-    buildConferenceMsg: function (path, content, callback, onError) {
+    buildConferenceMsg: function(path, content, callback, onError) {
       if (!path || !content) {
         var resp = {};
         resp.code = commonConfig.errCode._NO_REQUIRED_PARAM;
@@ -5862,47 +5949,47 @@
         {
           sendObj: {
             1: path,
-            2: Base64.encode(JSON.stringify(content)),
+            2: Base64.encode(JSON.stringify(content))
           },
           MsgLiteObj: {
-            1: commonConfig.msgTypeNo._ConferenceMessage,
+            1: commonConfig.msgTypeNo._ConferenceMessage
           },
-          msgKey: 'ConferenceMessage',
+          msgKey: 'ConferenceMessage'
         },
         callback,
         onError
       );
-    },
+    }
   };
   RL_MEET.prototype = {
-    unLoad: function () {
+    unLoad: function() {
       meetConfig.confId = '';
     },
-    setConfig: function (data) {
+    setConfig: function(data) {
       meetConfig = commonMethods.assign(meetConfig, data);
       // console.log('RL_MEET set config succ')
     },
-    receiveMsgResp: function (obj, request, key) {
+    receiveMsgResp: function(obj, request, key) {
       var callback = request.callback;
       callback(meetMethods[key](obj, request));
     },
-    receiveConferenceNotice: function (obj) {
+    receiveConferenceNotice: function(obj) {
       var cn = meetMethods.parseConferenceNotice(obj);
       meetMethods._conferenceNotifyListener(cn);
     },
-    onConferenceNotifyLinstener: function (callback) {
+    onConferenceNotifyLinstener: function(callback) {
       meetMethods._conferenceNotifyListener = callback;
     },
-    ConferenceMsg: function (data, callback, onerror) {
+    ConferenceMsg: function(data, callback, onerror) {
       meetMethods.buildConferenceMsg(data.path, data.content, callback, onerror);
     },
     // 加入会议
-    JoinMeetRoom: function (data, callback, onError) {
+    JoinMeetRoom: function(data, callback, onError) {
       this.confId = data.confId;
       meetMethods.buildConferenceMsg(
         '/REST/Conference/Member/Join?source=SDK',
         data,
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           console.log('JoinMeetRoom  data', resp);
           if (resp.statusCode !== '000000') {
@@ -5916,12 +6003,12 @@
           ROOT.RL_Media.ConnectMedia(
             {
               isVoipCall: 1,
-              called: resp.conf.confId,
+              called: resp.conf.confId
             },
-            function (res) {
+            function(res) {
               callback(resp, res);
             },
-            function (err) {
+            function(err) {
               onError(err);
             }
           );
@@ -5930,11 +6017,11 @@
       );
     },
     // 白板共享
-    StartWhiteboardSharing: function (data, callback, onError) {
+    StartWhiteboardSharing: function(data, callback, onError) {
       meetMethods.buildConferenceMsg(
         '/REST/Conference/MediaControl/StartWhiteboardSharing?source=SDK',
         commonMethods.assign({ confId: this.confId }, data),
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           if (resp.statusCode !== '000000') {
             onError(resp);
@@ -5947,11 +6034,11 @@
       );
     },
     // 停止白板共享
-    StopWhiteboardSharing: function (data, callback, onError) {
+    StopWhiteboardSharing: function(data, callback, onError) {
       meetMethods.buildConferenceMsg(
         '/REST/Conference/MediaControl/StopWhiteboardSharing?source=SDK',
         commonMethods.assign({ confId: this.confId }, data),
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           if (resp.statusCode !== '000000') {
             onError(resp);
@@ -5964,11 +6051,11 @@
       );
     },
     // 会议更新
-    ConferenceUpdate: function (data, callback, onError) {
+    ConferenceUpdate: function(data, callback, onError) {
       meetMethods.buildConferenceMsg(
         '/REST/Conference/Update?source=SDK',
         commonMethods.assign({ confId: this.confId }, data),
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           if (resp.statusCode !== '000000') {
             onError(resp);
@@ -5981,11 +6068,11 @@
       );
     },
     //会议室列表
-    RoomList: function (data, callback, onError) {
+    RoomList: function(data, callback, onError) {
       meetMethods.buildConferenceMsg(
         '/REST/Conference/Room/List?source=SDK',
         commonMethods.assign({ confId: this.confId }, data),
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           if (resp.statusCode !== '000000') {
             onError(resp);
@@ -5998,11 +6085,11 @@
       );
     },
     // 获取成员列表
-    GetMeetMemberList: function (data, callback, onError) {
+    GetMeetMemberList: function(data, callback, onError) {
       meetMethods.buildConferenceMsg(
         '/REST/Conference/Member/List?source=SDK',
         commonMethods.assign({ confId: this.confId }, data),
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           callback(resp);
         },
@@ -6010,15 +6097,15 @@
       );
     },
     // 获取会议信息
-    GetMeetInfo: function (data, callback, onError) {
+    GetMeetInfo: function(data, callback, onError) {
       meetMethods.buildConferenceMsg('/REST/Conference/Info?source=SDK', data, callback, onError);
     },
     // 创建会议
-    CreateMeet: function (data, callback, onError) {
+    CreateMeet: function(data, callback, onError) {
       meetMethods.buildConferenceMsg(
         '/REST/Conference/Create?source=SDK',
         data,
-        function (e) {
+        function(e) {
           var result = JSON.parse(e.result);
           if (result.statusCode === '000000') {
             this.confId = result.confId;
@@ -6031,11 +6118,11 @@
       );
     },
     // 获取会议列表
-    GetOrderMeetList: function (data, callback, onError) {
+    GetOrderMeetList: function(data, callback, onError) {
       meetMethods.buildConferenceMsg(
         '/REST/Conference/List?source=SDK',
         data,
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           if (resp.statusCode === '000000') {
             callback(resp);
@@ -6047,7 +6134,7 @@
       );
     },
     // 发布语音
-    StartPublishVoice: function (data, callback, onError) {
+    StartPublishVoice: function(data, callback, onError) {
       ROOT.RL_Media.deployVideoVoice(true, 'audio');
       meetMethods.buildConferenceMsg(
         '/REST/Conference/MediaControl/StartPublishVoice?source=SDK',
@@ -6057,7 +6144,7 @@
       );
     },
     // 停止发布语音
-    StopPublishVoice: function (data, callback, onError) {
+    StopPublishVoice: function(data, callback, onError) {
       ROOT.RL_Media.deployVideoVoice(false, 'audio');
       meetMethods.buildConferenceMsg(
         '/REST/Conference/MediaControl/StopPublishVoice?source=SDK',
@@ -6067,12 +6154,12 @@
       );
     },
     //  发布视频
-    StartPublishVideo: function (data, callback, onError) {
+    StartPublishVideo: function(data, callback, onError) {
       ROOT.RL_Media.deployVideoVoice(true, 'video');
       meetMethods.buildConferenceMsg(
         '/REST/Conference/MediaControl/StartPublishVideo?source=SDK',
         commonMethods.assign({ confId: this.confId }, data),
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           if (resp.statusCode === '000000') {
             callback(resp);
@@ -6084,12 +6171,12 @@
       );
     },
     //  停止发布视频
-    StopPublishVideo: function (data, callback, onError) {
+    StopPublishVideo: function(data, callback, onError) {
       ROOT.RL_Media.deployVideoVoice(false, 'video');
       meetMethods.buildConferenceMsg(
         '/REST/Conference/MediaControl/StopPublishVideo?source=SDK',
         commonMethods.assign({ confId: this.confId }, data),
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           if (resp.statusCode === '000000') {
             callback(resp);
@@ -6101,11 +6188,11 @@
       );
     },
     // 邀请
-    InviteMember: function (data, callback, onError) {
+    InviteMember: function(data, callback, onError) {
       meetMethods.buildConferenceMsg(
         '/REST/Conference/Member/Invite?source=SDK',
         commonMethods.assign({ confId: this.confId }, data),
-        function (e) {
+        function(e) {
           var resp = JSON.parse(e.result);
           if (resp.statusCode === '000000') {
             callback(resp);
@@ -6117,39 +6204,69 @@
       );
     },
     // 控制媒体
-    MediaControl: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg('/REST/Conference/Member/MediaControl?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
+    MediaControl: function(data, callback, onError) {
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/Member/MediaControl?source=SDK',
+        commonMethods.assign({ confId: this.confId }, data),
+        callback,
+        onError
+      );
     },
     //更新成员信息
-    UpdateMeetMemberNick: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg('/REST/Conference/Member/Update?source=SDK', data, callback, onError);
+    UpdateMeetMemberNick: function(data, callback, onError) {
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/Member/Update?source=SDK',
+        data,
+        callback,
+        onError
+      );
     },
     //踢出成员
-    KickMeetMember: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg('/REST/Conference/Member/Kickout?source=SDK', data, callback, onError);
+    KickMeetMember: function(data, callback, onError) {
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/Member/Kickout?source=SDK',
+        data,
+        callback,
+        onError
+      );
     },
     //拒绝邀请
-    RejectInvitation: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg('/REST/Conference/Member/RejectInvitation?source=SDK', data, callback, onError);
+    RejectInvitation: function(data, callback, onError) {
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/Member/RejectInvitation?source=SDK',
+        data,
+        callback,
+        onError
+      );
     },
     //接受邀请
-    AcceptInvitation: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg('/REST/Conference/Member/AcceptInvitation?source=SDK', data, callback, onError);
+    AcceptInvitation: function(data, callback, onError) {
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/Member/AcceptInvitation?source=SDK',
+        data,
+        callback,
+        onError
+      );
     },
     //退出会议
-    leaveMeeting: function (data, callback, onError) {
+    leaveMeeting: function(data, callback, onError) {
       if (!this.callId) return;
-      meetMethods.buildConferenceMsg('/REST/Conference/Member/Quit?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/Member/Quit?source=SDK',
+        commonMethods.assign({ confId: this.confId }, data),
+        callback,
+        onError
+      );
       ROOT.RL_Media.releaseCall(
         {
           caller: this.caller,
           called: this.called,
-          callId: this.callId,
+          callId: this.callId
         },
-        function (e) {
+        function(e) {
           console.log(e, 'quit meeting ');
         },
-        function (err) {
+        function(err) {
           console.log(err);
         }
       );
@@ -6158,18 +6275,23 @@
       this.caller = null;
     },
     // 删除会议、结束会议
-    DeleteMeeting: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg('/REST/Conference/Delete?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
+    DeleteMeeting: function(data, callback, onError) {
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/Delete?source=SDK',
+        commonMethods.assign({ confId: this.confId }, data),
+        callback,
+        onError
+      );
       ROOT.RL_Media.DisconnectMedia(
         {
           caller: this.caller,
           called: this.called,
-          callId: this.callId,
+          callId: this.callId
         },
-        function (e) {
+        function(e) {
           console.log(e, 'quit meeting ');
         },
-        function (err) {
+        function(err) {
           console.log(err);
         }
       );
@@ -6179,11 +6301,11 @@
       this.caller = null;
     },
     //获取会议摘要列表
-    GetAbstractList: function (data, callback, onError) {
+    GetAbstractList: function(data, callback, onError) {
       meetMethods.buildConferenceMsg(
         '/REST/Conference/Abstract/List?source=SDK',
         data,
-        function (e) {
+        function(e) {
           if (e.result) {
             var result = JSON.parse(e.result);
             if (result.statusCode === '000000') {
@@ -6197,20 +6319,35 @@
       );
     },
     //更新会议摘要
-    UpdateAbstract: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg('/REST/Conference/Abstract/Update?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
+    UpdateAbstract: function(data, callback, onError) {
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/Abstract/Update?source=SDK',
+        commonMethods.assign({ confId: this.confId }, data),
+        callback,
+        onError
+      );
     },
     //锁定会议
-    LockMeet: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg('/REST/Conference/LockUnlock?source=SDK', commonMethods.assign({ confId: this.confId }, data), callback, onError);
+    LockMeet: function(data, callback, onError) {
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/LockUnlock?source=SDK',
+        commonMethods.assign({ confId: this.confId }, data),
+        callback,
+        onError
+      );
     },
     //删除摘要
-    DeleteAbstract: function (data, callback, onError) {
-      meetMethods.buildConferenceMsg('/REST/Conference/Abstract/Delete?source=SDK', data, callback, onError);
-    },
+    DeleteAbstract: function(data, callback, onError) {
+      meetMethods.buildConferenceMsg(
+        '/REST/Conference/Abstract/Delete?source=SDK',
+        data,
+        callback,
+        onError
+      );
+    }
   };
 
-  String.prototype.startWith = function (str) {
+  String.prototype.startWith = function(str) {
     if (str == null || str == '' || this.length == 0 || str.length > this.length) return false;
     if (this.substr(0, str.length) == str) {
       return true;
@@ -6219,7 +6356,7 @@
     }
     return true;
   };
-  String.prototype.endWith = function (str) {
+  String.prototype.endWith = function(str) {
     if (str == null || str == '' || this.length == 0 || str.length > this.length);
     return false;
     if (this.substring(this.length - str.length) == str) {

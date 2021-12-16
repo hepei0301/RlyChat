@@ -22,16 +22,22 @@ export default function RlyChat() {
   }, []);
   return (
     <div>
-      <Button style={{ position: 'absolute', top: 50, left: 20 }} onClick={() => openIM({ type: 'message', userId: 17887787788, userName: '我是一个姓名' })}>
+      <Button
+        style={{ position: 'absolute', top: 50, left: 20 }}
+        onClick={() => openIM({ type: 'message', userId: 17887787788, userName: '我是一个姓名' })}
+      >
         答案开meet23
       </Button>
       <Button
         style={{ position: 'absolute', top: 10, left: 20 }}
-        onClick={() => openMeet({ type: 'meet', checkedList: [{ phone: '21212121212', name: '我是一个名字' }] })}>
+        onClick={() =>
+          openMeet({ type: 'meet', checkedList: [{ phone: '21212121212', name: '我是一个名字' }] })
+        }
+      >
         答案开im122
       </Button>
-      <IM userInfo={{ userId: '13700000000', userName: '默认昵称321' }} contactsList={[]} />
-      <Meet userInfo={{ userId: '13700000000', userName: '默认昵称321' }} />
+      {/* <IM userInfo={{ userId: '18913145206', userName: '默认昵称321' }} contactsList={[]} /> */}
+      {/* <Meet userInfo={{ userId: '13700000000', userName: '默认昵称321' }} /> */}
     </div>
   );
 }

@@ -1,10 +1,29 @@
-import './MD5.min.js';
-import './base64.min.js';
 import * as $ from './jquery-3.1.0.min.js';
-import './ytx-web-im7.2.2.5.js';
 import './ytx-web-av3.js';
+import './ytx-web-im7.2.2.5.js';
 import { app, ip } from './config.js';
 import './RL_Meet.js';
+
+if (typeof hex_md5 == 'undefined') {
+  var element = document.createElement('script');
+  element.src = 'https://app.cloopen.com/im50/MD5.min.js';
+  document.body.appendChild(element);
+}
+if (typeof Base64 == 'undefined') {
+  var element = document.createElement('script');
+  element.src = 'https://app.cloopen.com/im50/base64.min.js';
+  document.body.appendChild(element);
+}
+if (typeof pako == 'undefined') {
+  var element = document.createElement('script');
+  element.src = 'https://app.cloopen.com/im50/pako.js';
+  document.body.appendChild(element);
+}
+if (typeof AMR == 'undefined') {
+  var element = document.createElement('script');
+  element.src = 'https://app.cloopen.com/im50/amrnb.js';
+  document.body.appendChild(element);
+}
 function LOGIN() {
   this._appid = app._appid || '8a2af988536458c301537d7197320004';
   this._appToken = app._appToken || '0f26f16e4a8d4680a586c6eb2a9f4e03';
@@ -14,19 +33,19 @@ function LOGIN() {
 }
 
 LOGIN.prototype = {
-  init: function (cb) {
+  init: function(cb) {
     this._callBacks.push(cb);
     if (this._login && this._callBacks.length === 2) {
       this._callBacks[1]();
     }
-    var resp = RL_YTX_NEW.init({
+    var resp = window.RL_YTX_NEW.init({
       appId: this._appid,
       serverIp: ip.serverIp,
-      isV3: true,
+      isV3: true
     });
-    RL_YTX_NEW.chatInit({
+    window.RL_YTX_NEW.chatInit({
       fileServerIp: ip.fileServerIp,
-      lvsServer: ip.lvsServer,
+      lvsServer: ip.lvsServer
     });
     if (resp.code != 200) {
       alert('SDK初始化错误');
@@ -51,7 +70,7 @@ LOGIN.prototype = {
     console.log(window.__USERINFO__, '登录的window---->');
     this.getSig(window.__USERINFO__.phoneNumber, '', cb);
   },
-  getSig: function (account_number, pwd, cb) {
+  getSig: function(account_number, pwd, cb) {
     var pass = pwd ? pwd : '';
     var now = new Date();
     var timestamp =
@@ -66,19 +85,19 @@ LOGIN.prototype = {
     var sig = hex_md5(this._appid + account_number + timestamp + this._appToken);
     this.EV_login(account_number, pass, sig, timestamp, cb);
   },
-  EV_login: function (user_account, pwd, sig, timestamp, cb) {
+  EV_login: function(user_account, pwd, sig, timestamp, cb) {
     const data = {
       sig,
       pwd,
       type: 1,
       userName: user_account,
-      timestamp: timestamp,
+      timestamp: timestamp
     };
     if (this._callBacks.length < 2) {
       const that = this;
       window.RL_YTX_NEW.login(
         data,
-        function () {
+        function() {
           window.RL_YTX_NEW.setLogClose();
           if (that._callBacks.length === 1) {
             that._login = true;
@@ -86,17 +105,17 @@ LOGIN.prototype = {
           }
           if (that._callBacks.length === 2) {
             that._login = false;
-            that._callBacks.forEach((element) => {
+            that._callBacks.forEach(element => {
               element && element();
             });
           }
         },
-        function () {
+        function() {
           console.error('登录失败');
         }
       );
     }
-  },
+  }
 };
 
 window.ChatLogin = new LOGIN();

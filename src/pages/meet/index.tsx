@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
+// eslint-disable-next-line import/no-unresolved
 import ResizeMoveDialog from '../../components/ResizeMoveDialog';
 import { EventOpenMeet, MeetProps } from '../../event';
-import '../../utils/MD5.min.js';
-import '../../utils/base64.min.js';
-import '../../utils/jquery-3.1.0.min.js';
-import '../../utils/ytx-web-im7.2.2.5.js';
-import '../../utils/ytx-web-av3.js';
-import '../../utils/adapter.js';
-import '../../utils/config.js';
-import '../../utils/RL_Meet.js';
 import '../../utils/chatLogin.js';
 import './index.less';
+
 export interface RlyPropos {
   bounds?: string;
   contactsList?: [any];
@@ -20,11 +14,12 @@ export interface RlyPropos {
   size?: { width: number; height: number };
   limitSize?: { width: number; height: number };
   maxSize?: { width: number; height: number };
+  id: string;
 }
 
-export default function Meet({ bounds, size, maxSize, limitSize, userInfo }: RlyPropos) {
+function Meet({ bounds, size, maxSize, limitSize, userInfo }: RlyPropos) {
   const [toggle, setToggle] = useState(false);
-  const [init, setInit] = useState(true);
+  const [showCloseIcon, setShowCloseIcon] = useState(true);
 
   const close = () => {
     setToggle(false);
@@ -34,52 +29,65 @@ export default function Meet({ bounds, size, maxSize, limitSize, userInfo }: Rly
     setToggle(true);
   };
 
-  useEffect(() => {
-    const handle = (res: any) => {
-      const data = (res && res.data) || { type: '', name: '' };
-      if (toggle || data.type !== 'meet') return;
-      notification.destroy();
-      notification.info({
-        message: data.des,
-        placement: 'bottomRight',
-        bottom: 0,
-        duration: 30,
-        btn: (
-          <Button
-            type="primary"
-            size="small"
-            onClick={() => {
-              open();
-              notification.destroy();
-            }}>
-            打开对话框
-          </Button>
-        ),
+  useEffect(
+    () => {
+      const handle = (res: any) => {
+        const data = (res && res.data) || { type: '', des: '' };
+        if (data.type === 'meeting') {
+          setShowCloseIcon(data.value);
+        }
+        if (toggle || data.type !== 'meet') return;
+        notification.destroy();
+        notification.info({
+          message: data.des,
+          placement: 'bottomRight',
+          bottom: 0,
+          duration: 30,
+          btn: (
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => {
+                open();
+                notification.destroy();
+              }}
+            >
+              打开对话框
+            </Button>
+          )
+        });
+      };
+      window.addEventListener('message', handle);
+
+      return () => window.removeEventListener('message', handle);
+    },
+    [toggle]
+  );
+
+  useEffect(
+    () => {
+      return EventOpenMeet.on((res: MeetProps) => {
+        (document.getElementById('RlyChat-Meet') as any).contentWindow.postMessage({ ...res });
+        open();
       });
-    };
-    window.addEventListener('message', handle);
+    },
+    [toggle]
+  );
 
-    return () => window.removeEventListener('message', handle);
-  }, [toggle]);
-
-  useEffect(() => {
-    return EventOpenMeet.on((res: MeetProps) => {
-      (document.getElementById('RlyChat-Meet') as any).contentWindow.postMessage({ ...res });
-      open();
-    });
-  }, [toggle]);
-
-  return !init ? null : (
+  return (
     <ResizeMoveDialog
       limitSize={limitSize || { width: 400, height: 200 }}
-      size={size || { width: 1100, height: 780 }}
+      size={size || { width: 1150, height: 780 }}
       close={close}
-      bounds={bounds ? bounds : '#root'}
-      toggle={toggle}>
+      bounds={bounds || '#root'}
+      toggle={toggle}
+      id="RLY-MEET"
+      showCloseIcon={showCloseIcon}
+    >
       <Iframe
         url="meet/index.html"
-        width={'100%'}
-        height={'100%'}
+        width="100%"
+        height="100%"
         allow="geolocation;microphone;camera;midi;encrypted-media"
         id="RlyChat-Meet"
         onLoad={() => {
@@ -92,6 +100,8 @@ export default function Meet({ bounds, size, maxSize, limitSize, userInfo }: Rly
     </ResizeMoveDialog>
   );
 }
+
+export default React.memo(Meet);
 
 export const openMeet = (res: MeetProps) => {
   EventOpenMeet.emit(res);
