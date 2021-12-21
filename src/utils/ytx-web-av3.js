@@ -1,25 +1,4 @@
-﻿if (typeof hex_md5 == 'undefined') {
-  document.write(
-    '<script src="https://app.cloopen.com/im50/MD5.min.js" type="text/javascript" charset="utf-8"></script>'
-  );
-}
-if (typeof Base64 == 'undefined') {
-  document.write(
-    '<script src="https://app.cloopen.com/im50/base64.min.js" type="text/javascript" charset="utf-8"></script>'
-  );
-}
-if (typeof pako == 'undefined') {
-  document.write(
-    '<script src="https://app.cloopen.com/im50/pako.js" type="text/javascript" charset="utf-8"></script>'
-  );
-}
-if (typeof AMR == 'undefined') {
-  document.write(
-    '<script src="https://app.cloopen.com/im50/amrnb.js" type="text/javascript" charset="utf-8"></script>'
-  );
-}
-
-//=======================================Meeting==============================//
+﻿//=======================================Meeting==============================//
 var ParKey = {};
 ParKey.MessageType = '1';
 ParKey.MessageContent = '2';
