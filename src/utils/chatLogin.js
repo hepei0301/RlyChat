@@ -7,22 +7,22 @@ import './RL_Meet.js';
 if (typeof hex_md5 == 'undefined') {
   var element = document.createElement('script');
   element.src = 'https://app.cloopen.com/im50/MD5.min.js';
-  document.body && document.body.appendChild(element);
+  document && document.body && document.body.appendChild(element);
 }
 if (typeof Base64 == 'undefined') {
   var element = document.createElement('script');
   element.src = 'https://app.cloopen.com/im50/base64.min.js';
-  document.body && document.body.appendChild(element);
+  document && document.body && document.body.appendChild(element);
 }
 if (typeof pako == 'undefined') {
   var element = document.createElement('script');
   element.src = 'https://app.cloopen.com/im50/pako.js';
-  document.body && document.body.appendChild(element);
+  document && document.body && document.body.appendChild(element);
 }
 if (typeof AMR == 'undefined') {
   var element = document.createElement('script');
   element.src = 'https://app.cloopen.com/im50/amrnb.js';
-  document.body && document.body.appendChild(element);
+  document && document.body && document.body.appendChild(element);
 }
 function LOGIN() {
   this._appid = app._appid || '8a2af988536458c301537d7197320004';
