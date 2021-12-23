@@ -71,7 +71,7 @@ function Meet({ bounds, size, maxSize, limitSize, userInfo }: RlyPropos) {
         open();
       });
     },
-    [toggle]
+    []
   );
 
   return (

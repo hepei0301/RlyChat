@@ -69,7 +69,7 @@ function IM({ bounds, size, maxSize, limitSize, userInfo }: RlyPropos) {
         EventToggleHorn.on((res: ImProps) => {
             (document.getElementById('RlyChat-Im') as any).contentWindow.postMessage({ ...res });
         });
-    }, [toggle]);
+    }, []);
 
     return (
         <ResizeMoveDialog
