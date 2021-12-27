@@ -945,6 +945,7 @@
         if (ytx.chatActive) Chat.receiveSyncMsg(obj, request);
       } else if (type === commonConfig.msgTypeNo._kickOff) {
         //被踢下线，要释放媒体
+        window.__LOGOUT__ && window.__LOGOUT__();
         var loginRsp = YTX_Methods.parseKickOffResp(obj);
         if (!!YTX_Methods._connectStatListener) {
           YTX_Methods._connectStatListener(loginRsp);

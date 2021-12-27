@@ -628,7 +628,7 @@
           confTopic: CreateMeetBuilder.getConfTopic(),
           confRoomId: CreateMeetBuilder.getConfRoomId(),
           joinState: CreateMeetBuilder.getJoinState(),
-          chatInConf: CreateMeetBuilder.getChatInConf(),
+          chatInConf: 0,
           appData: CreateMeetBuilder.getAppData(),
           autoRecord: CreateMeetBuilder.getAutoRecord(),
           recordAction: CreateMeetBuilder.getRecordAction(),

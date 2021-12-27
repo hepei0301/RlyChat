@@ -71,6 +71,15 @@ function IM({ bounds, size, maxSize, limitSize, userInfo }: RlyPropos) {
         });
     }, []);
 
+    useEffect(() => {
+        (window as any).__LOGOUT__ = () => {
+            notification.error({
+            message: '您的账号在另外终端被登录，请退出重新登录',
+            duration: null
+        });
+        };
+    }, []);
+
     return (
         <ResizeMoveDialog
             limitSize={limitSize || { width: 300, height: 300 }}
