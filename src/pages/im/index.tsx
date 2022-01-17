@@ -4,7 +4,7 @@ import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 // eslint-disable-next-line import/extensions
 import ResizeMoveDialog from '../../components/ResizeMoveDialog';
-import { EventOpenIm, ImProps, EventToggleHorn, ToggleHornProp } from '../../event';
+import { EventOpenIm, ImProps, EventToggleHorn, ToggleHornProp, EventCloseIm } from '../../event';
 import '../../utils/chatLogin.js';
 export interface RlyPropos {
     bounds?: string;
@@ -69,6 +69,9 @@ function IM({ bounds, size, maxSize, limitSize, userInfo }: RlyPropos) {
         EventToggleHorn.on((res: ImProps) => {
             (document.getElementById('RlyChat-Im') as any).contentWindow.postMessage({ ...res });
         });
+        EventCloseIm.on(() => {
+            close();
+        });
     }, []);
 
     useEffect(() => {
@@ -115,6 +118,10 @@ export default React.memo(IM);
 
 export const openIM = (res: ImProps) => {
     EventOpenIm.emit(res);
+};
+
+export const closeIM = () => {
+    EventCloseIm.emit();
 };
 
 export const toggleHorn = (res: ToggleHornProp) => {

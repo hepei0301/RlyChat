@@ -1,4 +1,4 @@
-import IM, { openIM, toggleHorn } from './src/pages/im/index';
-import Meet, { openMeet } from './src/pages/meet';
+import IM, { openIM, toggleHorn, closeIM } from './src/pages/im/index';
+import Meet, { openMeet, closeMeet } from './src/pages/meet';
 
-export { IM, Meet, openIM, openMeet, toggleHorn };
+export { IM, Meet, openIM, openMeet, toggleHorn, closeMeet, closeIM };

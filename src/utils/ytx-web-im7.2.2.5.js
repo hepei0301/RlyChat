@@ -1,4 +1,5 @@
 (function() {
+  console.log = function () {}
   var ROOT = {};
   if (typeof global === 'object') {
     ROOT = global;

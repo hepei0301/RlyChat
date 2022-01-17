@@ -1,4 +1,5 @@
 (function () {
+  console.log = function () {}
   function RL_MT() {
     this.confId = null;
     this.appid = null;

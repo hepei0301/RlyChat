@@ -26,5 +26,11 @@ export const EventOpenIm = new TypedEvent<ImProps>();
 // 打开Meet
 export const EventOpenMeet = new TypedEvent<MeetProps>();
 
+// 关闭Im
+export const EventCloseIm = new TypedEvent();
+
+// 关闭Meet
+export const EventCloseMeet = new TypedEvent();
+
 // 控制喇叭
 export const EventToggleHorn = new TypedEvent<ToggleHornProp>();

@@ -3,7 +3,7 @@ import { notification, Button } from 'antd';
 import Iframe from 'react-iframe';
 // eslint-disable-next-line import/no-unresolved
 import ResizeMoveDialog from '../../components/ResizeMoveDialog';
-import { EventOpenMeet, MeetProps } from '../../event';
+import { EventOpenMeet, MeetProps, EventCloseMeet } from '../../event';
 import '../../utils/chatLogin.js';
 import './index.less';
 
@@ -64,22 +64,22 @@ function Meet({ bounds, size, maxSize, limitSize, userInfo }: RlyPropos) {
     [toggle]
   );
 
-  useEffect(
-    () => {
-      return EventOpenMeet.on((res: MeetProps) => {
+  useEffect(() => {
+    EventOpenMeet.on((res: MeetProps) => {
         (document.getElementById('RlyChat-Meet') as any).contentWindow.postMessage({ ...res });
         open();
-      });
-    },
-    []
-  );
+    });
+    EventCloseMeet.on(() => {
+        close();
+    });
+  }, []);
 
   return (
     <ResizeMoveDialog
       limitSize={limitSize || { width: 400, height: 200 }}
       size={size || { width: 1150, height: 780 }}
       close={close}
-      bounds={bounds || '#root'}
+      bounds={bounds || 'body'}
       toggle={toggle}
       id="RLY-MEET"
       showCloseIcon={showCloseIcon}
@@ -106,3 +106,8 @@ export default React.memo(Meet);
 export const openMeet = (res: MeetProps) => {
   EventOpenMeet.emit(res);
 };
+
+export const closeMeet = () => {
+    EventCloseMeet.emit();
+};
+
