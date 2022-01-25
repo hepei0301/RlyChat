@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Rnd } from 'react-rnd';
 import _ from 'lodash';
+import { message } from 'antd';
+import { CloseCircleOutlined } from '@ant-design/icons';
 import { RlyPropos } from '../pages/im';
 import close_press from '../assets/close_press.png';
 import './ResizeMoveDialog.less';
@@ -17,6 +19,7 @@ function ResizeMoveDialog(props: ResizeMoveDialogProps) {
   const [currentPosition, setCurrentPosition] = useState({ x: -10000, y: -10000 });
   const [currentSize, setCurrentSize] = useState(size);
   const [mouseState, setMouseState] = useState(false);
+  const [login, setLogin] = useState(true);
 
   useEffect(
     () => {
@@ -32,6 +35,12 @@ function ResizeMoveDialog(props: ResizeMoveDialogProps) {
     },
     [toggle]
   );
+
+  useEffect(() => {
+    (window as any).__LOGOUT__ = () => {
+        setLogin(false);
+    };
+  }, [login]);
 
   const closeDialog = () => {
     close && close();
@@ -79,6 +88,10 @@ function ResizeMoveDialog(props: ResizeMoveDialogProps) {
       />
       <div className="resizeContent" style={{ pointerEvents: mouseState ? 'none' : 'auto' }}>
         {children}
+      </div>
+      <div className="loginOutMessage" style={{left: login ? '50%' : '-10000px'}}>
+        <CloseCircleOutlined style={{marginRight: 10, color: '#ff4d4f'}}/>
+        您的账号在另外终端被登录，请刷新页面再使用通信
       </div>
     </Rnd>
   );
