@@ -89,7 +89,7 @@ function ResizeMoveDialog(props: ResizeMoveDialogProps) {
       <div className="resizeContent" style={{ pointerEvents: mouseState ? 'none' : 'auto' }}>
         {children}
       </div>
-      <div className="loginOutMessage" style={{left: login ? '50%' : '-10000px'}}>
+      <div className="loginOutMessage" style={{left: !login ? '50%' : '-10000px'}}>
         <CloseCircleOutlined style={{marginRight: 10, color: '#ff4d4f'}}/>
         您的账号在另外终端被登录，请刷新页面再使用通信
       </div>
