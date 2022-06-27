@@ -34,3 +34,9 @@ export const EventCloseMeet = new TypedEvent();
 
 // 控制喇叭
 export const EventToggleHorn = new TypedEvent<ToggleHornProp>();
+
+// 设置频道
+export const EventChannelId = new TypedEvent<string>();
+
+// 控制对讲机
+export const EventToggleTotalkd = new TypedEvent<boolean>();
