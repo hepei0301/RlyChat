@@ -1,8 +1,8 @@
 var ip = {
-  serverIp: 'wss://im-demo.gcnao.cn:9002/ws', //'
-  fileServerIp: 'https://im-demo.gcnao.cn:9002/uploadFile', //'
-  lvsServer: 'https://im-demo.gcnao.cn:9002/accessFile', //
-  mwsgServer: 'wss://im-demo.gcnao.cn:9003/h5websocket', //
+  serverIp: 'wss://im.gcnao.cn:9002/ws', //'
+  fileServerIp: 'https://im.gcnao.cn:9002/uploadFile', //'
+  lvsServer: 'https://im.gcnao.cn:9002/accessFile', //
+  mwsgServer: 'wss://im.gcnao.cn:9003/h5websocket', //
 };
 var app = {
   _appid: '8a2af988536458c301537d7197320004', //'
