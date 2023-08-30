@@ -1,6 +1,6 @@
 {
   "name": "rly-chat",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "react project chat",
   "main": "./index.ts",
   "module": "./index.ts",
